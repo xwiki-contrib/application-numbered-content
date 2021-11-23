@@ -1,0 +1,118 @@
+.runTransformations:macro,numberedheadings
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the reference macro on a simple case with the default parameters.
+.#-----------------------------------------------------
+See section {{reference section='C'/}}. Invalid {{reference section='invalid'/}}.
+
+= heading A =
+== heading B ==
+== {{id name='C'/}}heading C ==
+=== heading D ===
+= heading E =
+
+.#-----------------------------------------------------
+.expect|xwiki/2.1
+.#-----------------------------------------------------
+See section {{reference section="C"/}}. Invalid {{reference section="invalid"/}}.
+
+= (% class="wikigeneratedheadingnumber" %)1 (%%)heading A =
+
+== (% class="wikigeneratedheadingnumber" %)1.1 (%%)heading B ==
+
+== (% class="wikigeneratedheadingnumber" %)1.2 (%%){{id name="C"/}}heading C ==
+
+=== (% class="wikigeneratedheadingnumber" %)1.2.1 (%%)heading D ===
+
+= (% class="wikigeneratedheadingnumber" %)2 (%%)heading E =
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginParagraph
+onWord [See]
+onSpace
+onWord [section]
+onSpace
+beginMacroMarkerInline [reference] [section=C]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [C]]] [false]
+onWord [1]
+onSpecialSymbol [.]
+onWord [2]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [C]]] [false]
+endMacroMarkerInline [reference] [section=C]
+onSpecialSymbol [.]
+onSpace
+onWord [Invalid]
+onSpace
+beginMacroMarkerInline [reference] [section=invalid]
+endMacroMarkerInline [reference] [section=invalid]
+onSpecialSymbol [.]
+endParagraph
+beginSection
+beginHeader [1, HheadingA]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [1]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [A]
+endHeader [1, HheadingA]
+beginSection
+beginHeader [2, HheadingB]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [1]
+onSpecialSymbol [.]
+onWord [1]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [B]
+endHeader [2, HheadingB]
+endSection
+beginSection
+beginHeader [2, HheadingC]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [1]
+onSpecialSymbol [.]
+onWord [2]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+beginMacroMarkerInline [id] [name=C]
+onId [C]
+endMacroMarkerInline [id] [name=C]
+onWord [heading]
+onSpace
+onWord [C]
+endHeader [2, HheadingC]
+beginSection
+beginHeader [3, HheadingD]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [1]
+onSpecialSymbol [.]
+onWord [2]
+onSpecialSymbol [.]
+onWord [1]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [D]
+endHeader [3, HheadingD]
+endSection
+endSection
+endSection
+beginSection
+beginHeader [1, HheadingE]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [2]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [E]
+endHeader [1, HheadingE]
+endSection
+endDocument

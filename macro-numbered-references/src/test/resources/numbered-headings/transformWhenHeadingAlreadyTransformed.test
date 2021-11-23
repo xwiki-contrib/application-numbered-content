@@ -1,0 +1,27 @@
+.runTransformations:macro,numberedheadings
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the reference macro on a simple case with the default parameters.
+.#-----------------------------------------------------
+= (% class="wikigeneratedheadingnumber" %)10.5 (%%)heading A =
+
+.#-----------------------------------------------------
+.expect|xwiki/2.1
+.#-----------------------------------------------------
+= (% class="wikigeneratedheadingnumber" %)1 (%%)heading A =
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginSection
+beginHeader [1, H10.5headingA]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [1]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [A]
+endHeader [1, H10.5headingA]
+endSection
+endDocument

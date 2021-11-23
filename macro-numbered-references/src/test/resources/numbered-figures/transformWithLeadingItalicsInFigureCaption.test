@@ -1,0 +1,58 @@
+.runTransformations:macro,numberedfigures
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the reference macro on a simple case with the default parameters.
+.#-----------------------------------------------------
+{{figure}}
+{{figureCaption}}
+//p//-Values
+{{/figureCaption}}
+
+Figure content
+{{/figure}}
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<p><span class="wikigeneratedfigurenumber">Figure 1:&nbsp;</span><em>p</em>-Values</p><p>Figure content</p>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [figure] [] [{{figureCaption}}
+//p//-Values
+{{/figureCaption}}
+
+Figure content]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginFigure
+beginMacroMarkerStandalone [figureCaption] [] [//p//-Values]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginFigureCaption
+beginFormat [NONE] [[class]=[wikigeneratedfigurenumber]]
+onWord [Figure]
+onSpace
+onWord [1]
+onSpecialSymbol [:]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedfigurenumber]]
+beginFormat [ITALIC]
+onWord [p]
+endFormat [ITALIC]
+onSpecialSymbol [-]
+onWord [Values]
+endFigureCaption
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endMacroMarkerStandalone [figureCaption] [] [//p//-Values]
+beginParagraph
+onWord [Figure]
+onSpace
+onWord [content]
+endParagraph
+endFigure
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endMacroMarkerStandalone [figure] [] [{{figureCaption}}
+//p//-Values
+{{/figureCaption}}
+
+Figure content]
+endDocument
