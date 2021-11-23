@@ -12,4 +12,4 @@ Allows to automatically add number on paragraphs and sub-paragraphs.
 * License: LGPL 2.1
 * Translations: N/A
 * Sonar Dashboard: N/A 
-* Continuous Integration Status: [![Build Status](https://ci.xwiki.org/buildStatus/icon?job=XWiki+Contrib%2Fapplication-numbered-content%2Fmain)](https://ci.xwiki.org/job/XWiki%20Contrib/job/application-numbered-content/job/main/)
+* Continuous Integration Status: [![Build Status](https://ci.xwiki.org/buildStatus/icon?job=XWiki+Contrib%2Fapplication-numbered-content%2Fmaster)](https://ci.xwiki.org/job/XWiki%20Contrib/job/application-numbered-content/job/master/)
