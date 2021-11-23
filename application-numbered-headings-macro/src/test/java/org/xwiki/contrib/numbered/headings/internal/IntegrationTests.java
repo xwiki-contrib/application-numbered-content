@@ -70,5 +70,8 @@ public class IntegrationTests implements RenderingTests
         });
         when(contextualLocalizationManager.getTranslation("transformation.numberedReferences.tablePrefix")).thenReturn(
             translation2);
+
+        when(componentManager.<NumberedHeadingsService>registerMockComponent(NumberedHeadingsService.class)
+            .isCurrentDocumentNumbered()).thenReturn(true);
     }
 }

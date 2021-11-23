@@ -42,11 +42,13 @@ import org.xwiki.rendering.transformation.TransformationContext;
 import org.xwiki.test.annotation.AllComponents;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectComponentManager;
+import org.xwiki.test.junit5.mockito.MockComponent;
 import org.xwiki.test.mockito.MockitoComponentManager;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 /**
  * Integration tests for {@link NumberedHeadingsTransformation}, in addition to {@link IntegrationTests}.
@@ -55,11 +57,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 1.0
  */
 @ComponentTest
-@AllComponents
+@AllComponents(excludes = NumberedHeadingsService.class)
 class NumberedHeadingsTransformationTest
 {
     @InjectComponentManager
     private MockitoComponentManager componentManager;
+
+    @MockComponent
+    private NumberedHeadingsService numberedHeadingsService;
 
     private Transformation numberedHeadingsTransformation;
 
@@ -78,6 +83,7 @@ class NumberedHeadingsTransformationTest
         this.rendererXWiki21 = this.componentManager.getInstance(BlockRenderer.class, Syntax.XWIKI_2_1.toIdString());
         this.parserXWiki21 = this.componentManager.getInstance(Parser.class, "xwiki/2.1");
         this.componentManager.registerMockComponent(ContextualLocalizationManager.class);
+        when(this.numberedHeadingsService.isCurrentDocumentNumbered()).thenReturn(true);
     }
 
     @Test

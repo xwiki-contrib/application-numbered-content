@@ -86,7 +86,8 @@
     </plugins>
   </build>
   <modules>
-    <module>macro-numbered-content</module>
-    <module>macro-numbered-headings</module>
+    <module>application-numbered-content-macro</module>
+    <module>application-numbered-headings-macro</module>
+    <module>application-numbered-headings-ui</module>
   </modules>
 </project>

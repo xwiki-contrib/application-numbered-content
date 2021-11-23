@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -44,6 +45,7 @@ import org.xwiki.rendering.block.match.BlockMatcher;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.listener.Format;
 import org.xwiki.rendering.transformation.TransformationContext;
+import org.xwiki.rendering.transformation.TransformationException;
 
 /**
  * Find all headings, create numbers (and support nested numbering with the dot notation, e.g. {@code 1.1.1.1}) for them
@@ -65,9 +67,21 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
 
     private static final SpecialSymbolBlock DOT_BLOCK = new SpecialSymbolBlock('.');
 
+    @Inject
+    private NumberedHeadingsService numberedHeadingsService;
+
     @Override
-    public void transform(Block block, TransformationContext context)
+    public void transform(Block block, TransformationContext context) throws TransformationException
     {
+        // First check if the numbered headings feature is activated. The transformation is skipped on documents where
+        // it is not activated.
+        try {
+            if (!this.numberedHeadingsService.isCurrentDocumentNumbered()) {
+                return;
+            }
+        } catch (Exception e) {
+            throw new TransformationException("Failed to check if document is numbered", e);
+        }
         // Algorithm:
         // - Find all HeaderBlock (except those in protected data such as inside code macro)
         // - For each HeaderBlock, compute the heading number and cache it for later use for resolving the

@@ -24,10 +24,14 @@ import javax.inject.Singleton;
 
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.component.annotation.Component;
+import org.xwiki.context.Execution;
 import org.xwiki.model.reference.DocumentReference;
 
+import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.doc.XWikiDocument;
 import com.xpn.xwiki.objects.BaseObject;
+
+import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
 
 /**
  * Provides services related to the numbered headings. For instance, to know if a given document has the numbered
@@ -43,12 +47,17 @@ public class NumberedHeadingsService
     @Inject
     private DocumentAccessBridge documentAccessBridge;
 
+    @Inject
+    private Execution execution;
+
     /**
-     * Checks if a document has numbered headings activated by looking at the presence.
+     * Checks if a document has numbered headings activated by looking at the presence of an XObject of type {@link
+     * NumberedHeadingsClassDocumentInitializer#ACTIVATED_PROPERTY}.
      *
      * @param documentReference the document reference to check
      * @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
+     * @see #isCurrentDocumentNumbered()
      */
     public boolean isNumbered(DocumentReference documentReference) throws Exception
     {
@@ -65,5 +74,21 @@ public class NumberedHeadingsService
             currentReference = actualDoc.getParentReference();
         } while (currentReference != null);
         return false;
+    }
+
+    /**
+     * Check if the current document has numbered headings activated  by looking at the presence of an XObject of type
+     * {@link NumberedHeadingsClassDocumentInitializer#ACTIVATED_PROPERTY}.
+     *
+     * @return @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
+     * @throws Exception in case of error when access the document instance though the document bridge
+     * @see #isNumbered(DocumentReference)
+     */
+    public boolean isCurrentDocumentNumbered() throws Exception
+    {
+        DocumentReference documentReference =
+            ((XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY)).getDoc()
+                .getDocumentReference();
+        return isNumbered(documentReference);
     }
 }

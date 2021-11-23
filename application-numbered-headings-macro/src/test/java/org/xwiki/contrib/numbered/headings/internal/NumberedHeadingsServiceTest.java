@@ -24,14 +24,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.xwiki.bridge.DocumentAccessBridge;
+import org.xwiki.context.Execution;
+import org.xwiki.context.ExecutionContext;
 import org.xwiki.model.reference.DocumentReference;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
 import org.xwiki.test.junit5.mockito.MockComponent;
 
+import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.doc.XWikiDocument;
 import com.xpn.xwiki.objects.BaseObject;
 
+import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -62,22 +66,33 @@ class NumberedHeadingsServiceTest
     @MockComponent
     private DocumentAccessBridge documentAccessBridge;
 
+    @MockComponent
+    private Execution execution;
+
     @Mock
     private XWikiDocument xWikiDocumentPage;
 
     @Mock
     private XWikiDocument xWikiDocumentSpace1;
 
+    @Mock
+    private ExecutionContext context;
+
+    @Mock
+    private XWikiContext xWikiContext;
+
     @BeforeEach
-    void setUp()
+    void setUp() throws Exception
     {
         when(this.xWikiDocumentPage.getParentReference()).thenReturn(DOCUMENT_REFERENCE_SPACE_1);
+        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_PAGE)).thenReturn(this.xWikiDocumentPage);
+        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_1))
+            .thenReturn(this.xWikiDocumentSpace1);
     }
 
     @Test
     void isNumbered() throws Exception
     {
-        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_PAGE)).thenReturn(this.xWikiDocumentPage);
         BaseObject baseObject = mock(BaseObject.class);
         when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).
             thenReturn(baseObject);
@@ -100,9 +115,6 @@ class NumberedHeadingsServiceTest
     @CsvSource({ "1,true", "0,false" })
     void isNumberedOnParent(int activated, boolean expected) throws Exception
     {
-        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_PAGE)).thenReturn(this.xWikiDocumentPage);
-        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_1)).thenReturn(
-            this.xWikiDocumentSpace1);
         BaseObject baseObject = mock(BaseObject.class);
         when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
         when(this.xWikiDocumentSpace1.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE))
@@ -114,11 +126,25 @@ class NumberedHeadingsServiceTest
     @Test
     void isNumberedNoXObject() throws Exception
     {
-        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_PAGE)).thenReturn(this.xWikiDocumentPage);
-        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_1)).thenReturn(
-            this.xWikiDocumentSpace1);
         when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
         when(this.xWikiDocumentSpace1.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
         assertFalse(this.numberedHeadingsService.isNumbered(DOCUMENT_REFERENCE_PAGE));
+    }
+
+    @Test
+    void isCurrentDocumentNumbered() throws Exception
+    {
+        when(this.execution.getContext()).thenReturn(this.context);
+        when(this.context.getProperty(EXECUTIONCONTEXT_KEY)).thenReturn(this.xWikiContext);
+        when(this.xWikiContext.getDoc()).thenReturn(this.xWikiDocumentPage);
+        when(this.xWikiDocumentPage.getDocumentReference()).thenReturn(DOCUMENT_REFERENCE_PAGE);
+
+        BaseObject baseObject = mock(BaseObject.class);
+        when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
+        when(this.xWikiDocumentSpace1.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE))
+            .thenReturn(baseObject);
+        when(baseObject.getIntValue(NumberedHeadingsClassDocumentInitializer.ACTIVATED_PROPERTY)).thenReturn(1);
+
+        assertTrue(this.numberedHeadingsService.isCurrentDocumentNumbered());
     }
 }
