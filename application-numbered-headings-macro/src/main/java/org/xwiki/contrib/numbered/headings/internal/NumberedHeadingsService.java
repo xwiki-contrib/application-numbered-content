@@ -19,6 +19,8 @@
  */
 package org.xwiki.contrib.numbered.headings.internal;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -52,7 +54,7 @@ public class NumberedHeadingsService
 
     /**
      * Checks if a document has numbered headings activated by looking at the presence of an XObject of type {@link
-     * NumberedHeadingsClassDocumentInitializer#ACTIVATED_PROPERTY}.
+     * NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
      *
      * @param documentReference the document reference to check
      * @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
@@ -68,8 +70,13 @@ public class NumberedHeadingsService
             BaseObject xObject = actualDoc.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE);
             // We stop as soon as we find an object.
             if (xObject != null) {
-                int intValue = xObject.getIntValue(NumberedHeadingsClassDocumentInitializer.ACTIVATED_PROPERTY);
-                return intValue != 0;
+                String activatePropertyValue =
+                    xObject.getStringValue(NumberedHeadingsClassDocumentInitializer.STATUS_PROPERTY);
+                // If the value is inherits, we continue looking up the hierarchy, otherwise we use the configured 
+                // activation setting.
+                if (!Objects.equals(activatePropertyValue, "inherits")) {
+                    return Objects.equals(activatePropertyValue, "activated");
+                }
             }
             currentReference = actualDoc.getParentReference();
         } while (currentReference != null);
@@ -78,7 +85,7 @@ public class NumberedHeadingsService
 
     /**
      * Check if the current document has numbered headings activated  by looking at the presence of an XObject of type
-     * {@link NumberedHeadingsClassDocumentInitializer#ACTIVATED_PROPERTY}.
+     * {@link NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
      *
      * @return @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
@@ -86,9 +93,11 @@ public class NumberedHeadingsService
      */
     public boolean isCurrentDocumentNumbered() throws Exception
     {
-        DocumentReference documentReference =
-            ((XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY)).getDoc()
-                .getDocumentReference();
+        XWikiDocument doc = ((XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY)).getDoc();
+        if (doc == null) {
+            return false;
+        }
+        DocumentReference documentReference = doc.getDocumentReference();
         return isNumbered(documentReference);
     }
 }

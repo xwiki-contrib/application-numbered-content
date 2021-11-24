@@ -29,6 +29,7 @@ import com.xpn.xwiki.doc.AbstractMandatoryClassInitializer;
 import com.xpn.xwiki.objects.classes.BaseClass;
 
 import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.join;
 
 /**
  * Create or update the {@code NumberedHeadings.Code.NumberedHeadingsClass} document with all required information.
@@ -50,7 +51,22 @@ public class NumberedHeadingsClassDocumentInitializer extends AbstractMandatoryC
     /**
      * The field name of the activated property.
      */
-    public static final String ACTIVATED_PROPERTY = "activated";
+    public static final String STATUS_PROPERTY = "status";
+
+    /**
+     * The activated status value.
+     */
+    public static final String STATUS_ACTIVATED = "activated";
+
+    /**
+     * The deactivated status value.
+     */
+    public static final String STATUS_DEACTIVATED = "deactivated";
+
+    /**
+     * The inherits status value.
+     */
+    public static final String STATUS_INHERITS = "inherits";
 
     /**
      * Default constructor.
@@ -63,7 +79,8 @@ public class NumberedHeadingsClassDocumentInitializer extends AbstractMandatoryC
     @Override
     protected void createClass(BaseClass xclass)
     {
-        // TODO: localization
-        xclass.addBooleanField(ACTIVATED_PROPERTY, "Activated", "checkbox", true);
+        // TODO: localization + add labels.
+        xclass.addStaticListField(STATUS_PROPERTY, "Status",
+            join(asList(STATUS_ACTIVATED, STATUS_DEACTIVATED, STATUS_INHERITS), "|"));
     }
 }

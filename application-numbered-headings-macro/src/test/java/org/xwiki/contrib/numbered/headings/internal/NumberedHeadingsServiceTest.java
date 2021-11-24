@@ -44,6 +44,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.REFERENCE;
+import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.STATUS_ACTIVATED;
+import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.STATUS_DEACTIVATED;
+import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.STATUS_INHERITS;
+import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.STATUS_PROPERTY;
 
 /**
  * Test of {@link NumberedHeadingsService}.
@@ -94,9 +99,8 @@ class NumberedHeadingsServiceTest
     void isNumbered() throws Exception
     {
         BaseObject baseObject = mock(BaseObject.class);
-        when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).
-            thenReturn(baseObject);
-        when(baseObject.getIntValue(NumberedHeadingsClassDocumentInitializer.ACTIVATED_PROPERTY)).thenReturn(1);
+        when(this.xWikiDocumentPage.getXObject(REFERENCE)).thenReturn(baseObject);
+        when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn(STATUS_ACTIVATED);
         assertTrue(this.numberedHeadingsService.isNumbered(DOCUMENT_REFERENCE_PAGE));
     }
 
@@ -112,22 +116,21 @@ class NumberedHeadingsServiceTest
     }
 
     @ParameterizedTest
-    @CsvSource({ "1,true", "0,false" })
-    void isNumberedOnParent(int activated, boolean expected) throws Exception
+    @CsvSource({ STATUS_ACTIVATED + ",true", STATUS_DEACTIVATED + ",false", STATUS_INHERITS + ",false" })
+    void isNumberedOnParent(String status, boolean expected) throws Exception
     {
         BaseObject baseObject = mock(BaseObject.class);
-        when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
-        when(this.xWikiDocumentSpace1.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE))
-            .thenReturn(baseObject);
-        when(baseObject.getIntValue(NumberedHeadingsClassDocumentInitializer.ACTIVATED_PROPERTY)).thenReturn(activated);
+        when(this.xWikiDocumentPage.getXObject(REFERENCE)).thenReturn(null);
+        when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(baseObject);
+        when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn(status);
         assertEquals(expected, this.numberedHeadingsService.isNumbered(DOCUMENT_REFERENCE_PAGE));
     }
 
     @Test
     void isNumberedNoXObject() throws Exception
     {
-        when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
-        when(this.xWikiDocumentSpace1.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
+        when(this.xWikiDocumentPage.getXObject(REFERENCE)).thenReturn(null);
+        when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(null);
         assertFalse(this.numberedHeadingsService.isNumbered(DOCUMENT_REFERENCE_PAGE));
     }
 
@@ -140,11 +143,19 @@ class NumberedHeadingsServiceTest
         when(this.xWikiDocumentPage.getDocumentReference()).thenReturn(DOCUMENT_REFERENCE_PAGE);
 
         BaseObject baseObject = mock(BaseObject.class);
-        when(this.xWikiDocumentPage.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE)).thenReturn(null);
-        when(this.xWikiDocumentSpace1.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE))
-            .thenReturn(baseObject);
-        when(baseObject.getIntValue(NumberedHeadingsClassDocumentInitializer.ACTIVATED_PROPERTY)).thenReturn(1);
+        when(this.xWikiDocumentPage.getXObject(REFERENCE)).thenReturn(null);
+        when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(baseObject);
+        when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn(STATUS_ACTIVATED);
 
         assertTrue(this.numberedHeadingsService.isCurrentDocumentNumbered());
+    }
+
+    @Test
+    void isCurrentDocumentNumberedDocIsNull() throws Exception
+    {
+        when(this.execution.getContext()).thenReturn(this.context);
+        when(this.context.getProperty(EXECUTIONCONTEXT_KEY)).thenReturn(this.xWikiContext);
+        when(this.xWikiContext.getDoc()).thenReturn(null);
+        assertFalse(this.numberedHeadingsService.isCurrentDocumentNumbered());
     }
 }

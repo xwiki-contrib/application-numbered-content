@@ -23,15 +23,27 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
     <artifactId>application-numbered-content</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.xwiki.contrib.numbered.content</groupId>
   <artifactId>application-numbered-headings-ui</artifactId>
   <version>1.0-SNAPSHOT</version>
-
+  <name>Numbered Headings - UI</name>
+  <description>Provides the User Interface and CKEditor plugins for Numbered Headings.</description>
+  <packaging>xar</packaging>
+  <properties>
+    <!-- Name to display by the Extension Manager -->
+    <xwiki.extension.name>Numbered Headings Application</xwiki.extension.name>
+    <xwiki.extension.category>application</xwiki.extension.category>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-headings-macro</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>
