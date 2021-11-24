@@ -247,6 +247,175 @@
   <object>
     <name>NumberedHeadings.Code.NumberedHeadings</name>
     <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>39f1c196-1777-481b-b3af-e6842fbe2028</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>#xwikicontent.cke_editable {
+  &gt; :first-child {
+    /* This is not strictly necessary apart from counter initialization for a global start value. */
+    counter-reset: ch1;
+  }
+  &gt; h1::before {
+    content: counter(ch1) " ";
+  }
+  &gt; h1 {
+    counter-reset: ch2 ch3 ch4 ch5 ch6;
+    counter-increment: ch1;
+  }
+  &gt; h2::before {
+    content: counter(ch1) "." counter(ch2) " ";
+  }
+  &gt; h2 {
+    counter-reset: ch3 ch4 ch5 ch6;
+    counter-increment: ch2;
+  }
+  &gt; h3::before {
+    content: counter(ch1) "." counter(ch2) "." counter(ch3) " ";
+  }
+  &gt; h3 {
+    counter-reset: ch4 ch5 ch6;
+    counter-increment: ch3;
+  }
+  &gt; h4::before {
+    content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) " ";
+  }
+  &gt; h4 {
+    counter-reset: ch5 ch6;
+    counter-increment: ch4;
+  }
+  &gt; h5::before {
+    content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) "."
+      counter(ch5) " ";
+  }
+  &gt; h5 {
+    counter-reset: ch6;
+    counter-increment: ch5;
+  }
+  &gt; h6::before {
+    content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) "."
+      counter(ch5) "." counter(ch6) " ";
+  }
+  &gt; h6 {
+    counter-increment: ch6;
+  }
+}
+</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>always</use>
+    </property>
+  </object>
+  <object>
+    <name>NumberedHeadings.Code.NumberedHeadings</name>
+    <number>0</number>
     <className>XWiki.UIExtensionClass</className>
     <guid>7418a0af-1e14-45bb-9c7c-068a030e664a</guid>
     <class>
