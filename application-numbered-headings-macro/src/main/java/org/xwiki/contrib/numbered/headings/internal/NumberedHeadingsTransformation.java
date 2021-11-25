@@ -105,27 +105,32 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
     }
 
     private void transformerHeader(Map<String, List<Block>> headingNumbers, Deque<Integer> number,
-        HeaderBlock headerBlock)
+        HeaderBlock headerBlock) throws TransformationException
     {
         if (headerBlock.getChildren().isEmpty() || isInsProtectedBlock(headerBlock)) {
             return;
         }
 
         // Step 1: Update the number stack to compute the new number
+        Integer start = getAndParseStart(headerBlock);
+
         int currentHeaderLevel = headerBlock.getLevel().getAsInt();
         if (number.size() < currentHeaderLevel) {
             int size = number.size();
             for (int i = 0; i < currentHeaderLevel - size; i++) {
                 number.push(1);
             }
+            replaceWithStart(number, start);
         } else if (number.size() == currentHeaderLevel) {
             number.push(number.pop() + 1);
+            replaceWithStart(number, start);
         } else {
             int size = number.size();
             for (int i = 0; i < size - currentHeaderLevel; i++) {
                 number.pop();
             }
             number.push(number.pop() + 1);
+            replaceWithStart(number, start);
         }
 
         // Step 2: Insert the number in the header
@@ -141,6 +146,28 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
         for (Block idBlock : idBlocks) {
             headingNumbers.put(((IdBlock) idBlock).getName(), serializeNumber(number));
         }
+    }
+
+    private void replaceWithStart(Deque<Integer> number, Integer start)
+    {
+        if (start != null) {
+            number.pop();
+            number.push(start);
+        }
+    }
+
+    private Integer getAndParseStart(HeaderBlock headerBlock) throws TransformationException
+    {
+        String startStr = headerBlock.getParameter("start");
+        Integer start = null;
+        try {
+            if (startStr != null) {
+                start = Integer.parseInt(startStr);
+            }
+        } catch (NumberFormatException e) {
+            throw new TransformationException("Invalid start parameter: " + startStr, e);
+        }
+        return start;
     }
 
     private void insertHeaderNumber(HeaderBlock headerBlock, Deque<Integer> number)
@@ -183,8 +210,7 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
 
     private Block serializeAndFormatNumber(Deque<Integer> number)
     {
-        List<Block> blocks = new ArrayList<>();
-        blocks.addAll(serializeNumber(number));
+        List<Block> blocks = new ArrayList<>(serializeNumber(number));
         blocks.add(new SpaceBlock());
         return new FormatBlock(blocks, Format.NONE, Collections.singletonMap(CLASS, CLASS_VALUE));
     }

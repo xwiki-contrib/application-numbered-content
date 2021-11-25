@@ -1,0 +1,136 @@
+.runTransformations:macro,numberedheadings
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the reference macro on a simple case with the default parameters.
+.#-----------------------------------------------------
+See section {{reference section='C'/}}. Invalid {{reference section='invalid'/}}.
+
+= heading A =
+(% start="100" %)
+== heading B ==
+(% start="20" %)
+= Heading F =
+== {{id name='C'/}}heading C ==
+=== heading D ===
+= heading E =
+
+.#-----------------------------------------------------
+.expect|xwiki/2.1
+.#-----------------------------------------------------
+See section {{reference section="C"/}}. Invalid {{reference section="invalid"/}}.
+
+= (% class="wikigeneratedheadingnumber" %)1 (%%)heading A =
+
+(% start="100" %)
+== (% class="wikigeneratedheadingnumber" %)1.100 (%%)heading B ==
+
+(% start="20" %)
+= (% class="wikigeneratedheadingnumber" %)20 (%%)Heading F =
+
+== (% class="wikigeneratedheadingnumber" %)20.1 (%%){{id name="C"/}}heading C ==
+
+=== (% class="wikigeneratedheadingnumber" %)20.1.1 (%%)heading D ===
+
+= (% class="wikigeneratedheadingnumber" %)21 (%%)heading E =
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginParagraph
+onWord [See]
+onSpace
+onWord [section]
+onSpace
+beginMacroMarkerInline [reference] [section=C]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [C]]] [false]
+onWord [20]
+onSpecialSymbol [.]
+onWord [1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [C]]] [false]
+endMacroMarkerInline [reference] [section=C]
+onSpecialSymbol [.]
+onSpace
+onWord [Invalid]
+onSpace
+beginMacroMarkerInline [reference] [section=invalid]
+endMacroMarkerInline [reference] [section=invalid]
+onSpecialSymbol [.]
+endParagraph
+beginSection
+beginHeader [1, HheadingA]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [1]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [A]
+endHeader [1, HheadingA]
+beginSection
+beginHeader [2, HheadingB] [[start]=[100]]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [1]
+onSpecialSymbol [.]
+onWord [100]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [B]
+endHeader [2, HheadingB] [[start]=[100]]
+endSection
+endSection
+beginSection
+beginHeader [1, HHeadingF] [[start]=[20]]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [20]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [Heading]
+onSpace
+onWord [F]
+endHeader [1, HHeadingF] [[start]=[20]]
+beginSection
+beginHeader [2, HheadingC]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [20]
+onSpecialSymbol [.]
+onWord [1]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+beginMacroMarkerInline [id] [name=C]
+onId [C]
+endMacroMarkerInline [id] [name=C]
+onWord [heading]
+onSpace
+onWord [C]
+endHeader [2, HheadingC]
+beginSection
+beginHeader [3, HheadingD]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [20]
+onSpecialSymbol [.]
+onWord [1]
+onSpecialSymbol [.]
+onWord [1]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [D]
+endHeader [3, HheadingD]
+endSection
+endSection
+endSection
+beginSection
+beginHeader [1, HheadingE]
+beginFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [21]
+onSpace
+endFormat [NONE] [[class]=[wikigeneratedheadingnumber]]
+onWord [heading]
+onSpace
+onWord [E]
+endHeader [1, HheadingE]
+endSection
+endDocument
