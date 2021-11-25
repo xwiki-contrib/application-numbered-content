@@ -125,16 +125,16 @@
     </property>
     <property>
       <code>require(['jquery', 'deferred!ckeditor'], function ($, ckeditorPromise) {
-
   const numberedHeadingsConfig = JSON.parse($('#numbered-headings-config').text());
 
   if (numberedHeadingsConfig.isActivated) {
-
     ckeditorPromise.done(ckeditor =&gt; {
       ckeditor.plugins.add('xwiki-numberedHeadings', {
+        requires: 'dialog',
         init: function (editor) {
           handleEnterKey(editor);
           handleIndentation(editor);
+          handleHeaderRightClick(editor);
         }
       });
 
@@ -142,7 +142,10 @@
         event.editor.config.extraPlugins = 'xwiki-numberedHeadings';
       });
 
-      var handleEnterKey = function (editor) {
+      //
+      // Enter specific plugin.
+      //
+      const handleEnterKey = function (editor) {
         editor.on('afterCommandExec', event =&gt; {
           if (event.data.name === 'enter') {
             afterEnterKey(editor);
@@ -150,15 +153,15 @@
         });
       };
 
-      var afterEnterKey = function (editor) {
-        var selection = editor.getSelection();
+      const afterEnterKey = function (editor) {
+        const selection = editor.getSelection();
         if (selection.isCollapsed()) {
-          var parentBlock = selection.getStartElement()
+          const parentBlock = selection.getStartElement()
             .getAscendant(element =&gt; ckeditor.dtd.$block[element.getName()], true);
-          var previousBlock = parentBlock.getPrevious();
+          const previousBlock = parentBlock.getPrevious();
           if (parentBlock.is('p') &amp;&amp; /h[1-6]/.test(previousBlock.getName())) {
             if (previousBlock.getText().trim().length) {
-              var bookmarks = selection.createBookmarks2();
+              const bookmarks = selection.createBookmarks2();
               parentBlock.renameNode(previousBlock.getName());
               selection.selectBookmarks(bookmarks);
             } else {
@@ -168,21 +171,24 @@
         }
       };
 
-      var handleIndentation = function (editor) {
+      //
+      // Indentation specific code.
+      //
+      const handleIndentation = function (editor) {
         ckeditor.plugins.indent.registerCommands(editor, {
-          indentHeading: new commandDefinition(editor, 'indentHeading', true),
-          outdentHeading: new commandDefinition(editor, 'outdentHeading')
+          indentHeading: new CommandDefinition(editor, 'indentHeading', true),
+          outdentHeading: new CommandDefinition(editor, 'outdentHeading')
         });
       };
 
-      function commandDefinition(editor) {
+      function CommandDefinition(editor) {
         ckeditor.plugins.indent.specificDefinition.apply(this, arguments);
         this.requiredContent = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
         editor.on('key', function (event) {
-          var path = editor.elementPath();
+          const path = editor.elementPath();
           if (path &amp;&amp; editor.mode === 'wysiwyg' &amp;&amp; event.data.keyCode === this.indentKey) {
-            var heading = this.getContext(path);
+            const heading = this.getContext(path);
             if (heading &amp;&amp; !(this.isIndent &amp;&amp; heading.is('h6'))) {
               editor.execCommand(this.relatedGlobal);
               // Cancel the key event so editor doesn't lose focus.
@@ -195,32 +201,33 @@
         //
         //	* Indent job (priority=10), before indentblock.
         //
-        //	  This job is before indentblock because, if this plugin is
-        //	  loaded it has higher priority over indentblock.
+        //	  This job is before indentblock because, if this plugin is loaded it has higher priority over indentblock.
         //
         //	* Outdent job (priority=30), after outdentblock.
         //
-        //	  This job got to be after outdentblock because in some cases
-        //	  outdent must be done on block-level.
+        //	  This job got to be after outdentblock because in some cases outdent must be done on block-level.
 
         this.jobs[this.isIndent ? 10 : 30] = {
           refresh: function (editor, path) {
-            var heading = this.getContext(path);
-            return (!heading || (this.isIndent &amp;&amp; heading.is('h6'))) ? ckeditor.TRISTATE_DISABLED : ckeditor.TRISTATE_OFF;
+            const heading = this.getContext(path);
+            if (!heading || (this.isIndent &amp;&amp; heading.is('h6'))) {
+              return ckeditor.TRISTATE_DISABLED;
+            } else {
+              return ckeditor.TRISTATE_OFF;
+            }
           },
           exec: ckeditor.tools.bind(indentHeading, this)
         };
-      };
+      }
 
-      ckeditor.tools.extend(commandDefinition.prototype, ckeditor.plugins.indent.specificDefinition.prototype, {
-        context: { h1: 1, h2: 1, h3: 1, h4: 1, h5: 1, h6: 1 }
+      ckeditor.tools.extend(CommandDefinition.prototype, ckeditor.plugins.indent.specificDefinition.prototype, {
+        context: {h1: 1, h2: 1, h3: 1, h4: 1, h5: 1, h6: 1}
       });
 
-      var indentHeading = function (editor) {
-        var selection = editor.getSelection();
+      const indentHeading = function (editor) {
+        const selection = editor.getSelection();
         if (selection.isCollapsed()) {
-          var heading = selection.getStartElement()
-            .getAscendant(element =&gt; this.context[element.getName()], true);
+          const heading = selection.getStartElement().getAscendant(element =&gt; this.context[element.getName()], true);
           var level = parseInt(heading.getName().substring(1));
           level += this.isIndent ? 1 : -1;
           if (level &lt; 1) {
@@ -231,8 +238,126 @@
         }
       };
     });
+
+    //
+    // Right-click specific code.
+    //
+    function handleHeaderRightClick(editor) {
+      /**
+       * Activate the action only when the condition is reached (ie, click on a hX header).
+       *
+       * @param def the command definition
+       */
+      function createDef(def) {
+        return CKEDITOR.tools.extend(def || {}, {
+          contextSensitive: 1,
+          refresh: function (editor, path) {
+            let isHeader = path.contains('h1', 1)
+              || path.contains('h2', 1)
+              || path.contains('h3', 1)
+              || path.contains('h4', 1)
+              || path.contains('h5', 1)
+              || path.contains('h6', 1);
+            this.setState(isHeader ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED);
+          }
+        });
+      }
+
+      function getHeadingElement(editor) {
+        var range;
+        try {
+          range = editor.getSelection().getRanges()[0];
+        } catch (e) {
+          return null;
+        }
+
+        range.shrink(CKEDITOR.SHRINK_TEXT);
+        let ancestors = editor.elementPath(range.getCommonAncestor());
+        return ancestors.contains('h1', 1)
+          || ancestors.contains('h2', 1)
+          || ancestors.contains('h3', 1)
+          || ancestors.contains('h4', 1)
+          || ancestors.contains('h5', 1)
+          || ancestors.contains('h6', 1);
+      }
+
+
+      CKEDITOR.dialog.add('headerConfig', () =&gt; {
+        return {
+          title: 'Header Configuration',
+          minHeight: 50,
+          minWidth: 150,
+          resizable: CKEDITOR.DIALOG_RESIZE_NONE,
+          getModel: () =&gt; {
+            const element = getHeadingElement(editor);
+            return element;
+          },
+          contents: [{
+            id: 'start',
+            label: 'Start',
+            elements: [{
+              id: 'startValue',
+              label: 'Start', // TODO: localization
+              type: 'text',
+              default: '',
+              validate: CKEDITOR.dialog.validate.integer('Header start number must be a whole number.'), // TODO: localization
+              setup: function (element) {
+                const value = parseInt(element.$.style.getPropertyValue("--numbered-heading-start"), 10) + 1 || '';
+                this.setValue(value);
+              },
+              commit: function (element) {
+                const value = this.getValue().trim();
+                if (value !== '') {
+                  const parsedValue = parseInt(value, 10);
+                  element.setAttribute("start", parsedValue);
+                  element.$.style.setProperty("--numbered-heading-start", parsedValue - 1);
+                } else {
+                  element.removeAttribute("start");
+                  element.$.style.removeProperty("--numbered-heading-start");
+                }
+              },
+            }]
+          }],
+          onShow: function () {
+            const editor = this.getParentEditor(),
+              element = getHeadingElement(editor, 'ul');
+
+            element &amp;&amp; this.setupContent(element);
+          },
+          onOk: function () {
+            const editor = this.getParentEditor(),
+              element = getHeadingElement(editor, 'ul');
+
+            element &amp;&amp; this.commitContent(element);
+          }
+        }
+      })
+
+      editor.addCommand('headerConfigCmd', new CKEDITOR.dialogCommand('headerConfig', createDef({
+        requiredContent: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+      })));
+
+      // If the "menu" plugin is loaded, register the menu item.
+      if (editor.addMenuItems) {
+        editor.addMenuItem('headerConfig', {
+          label: 'Header Config',
+          command: 'headerConfigCmd',
+          group: 'clipboard',
+          order: 12
+        });
+      }
+
+      if (editor.contextMenu) {
+        editor.contextMenu.addListener(function () {
+          return {
+            headerConfig: CKEDITOR.TRISTATE_OFF
+          }
+        })
+      }
+    }
   }
-})</code>
+})
+</code>
     </property>
     <property>
       <name/>
@@ -349,59 +474,72 @@
       <cache>long</cache>
     </property>
     <property>
-      <code>#xwikicontent.cke_editable {
-  &gt; :first-child {
-    /* This is not strictly necessary apart from counter initialization for a global start value. */
-    counter-reset: ch1;
-  }
-  &gt; h1::before {
-    content: counter(ch1) " ";
-  }
-  &gt; h1 {
-    counter-reset: ch2 ch3 ch4 ch5 ch6;
-    counter-increment: ch1;
-  }
-  &gt; h2::before {
-    content: counter(ch1) "." counter(ch2) " ";
-  }
-  &gt; h2 {
-    counter-reset: ch3 ch4 ch5 ch6;
-    counter-increment: ch2;
-  }
-  &gt; h3::before {
-    content: counter(ch1) "." counter(ch2) "." counter(ch3) " ";
-  }
-  &gt; h3 {
-    counter-reset: ch4 ch5 ch6;
-    counter-increment: ch3;
-  }
-  &gt; h4::before {
-    content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) " ";
-  }
-  &gt; h4 {
-    counter-reset: ch5 ch6;
-    counter-increment: ch4;
-  }
-  &gt; h5::before {
-    content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) "."
-      counter(ch5) " ";
-  }
-  &gt; h5 {
-    counter-reset: ch6;
-    counter-increment: ch5;
-  }
-  &gt; h6::before {
-    content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) "."
-      counter(ch5) "." counter(ch6) " ";
-  }
-  &gt; h6 {
-    counter-increment: ch6;
-  }
+      <code>#xwikicontent.cke_editable &gt; :first-child {
+  /* This is not strictly necessary apart from counter initialization for a global start value. */
+  counter-reset: ch1;
 }
-</code>
+#xwikicontent.cke_editable &gt; h1::before {
+  content: counter(ch1) " ";
+}
+#xwikicontent.cke_editable &gt; h1 {
+  counter-reset: ch2 ch3 ch4 ch5 ch6;
+  counter-increment: ch1;
+}
+#xwikicontent.cke_editable &gt; h2::before {
+  content: counter(ch1) "." counter(ch2) " ";
+}
+#xwikicontent.cke_editable &gt; h2 {
+  counter-reset: ch3 ch4 ch5 ch6;
+  counter-increment: ch2;
+}
+#xwikicontent.cke_editable &gt; h3::before {
+  content: counter(ch1) "." counter(ch2) "." counter(ch3) " ";
+}
+#xwikicontent.cke_editable &gt; h3 {
+  counter-reset: ch4 ch5 ch6;
+  counter-increment: ch3;
+}
+#xwikicontent.cke_editable &gt; h4::before {
+  content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) " ";
+}
+#xwikicontent.cke_editable &gt; h4 {
+  counter-reset: ch5 ch6;
+  counter-increment: ch4;
+}
+#xwikicontent.cke_editable &gt; h5::before {
+  content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) "." counter(ch5) " ";
+}
+#xwikicontent.cke_editable &gt; h5 {
+  counter-reset: ch6;
+  counter-increment: ch5;
+}
+#xwikicontent.cke_editable &gt; h6::before {
+  content: counter(ch1) "." counter(ch2) "." counter(ch3) "." counter(ch4) "." counter(ch5) "." counter(ch6) " ";
+}
+#xwikicontent.cke_editable &gt; h6 {
+  counter-increment: ch6;
+}
+#xwikicontent.cke_editable &gt; h1[start] {
+  counter-reset: ch1 var(--numbered-heading-start) ch2 ch3 ch4 ch5 ch6;
+}
+#xwikicontent.cke_editable &gt; h2[start] {
+  counter-reset: ch2 var(--numbered-heading-start) ch3 ch4 ch5 ch6;
+}
+#xwikicontent.cke_editable &gt; h3[start] {
+  counter-reset: ch3 var(--numbered-heading-start) ch4 ch5 ch6;
+}
+#xwikicontent.cke_editable &gt; h4[start] {
+  counter-reset: ch4 var(--numbered-heading-start) ch5 ch6;
+}
+#xwikicontent.cke_editable &gt; h5[start] {
+  counter-reset: ch5 var(--numbered-heading-start) ch6;
+}
+#xwikicontent.cke_editable &gt; h6[start] {
+  counter-reset: ch6 var(--numbered-heading-start);
+}</code>
     </property>
     <property>
-      <contentType>LESS</contentType>
+      <contentType>CSS</contentType>
     </property>
     <property>
       <name/>
