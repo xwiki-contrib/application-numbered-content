@@ -29,15 +29,15 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application-numbered-headings-macro</artifactId>
+  <artifactId>application-numbered-headings-api</artifactId>
 
   <version>1.0-SNAPSHOT</version>
-  <name>Numbered Headings - Macro</name>
+  <name>Numbered Headings - API</name>
   <description>Automatically add numbering on the headings of a page.</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Headings Macro</xwiki.extension.name>
-    <xwiki.extension.category>macro</xwiki.extension.category>
+    <xwiki.extension.name>Numbered Headings API</xwiki.extension.name>
+    <xwiki.extension.category>api</xwiki.extension.category>
     <xwiki.jacoco.instructionRatio>0.87</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
@@ -47,14 +47,14 @@
       <version>${commons.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-macro</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.xwiki.rendering</groupId>
       <artifactId>xwiki-rendering-api</artifactId>
       <version>${rendering.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>macro-numbered-content</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.xwiki.platform</groupId>

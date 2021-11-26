@@ -42,7 +42,7 @@
   <dependencies>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-headings-macro</artifactId>
+      <artifactId>application-numbered-headings-api</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

@@ -51,6 +51,6 @@ public class NumberedHeadingsScriptService implements ScriptService
     // TODO: change the thrown exception. 
     public boolean isNumberedHeadingsEnabled() throws Exception
     {
-        return this.numberedHeadingsService.isCurrentDocumentNumbered();
+        return this.numberedHeadingsService.isNumberedHeadingsEnabled();
     }
 }

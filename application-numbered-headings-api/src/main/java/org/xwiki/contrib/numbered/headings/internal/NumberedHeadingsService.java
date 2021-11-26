@@ -27,6 +27,8 @@ import javax.inject.Singleton;
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.context.Execution;
+import org.xwiki.context.ExecutionContext;
+import org.xwiki.contrib.numbered.headings.NumberedHeadingsTransformation;
 import org.xwiki.model.reference.DocumentReference;
 
 import com.xpn.xwiki.XWikiContext;
@@ -34,6 +36,7 @@ import com.xpn.xwiki.doc.XWikiDocument;
 import com.xpn.xwiki.objects.BaseObject;
 
 import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
+import static org.xwiki.contrib.numbered.headings.NumberedHeadingsTransformation.NUMBERED_HEADING_ACTIVATED_KEY;
 
 /**
  * Provides services related to the numbered headings. For instance, to know if a given document has the numbered
@@ -53,6 +56,40 @@ public class NumberedHeadingsService
     private Execution execution;
 
     /**
+     * Check if the current document has numbered headings activated either by looking for the {@link
+     * NumberedHeadingsTransformation#NUMBERED_HEADING_ACTIVATED_KEY} key with a {@code true} value in the {@link
+     * ExecutionContext}, or by looking at the presence of an XObject of type {@link
+     * NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
+     *
+     * @return @return {@code true} if the numbered headings are activated, {@code false} otherwise
+     * @throws Exception in case of error when access the document instance though the document bridge
+     * @see #isNumbered(DocumentReference)
+     */
+    public boolean isNumberedHeadingsEnabled() throws Exception
+    {
+        return isCurrentDocumentNumbered() || isActivatedFromContext();
+    }
+
+    private boolean isActivatedFromContext()
+    {
+        Object property = this.execution.getContext().getProperty(NUMBERED_HEADING_ACTIVATED_KEY);
+        return Objects.equals(property, true);
+    }
+
+    private boolean isCurrentDocumentNumbered() throws Exception
+    {
+        XWikiContext property = (XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY);
+        if (property == null) {
+            return false;
+        }
+        XWikiDocument doc = property.getDoc();
+        if (doc == null) {
+            return false;
+        }
+        return isNumbered(doc.getDocumentReference());
+    }
+
+    /**
      * Checks if a document has numbered headings activated by looking at the presence of an XObject of type {@link
      * NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
      *
@@ -61,7 +98,7 @@ public class NumberedHeadingsService
      * @throws Exception in case of error when access the document instance though the document bridge
      * @see #isCurrentDocumentNumbered()
      */
-    public boolean isNumbered(DocumentReference documentReference) throws Exception
+    private boolean isNumbered(DocumentReference documentReference) throws Exception
     {
         DocumentReference currentReference = documentReference;
         do {
@@ -81,23 +118,5 @@ public class NumberedHeadingsService
             currentReference = actualDoc.getParentReference();
         } while (currentReference != null);
         return false;
-    }
-
-    /**
-     * Check if the current document has numbered headings activated  by looking at the presence of an XObject of type
-     * {@link NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
-     *
-     * @return @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
-     * @throws Exception in case of error when access the document instance though the document bridge
-     * @see #isNumbered(DocumentReference)
-     */
-    public boolean isCurrentDocumentNumbered() throws Exception
-    {
-        XWikiDocument doc = ((XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY)).getDoc();
-        if (doc == null) {
-            return false;
-        }
-        DocumentReference documentReference = doc.getDocumentReference();
-        return isNumbered(documentReference);
     }
 }

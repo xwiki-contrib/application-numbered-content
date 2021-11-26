@@ -72,6 +72,6 @@ public class IntegrationTests implements RenderingTests
             translation2);
 
         when(componentManager.<NumberedHeadingsService>registerMockComponent(NumberedHeadingsService.class)
-            .isCurrentDocumentNumbered()).thenReturn(true);
+            .isNumberedHeadingsEnabled()).thenReturn(true);
     }
 }

@@ -17,13 +17,15 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.headings.internal;
+package org.xwiki.contrib.numbered.headings;
 
 import java.io.StringReader;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xwiki.contrib.numbered.headings.internal.IntegrationTests;
+import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -83,7 +85,7 @@ class NumberedHeadingsTransformationTest
         this.rendererXWiki21 = this.componentManager.getInstance(BlockRenderer.class, Syntax.XWIKI_2_1.toIdString());
         this.parserXWiki21 = this.componentManager.getInstance(Parser.class, "xwiki/2.1");
         this.componentManager.registerMockComponent(ContextualLocalizationManager.class);
-        when(this.numberedHeadingsService.isCurrentDocumentNumbered()).thenReturn(true);
+        when(this.numberedHeadingsService.isNumberedHeadingsEnabled()).thenReturn(true);
     }
 
     @Test

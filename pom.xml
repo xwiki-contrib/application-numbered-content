@@ -87,7 +87,7 @@
   </build>
   <modules>
     <module>application-numbered-content-macro</module>
-    <module>application-numbered-headings-macro</module>
+    <module>application-numbered-headings-api</module>
     <module>application-numbered-headings-ui</module>
   </modules>
 </project>

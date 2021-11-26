@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.headings.internal;
+package org.xwiki.contrib.numbered.headings;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
+import org.xwiki.context.ExecutionContext;
+import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.contrib.numberedreferences.internal.AbstractNumberedTransformation;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FormatBlock;
@@ -46,6 +48,7 @@ import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.listener.Format;
 import org.xwiki.rendering.transformation.TransformationContext;
 import org.xwiki.rendering.transformation.TransformationException;
+import org.xwiki.stability.Unstable;
 
 /**
  * Find all headings, create numbers (and support nested numbering with the dot notation, e.g. {@code 1.1.1.1}) for them
@@ -57,8 +60,15 @@ import org.xwiki.rendering.transformation.TransformationException;
 @Component
 @Named("numberedheadings")
 @Singleton
+@Unstable
 public class NumberedHeadingsTransformation extends AbstractNumberedTransformation
 {
+    /**
+     * The key of the property that indicates if the numbered headings are activated. This key can be used to force the
+     * activation of the numbered headings in the {@link ExecutionContext}.
+     */
+    public static final String NUMBERED_HEADING_ACTIVATED_KEY = "numbered-heading-activated";
+
     private static final String CLASS = "class";
 
     private static final String CLASS_VALUE = "wikigeneratedheadingnumber";
@@ -76,7 +86,7 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
         // First check if the numbered headings feature is activated. The transformation is skipped on documents where
         // it is not activated.
         try {
-            if (!this.numberedHeadingsService.isCurrentDocumentNumbered()) {
+            if (!this.numberedHeadingsService.isNumberedHeadingsEnabled()) {
                 return;
             }
         } catch (Exception e) {
@@ -100,7 +110,7 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
             transformerHeader(headingNumbers, number, headerBlock);
         }
 
-        // Step 4: Replace the ReferenceBlock with links
+        // Step 4: Replace the ReferenceBlock with links.
         replaceReferenceBlocks(block, headingNumbers);
     }
 
@@ -118,7 +128,12 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
         if (number.size() < currentHeaderLevel) {
             int size = number.size();
             for (int i = 0; i < currentHeaderLevel - size; i++) {
-                number.push(1);
+                boolean isLastSegment = currentHeaderLevel - size - 1 == i;
+                if (isLastSegment) {
+                    number.push(1);
+                } else {
+                    number.push(0);
+                }
             }
             replaceWithStart(number, start);
         } else if (number.size() == currentHeaderLevel) {
@@ -213,5 +228,11 @@ public class NumberedHeadingsTransformation extends AbstractNumberedTransformati
         List<Block> blocks = new ArrayList<>(serializeNumber(number));
         blocks.add(new SpaceBlock());
         return new FormatBlock(blocks, Format.NONE, Collections.singletonMap(CLASS, CLASS_VALUE));
+    }
+
+    @Override
+    public int getPriority()
+    {
+        return super.getPriority();
     }
 }
