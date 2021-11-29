@@ -26,18 +26,19 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
 import org.xwiki.contrib.numbered.content.toc.internal.TocTreeBuilder;
 import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.XDOM;
-import org.xwiki.rendering.internal.macro.toc.AbstractTocMacro;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.internal.macro.toc.TreeParametersBuilder;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
 import org.xwiki.rendering.listener.reference.ResourceReference;
+import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.macro.MacroExecutionException;
 import org.xwiki.rendering.macro.toc.TocMacroParameters;
 import org.xwiki.rendering.parser.Parser;
@@ -46,9 +47,11 @@ import org.xwiki.rendering.transformation.MacroTransformationContext;
 import org.xwiki.rendering.wiki.WikiModel;
 import org.xwiki.rendering.wiki.WikiModelException;
 
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
+
 /**
- * TODO: document me.
- * WARNING: ToC from rendering is internal!
+ * Replace the {@link org.xwiki.rendering.internal.macro.toc.TocMacro} with a new implementation where numbered headings
+ * numbers are displayed in the ToC.
  *
  * @version $Id$
  * @since 1.0
@@ -56,14 +59,15 @@ import org.xwiki.rendering.wiki.WikiModelException;
 @Component
 @Named("toc")
 @Singleton
-public class TocMacro extends AbstractTocMacro<TocMacroParameters>
+public class TocMacro extends AbstractMacro<TocMacroParameters>
 {
+    private static final String DESCRIPTION = "Generates a Table Of Contents.";
+
     @Inject
     private NumberedHeadingsService numberedHeadingsService;
 
     @Inject
     private Provider<WikiModel> wikiModelProvider;
-
 
     private TocTreeBuilder tocTreeBuilder;
 
@@ -74,18 +78,27 @@ public class TocMacro extends AbstractTocMacro<TocMacroParameters>
     @Named("plain/1.0")
     private Parser plainTextParser;
 
+    @Inject
+    private Logger logger;
+
     /**
      * Generate link label.
      */
     @Inject
     private LinkLabelGenerator linkLabelGenerator;
-    
+
     /**
-     * TODO: document me.
+     * Create and initialize the descriptor of the macro.
      */
     public TocMacro()
     {
-        super(TocMacroParameters.class);
+        super("Table Of Contents", DESCRIPTION, TocMacroParameters.class);
+
+        // Make sure this macro is executed as one of the last macros to be executed since
+        // other macros can generate headers which need to be taken into account by the TOC
+        // macro.
+        setPriority(2000);
+        setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
     }
 
     @Override
@@ -96,19 +109,32 @@ public class TocMacro extends AbstractTocMacro<TocMacroParameters>
     }
 
     @Override
+    public boolean supportsInlineMode()
+    {
+        return false;
+    }
+
+    @Override
     public List<Block> execute(TocMacroParameters parameters, String content, MacroTransformationContext context)
         throws MacroExecutionException
     {
+        boolean isNumbered;
         try {
-            if (!this.numberedHeadingsService.isNumberedHeadingsEnabled()) {
-                return super.execute(parameters, content, context);
-            }
+            isNumbered = this.numberedHeadingsService.isNumberedHeadingsEnabled();
         } catch (Exception e) {
-            // TODO: can be replaced by a warning and a fallback to a non-numbered ToC.
-            throw new MacroExecutionException("Failed to identify if numbered headings is enabled.", e);
+            isNumbered = false;
+            this.logger.warn("Cannot check if numbered headings are enabled. Cause: [{}]", getRootCauseMessage(e));
         }
 
-        // TODO: duplicate from AbstractTocMacro.
+        Block rootBlock = getRootBlockBlock(parameters);
+
+        TreeParametersBuilder builder = new TreeParametersBuilder();
+        TreeParameters treeParameters = builder.build(rootBlock, parameters, context);
+        return this.tocTreeBuilder.build(treeParameters, isNumbered);
+    }
+
+    private Block getRootBlockBlock(TocMacroParameters parameters) throws MacroExecutionException
+    {
         Block rootBlock = null;
         WikiModel wikiModel = this.wikiModelProvider.get();
         if (parameters.getReference() != null) {
@@ -122,19 +148,9 @@ public class TocMacro extends AbstractTocMacro<TocMacroParameters>
                     "The \"reference\" parameter can only be used when a WikiModel implementation is available");
             }
         }
-
-        TreeParametersBuilder builder = new TreeParametersBuilder();
-        TreeParameters treeParameters = builder.build(rootBlock, parameters, context);
-        return this.tocTreeBuilder.build(treeParameters);
+        return rootBlock;
     }
 
-    /**
-     * TODO: duplicate from AbstractTocMacro.
-     * @param reference
-     * @param wikiModel
-     * @return
-     * @throws MacroExecutionException
-     */
     private XDOM getXDOM(ResourceReference reference, WikiModel wikiModel) throws MacroExecutionException
     {
         try {

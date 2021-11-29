@@ -21,6 +21,7 @@ package org.xwiki.contrib.numbered.content.toc.internal;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,6 +38,7 @@ import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.ListBLock;
 import org.xwiki.rendering.block.ListItemBlock;
 import org.xwiki.rendering.block.MacroMarkerBlock;
+import org.xwiki.rendering.block.NumberedListBlock;
 import org.xwiki.rendering.block.RawBlock;
 import org.xwiki.rendering.block.SectionBlock;
 import org.xwiki.rendering.block.SpaceBlock;
@@ -76,10 +78,11 @@ public class TocTreeBuilder
     /**
      * Build a Table of content from the parameters.
      *
-     * @param parameters the input parameters to generate the tree of {@link Block}s.
+     * @param parameters the input parameters to generate the tree of {@link Block}s
+     * @param headingsNumbered if {@code true} the numbers of the headings will be displayed
      * @return the list of {@link Block}s representing the TOC
      */
-    public List<Block> build(TreeParameters parameters)
+    public List<Block> build(TreeParameters parameters, boolean headingsNumbered)
     {
         // TODO: edit to keep build a cache, set non-duplicated IDs, insert numbers in prefix of the headings and
         // normalize the names.
@@ -109,11 +112,15 @@ public class TocTreeBuilder
         if (this.cache.containsKey(parameters.rootBlock)) {
             headers = new ArrayList<>(this.cache.get(parameters.rootBlock).keySet());
         } else {
-            headers = buildCache(parameters);
+            headers = getHeaderBlocks(parameters);
+            if (headingsNumbered) {
+                buildCache(parameters, headers);
+            }
         }
 
         // Construct table of content from sections list
-        Block tocBlock = generateTree(headers, parameters.start, parameters.depth, parameters.documentReference);
+        Block tocBlock = generateTree(headers, parameters.start, parameters.depth, parameters.documentReference,
+            parameters.isNumbered, headingsNumbered);
         if (tocBlock != null) {
             result = singletonList(tocBlock);
         } else {
@@ -123,10 +130,8 @@ public class TocTreeBuilder
         return result;
     }
 
-    private List<HeaderBlock> buildCache(TreeParameters parameters)
+    private void buildCache(TreeParameters parameters, List<HeaderBlock> headers)
     {
-        List<HeaderBlock> headers = getHeaderBlocks(parameters);
-
         // If the root block is a section, remove its header block for the list of header blocks
         // TODO: see if still relevant.
         if (parameters.rootBlock instanceof SectionBlock) {
@@ -145,7 +150,6 @@ public class TocTreeBuilder
         for (HeaderBlock header : headers) {
             cacheHeader(rootBlockCache, stack, header);
         }
-        return headers;
     }
 
     private void cacheHeader(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock header)
@@ -247,10 +251,14 @@ public class TocTreeBuilder
      * @param headers the headers to convert.
      * @param start the "start" parameter value.
      * @param depth the "depth" parameter value.
+     * @param numbered when {@code true} the {@link BulletedListBlock} use to display the ToC items are replaced by
+     *     {@link NumberedListBlock}
+     * @param headingsNumbered when {@code true} the numbers added on prefix of the headings are also displayed in
+     *     the ToC before the headings content
      * @return the root block of generated block tree or null if no header was matching the specified parameters
      */
-    private Block generateTree(List<HeaderBlock> headers, int start, int depth,
-        String documentReference)
+    private Block generateTree(List<HeaderBlock> headers, int start, int depth, String documentReference,
+        boolean numbered, boolean headingsNumbered)
     {
         Block tocBlock = null;
 
@@ -265,10 +273,10 @@ public class TocTreeBuilder
                 if (currentLevel < headerLevel) {
                     while (currentLevel < headerLevel) {
                         if (currentBlock instanceof ListBLock) {
-                            currentBlock = addItemBlock(currentBlock, null, documentReference);
+                            currentBlock = addItemBlock(currentBlock, null, documentReference, headingsNumbered);
                         }
 
-                        currentBlock = createChildListBlock(currentBlock);
+                        currentBlock = createChildListBlock(currentBlock, numbered);
                         ++currentLevel;
                     }
                 } else {
@@ -279,7 +287,7 @@ public class TocTreeBuilder
                     currentBlock = currentBlock.getParent();
                 }
 
-                currentBlock = addItemBlock(currentBlock, headerBlock, documentReference);
+                currentBlock = addItemBlock(currentBlock, headerBlock, documentReference, headingsNumbered);
             }
         }
 
@@ -297,10 +305,12 @@ public class TocTreeBuilder
      * @param headerBlock the {@link HeaderBlock} to use to generate toc anchor label.
      * @return the new {@link ListItemBlock}.
      */
-    private Block addItemBlock(Block currentBlock, HeaderBlock headerBlock, String documentReference)
+    private Block addItemBlock(Block currentBlock, HeaderBlock headerBlock, String documentReference,
+        boolean headingsNumbered)
     {
-        ListItemBlock itemBlock =
-            headerBlock == null ? createEmptyTocEntry() : createTocEntry(headerBlock, documentReference);
+        ListItemBlock itemBlock = headerBlock == null
+            ? createEmptyTocEntry()
+            : createTocEntry(headerBlock, documentReference, headingsNumbered);
 
         currentBlock.addChild(itemBlock);
 
@@ -322,17 +332,18 @@ public class TocTreeBuilder
      * @param headerBlock the {@link HeaderBlock}.
      * @return the new list item block.
      */
-    private ListItemBlock createTocEntry(HeaderBlock headerBlock, String documentReference)
+    private ListItemBlock createTocEntry(HeaderBlock headerBlock, String documentReference, boolean headingsNumbered)
     {
         // Create the link to target the header anchor
         DocumentResourceReference reference = new DocumentResourceReference(documentReference);
-        String number = this.cache.get(headerBlock.getRoot()).get(headerBlock);
         reference.setAnchor(headerBlock.getId());
 
         List<Block> childrenBlocks = this.tocBlockFilter.generateLabel(headerBlock);
         ArrayList<Block> blocks = new ArrayList<>();
-        blocks.add(new RawBlock(number, Syntax.XHTML_1_0));
-        blocks.add(new SpaceBlock());
+        if (headingsNumbered) {
+            blocks.add(new RawBlock(this.cache.get(headerBlock.getRoot()).get(headerBlock), Syntax.XHTML_1_0));
+            blocks.add(new SpaceBlock());
+        }
         blocks.addAll(childrenBlocks);
         LinkBlock linkBlock = new LinkBlock(blocks, reference, false);
 
@@ -345,9 +356,10 @@ public class TocTreeBuilder
      * @param parentBlock the block where to add the new list block.
      * @return the new list block.
      */
-    private ListBLock createChildListBlock(Block parentBlock)
+    private ListBLock createChildListBlock(Block parentBlock, boolean numbered)
     {
-        ListBLock childListBlock = new BulletedListBlock(emptyList());
+        ListBLock childListBlock =
+            numbered ? new NumberedListBlock(Collections.emptyList()) : new BulletedListBlock(Collections.emptyList());
 
         if (parentBlock != null) {
             parentBlock.addChild(childListBlock);
