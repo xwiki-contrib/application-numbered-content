@@ -39,12 +39,6 @@
     <!-- Extension Manager category -->
     <xwiki.extension.category>macro</xwiki.extension.category>
   </properties>
-  <scm>
-    <connection>scm:git:git://github.com/xwiki-contrib/macro-numbered-references.git</connection>
-    <developerConnection>scm:git:git@github.com:xwiki-contrib/macro-numbered-references.git</developerConnection>
-    <url>https://github.com/xwiki-contrib/macro-numbered-references</url>
-    <tag>HEAD</tag>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>org.xwiki.rendering</groupId>

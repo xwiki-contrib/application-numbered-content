@@ -1,4 +1,3 @@
-org.xwiki.contrib.numbered.headings.NumberedHeadingsTransformation
 org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer
 org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService
 org.xwiki.contrib.numbered.headings.script.NumberedHeadingsScriptService

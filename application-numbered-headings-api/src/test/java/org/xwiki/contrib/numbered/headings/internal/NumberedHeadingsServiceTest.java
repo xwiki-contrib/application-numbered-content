@@ -44,7 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.xwiki.contrib.numbered.headings.NumberedHeadingsTransformation.NUMBERED_HEADING_ACTIVATED_KEY;
 import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.REFERENCE;
 import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.STATUS_ACTIVATED;
 import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.STATUS_DEACTIVATED;
@@ -152,14 +151,5 @@ class NumberedHeadingsServiceTest
     {
         when(this.xWikiContext.getDoc()).thenReturn(null);
         assertFalse(this.numberedHeadingsService.isNumberedHeadingsEnabled());
-    }
-
-    @Test
-    void isNumberedHeadingsEnabledFromContext() throws Exception
-    {
-        when(this.xWikiDocumentPage.getXObject(REFERENCE)).thenReturn(null);
-        when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(null);
-        when(this.context.getProperty(NUMBERED_HEADING_ACTIVATED_KEY)).thenReturn(true);
-        assertTrue(this.numberedHeadingsService.isNumberedHeadingsEnabled());
     }
 }

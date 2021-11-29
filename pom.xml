@@ -89,5 +89,6 @@
     <module>application-numbered-content-macro</module>
     <module>application-numbered-headings-api</module>
     <module>application-numbered-headings-ui</module>
+    <module>application-numbered-headings-toc-macro</module>
   </modules>
 </project>
