@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
-import java.util.stream.Collectors;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xwiki.rendering.block.Block;
@@ -37,12 +37,10 @@ import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.ListBLock;
 import org.xwiki.rendering.block.ListItemBlock;
-import org.xwiki.rendering.block.MacroMarkerBlock;
 import org.xwiki.rendering.block.NumberedListBlock;
 import org.xwiki.rendering.block.RawBlock;
 import org.xwiki.rendering.block.SectionBlock;
 import org.xwiki.rendering.block.SpaceBlock;
-import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
@@ -52,7 +50,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 /**
- * Generates a TOc Tree of {@link Block} from input input parameters.
+ * Generates a ToC Tree of {@link Block} from input input parameters.
  *
  * @version $Id: 895750ff95339e6ee4316d1e267a188c14e5acb8 $
  * @since 9.6RC1
@@ -64,8 +62,6 @@ public class TocTreeBuilder
     private final TocBlockFilter tocBlockFilter;
 
     private final Map<Block, Map<HeaderBlock, String>> cache = new WeakHashMap<>();
-
-    private final ClassBlockMatcher classBlockMatcher = new ClassBlockMatcher(HeaderBlock.class);
 
     /**
      * @param tocBlockFilter the filter to use to generate TOC anchors
@@ -80,9 +76,11 @@ public class TocTreeBuilder
      *
      * @param parameters the input parameters to generate the tree of {@link Block}s
      * @param headingsNumbered if {@code true} the numbers of the headings will be displayed
+     * @param headersSupplier TODO
      * @return the list of {@link Block}s representing the TOC
      */
-    public List<Block> build(TreeParameters parameters, boolean headingsNumbered)
+    public List<Block> build(TreeParameters parameters, boolean headingsNumbered,
+        Supplier<List<HeaderBlock>> headersSupplier)
     {
         // TODO: edit to keep build a cache, set non-duplicated IDs, insert numbers in prefix of the headings and
         // normalize the names.
@@ -112,7 +110,7 @@ public class TocTreeBuilder
         if (this.cache.containsKey(parameters.rootBlock)) {
             headers = new ArrayList<>(this.cache.get(parameters.rootBlock).keySet());
         } else {
-            headers = getHeaderBlocks(parameters);
+            headers = headersSupplier.get();
             if (headingsNumbered) {
                 buildCache(parameters, headers);
             }
@@ -120,7 +118,7 @@ public class TocTreeBuilder
 
         // Construct table of content from sections list
         Block tocBlock = generateTree(headers, parameters.start, parameters.depth, parameters.documentReference,
-            parameters.isNumbered, headingsNumbered);
+            parameters.isNumbered, headingsNumbered, parameters.rootBlock);
         if (tocBlock != null) {
             result = singletonList(tocBlock);
         } else {
@@ -212,29 +210,6 @@ public class TocTreeBuilder
         rootBlockCache.put(header, serialize(stack));
     }
 
-    private List<HeaderBlock> getHeaderBlocks(TreeParameters parameters)
-    {
-        List<HeaderBlock> headers;
-        headers = parameters.rootBlock.getBlocks(this.classBlockMatcher, Block.Axes.DESCENDANT)
-            .stream()
-            .map(HeaderBlock.class::cast)
-            .filter(h -> {
-                // TODO: for now, excludes all blocks coming from internal Macro, a better way to fiter things 
-                // out exists probably...
-                Block parent = h.getParent();
-                while (parent != null) {
-                    if (parent instanceof MacroMarkerBlock && parent != parameters.rootBlock) {
-                        return false;
-                    }
-                    parent = parent.getParent();
-                }
-                return true;
-            })
-            .filter(h -> h.getLevel().getAsInt() <= parameters.depth)
-            .collect(Collectors.toList());
-        return headers;
-    }
-
     private String serialize(Deque<Integer> stack)
     {
         List<String> ret = new ArrayList<>();
@@ -255,10 +230,11 @@ public class TocTreeBuilder
      *     {@link NumberedListBlock}
      * @param headingsNumbered when {@code true} the numbers added on prefix of the headings are also displayed in
      *     the ToC before the headings content
+     * @param rootBlock the root block of the current numbered headings
      * @return the root block of generated block tree or null if no header was matching the specified parameters
      */
     private Block generateTree(List<HeaderBlock> headers, int start, int depth, String documentReference,
-        boolean numbered, boolean headingsNumbered)
+        boolean numbered, boolean headingsNumbered, Block rootBlock)
     {
         Block tocBlock = null;
 
@@ -273,7 +249,8 @@ public class TocTreeBuilder
                 if (currentLevel < headerLevel) {
                     while (currentLevel < headerLevel) {
                         if (currentBlock instanceof ListBLock) {
-                            currentBlock = addItemBlock(currentBlock, null, documentReference, headingsNumbered);
+                            currentBlock = addItemBlock(currentBlock, null, documentReference, headingsNumbered,
+                                rootBlock);
                         }
 
                         currentBlock = createChildListBlock(currentBlock, numbered);
@@ -287,7 +264,7 @@ public class TocTreeBuilder
                     currentBlock = currentBlock.getParent();
                 }
 
-                currentBlock = addItemBlock(currentBlock, headerBlock, documentReference, headingsNumbered);
+                currentBlock = addItemBlock(currentBlock, headerBlock, documentReference, headingsNumbered, rootBlock);
             }
         }
 
@@ -303,14 +280,15 @@ public class TocTreeBuilder
      *
      * @param currentBlock the current block in the toc tree.
      * @param headerBlock the {@link HeaderBlock} to use to generate toc anchor label.
+     * @param rootBlock the root block of the currently numbered headings
      * @return the new {@link ListItemBlock}.
      */
     private Block addItemBlock(Block currentBlock, HeaderBlock headerBlock, String documentReference,
-        boolean headingsNumbered)
+        boolean headingsNumbered, Block rootBlock)
     {
         ListItemBlock itemBlock = headerBlock == null
             ? createEmptyTocEntry()
-            : createTocEntry(headerBlock, documentReference, headingsNumbered);
+            : createTocEntry(headerBlock, documentReference, headingsNumbered, rootBlock);
 
         currentBlock.addChild(itemBlock);
 
@@ -330,9 +308,11 @@ public class TocTreeBuilder
      * Create a new toc list item based on section title.
      *
      * @param headerBlock the {@link HeaderBlock}.
+     * @param rootBlock the root block of the currently numbered headings
      * @return the new list item block.
      */
-    private ListItemBlock createTocEntry(HeaderBlock headerBlock, String documentReference, boolean headingsNumbered)
+    private ListItemBlock createTocEntry(HeaderBlock headerBlock, String documentReference, boolean headingsNumbered,
+        Block rootBlock)
     {
         // Create the link to target the header anchor
         DocumentResourceReference reference = new DocumentResourceReference(documentReference);
@@ -341,7 +321,8 @@ public class TocTreeBuilder
         List<Block> childrenBlocks = this.tocBlockFilter.generateLabel(headerBlock);
         ArrayList<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
-            blocks.add(new RawBlock(this.cache.get(headerBlock.getRoot()).get(headerBlock), Syntax.XHTML_1_0));
+            Map<HeaderBlock, String> headerBlockStringMap = this.cache.get(rootBlock);
+            blocks.add(new RawBlock(headerBlockStringMap.get(headerBlock), Syntax.XHTML_1_0));
             blocks.add(new SpaceBlock());
         }
         blocks.addAll(childrenBlocks);

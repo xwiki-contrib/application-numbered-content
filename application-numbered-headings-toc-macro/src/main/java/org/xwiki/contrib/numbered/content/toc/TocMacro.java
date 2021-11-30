@@ -20,6 +20,7 @@
 package org.xwiki.contrib.numbered.content.toc;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,7 +33,10 @@ import org.xwiki.component.phase.InitializationException;
 import org.xwiki.contrib.numbered.content.toc.internal.TocTreeBuilder;
 import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.rendering.block.Block;
+import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.rendering.block.MacroMarkerBlock;
 import org.xwiki.rendering.block.XDOM;
+import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.internal.macro.toc.TreeParametersBuilder;
@@ -70,6 +74,8 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
     private Provider<WikiModel> wikiModelProvider;
 
     private TocTreeBuilder tocTreeBuilder;
+
+    private final ClassBlockMatcher classBlockMatcher = new ClassBlockMatcher(HeaderBlock.class);
 
     /**
      * A parser that knows how to parse plain text; this is used to transform link labels into plain text.
@@ -130,7 +136,30 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
 
         TreeParametersBuilder builder = new TreeParametersBuilder();
         TreeParameters treeParameters = builder.build(rootBlock, parameters, context);
-        return this.tocTreeBuilder.build(treeParameters, isNumbered);
+        return this.tocTreeBuilder.build(treeParameters, isNumbered, () -> getHeaderBlocks(treeParameters));
+    }
+
+    private List<HeaderBlock> getHeaderBlocks(TreeParameters parameters)
+    {
+        List<HeaderBlock> headers;
+        headers = parameters.rootBlock.getBlocks(this.classBlockMatcher, Block.Axes.DESCENDANT)
+            .stream()
+            .map(HeaderBlock.class::cast)
+            .filter(h -> {
+                // TODO: for now, excludes all blocks coming from internal Macro, a better way to fiter things 
+                // out exists probably...
+                Block parent = h.getParent();
+                while (parent != null) {
+                    if (parent instanceof MacroMarkerBlock && parent != parameters.rootBlock) {
+                        return false;
+                    }
+                    parent = parent.getParent();
+                }
+                return true;
+            })
+            .filter(h -> h.getLevel().getAsInt() <= parameters.depth)
+            .collect(Collectors.toList());
+        return headers;
     }
 
     private Block getRootBlockBlock(TocMacroParameters parameters) throws MacroExecutionException
