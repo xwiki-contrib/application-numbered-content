@@ -27,10 +27,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
+import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.BulletedListBlock;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -61,14 +61,16 @@ public class TocTreeBuilder
 
     private final TocBlockFilter tocBlockFilter;
 
-    private final Map<Block, Map<HeaderBlock, String>> cache = new WeakHashMap<>();
+    private final NumberingCacheManager cacheManager;
 
     /**
      * @param tocBlockFilter the filter to use to generate TOC anchors
+     * @param cacheManager a numbering cache manager
      */
-    public TocTreeBuilder(TocBlockFilter tocBlockFilter)
+    public TocTreeBuilder(TocBlockFilter tocBlockFilter, NumberingCacheManager cacheManager)
     {
         this.tocBlockFilter = tocBlockFilter;
+        this.cacheManager = cacheManager;
     }
 
     /**
@@ -76,7 +78,7 @@ public class TocTreeBuilder
      *
      * @param parameters the input parameters to generate the tree of {@link Block}s
      * @param headingsNumbered if {@code true} the numbers of the headings will be displayed
-     * @param headersSupplier TODO
+     * @param headersSupplier a supplier returning the list of headers to number for the ToC
      * @return the list of {@link Block}s representing the TOC
      */
     public List<Block> build(TreeParameters parameters, boolean headingsNumbered,
@@ -107,8 +109,8 @@ public class TocTreeBuilder
 
         // Get the list of headers at the root level.
         List<HeaderBlock> headers;
-        if (this.cache.containsKey(parameters.rootBlock)) {
-            headers = new ArrayList<>(this.cache.get(parameters.rootBlock).keySet());
+        if (this.cacheManager.containsKey(parameters.rootBlock)) {
+            headers = this.cacheManager.getHeaders(parameters.rootBlock);
         } else {
             headers = headersSupplier.get();
             if (headingsNumbered) {
@@ -141,7 +143,7 @@ public class TocTreeBuilder
         }
 
         Map<HeaderBlock, String> rootBlockCache = new HashMap<>();
-        this.cache.put(parameters.rootBlock, rootBlockCache);
+        this.cacheManager.put(parameters.rootBlock, rootBlockCache);
 
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(0);
@@ -321,7 +323,7 @@ public class TocTreeBuilder
         List<Block> childrenBlocks = this.tocBlockFilter.generateLabel(headerBlock);
         ArrayList<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
-            Map<HeaderBlock, String> headerBlockStringMap = this.cache.get(rootBlock);
+            Map<HeaderBlock, String> headerBlockStringMap = this.cacheManager.get(rootBlock);
             blocks.add(new RawBlock(headerBlockStringMap.get(headerBlock), Syntax.XHTML_1_0));
             blocks.add(new SpaceBlock());
         }

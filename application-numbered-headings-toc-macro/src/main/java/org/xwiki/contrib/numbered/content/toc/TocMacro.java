@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
 import org.xwiki.contrib.numbered.content.toc.internal.TocTreeBuilder;
+import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
 import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -41,7 +42,6 @@ import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.internal.macro.toc.TreeParametersBuilder;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
-import org.xwiki.rendering.listener.reference.ResourceReference;
 import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.macro.MacroExecutionException;
 import org.xwiki.rendering.macro.toc.TocMacroParameters;
@@ -85,6 +85,9 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
     private Parser plainTextParser;
 
     @Inject
+    private NumberingCacheManager cacheManager;
+
+    @Inject
     private Logger logger;
 
     /**
@@ -111,7 +114,8 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
     public void initialize() throws InitializationException
     {
         super.initialize();
-        this.tocTreeBuilder = new TocTreeBuilder(new TocBlockFilter(this.plainTextParser, this.linkLabelGenerator));
+        this.tocTreeBuilder =
+            new TocTreeBuilder(new TocBlockFilter(this.plainTextParser, this.linkLabelGenerator), this.cacheManager);
     }
 
     @Override
@@ -141,8 +145,7 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
 
     private List<HeaderBlock> getHeaderBlocks(TreeParameters parameters)
     {
-        List<HeaderBlock> headers;
-        headers = parameters.rootBlock.getBlocks(this.classBlockMatcher, Block.Axes.DESCENDANT)
+        return parameters.rootBlock.getBlocks(this.classBlockMatcher, Block.Axes.DESCENDANT)
             .stream()
             .map(HeaderBlock.class::cast)
             .filter(h -> {
@@ -159,7 +162,6 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
             })
             .filter(h -> h.getLevel().getAsInt() <= parameters.depth)
             .collect(Collectors.toList());
-        return headers;
     }
 
     private Block getRootBlockBlock(TocMacroParameters parameters) throws MacroExecutionException
@@ -180,7 +182,7 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
         return rootBlock;
     }
 
-    private XDOM getXDOM(ResourceReference reference, WikiModel wikiModel) throws MacroExecutionException
+    private XDOM getXDOM(DocumentResourceReference reference, WikiModel wikiModel) throws MacroExecutionException
     {
         try {
             return wikiModel.getXDOM(reference);
