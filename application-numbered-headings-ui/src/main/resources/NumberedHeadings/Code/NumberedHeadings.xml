@@ -135,7 +135,26 @@
       return numberedHeadingsConfig.isActivated;
     },
     updateActivationStatus(status) {
+      if (status != this.isActivated()) {
+        var contentElement = document.getElementById("xwikicontent");
+        if (contentElement) {
+          if (status) {
+            contentElement.classList.remove("disable-numbered-headings");
+            if (!numberedHeadingsConfig.isActivated) {
+              contentElement.classList.add("numbered-content-root");
+            }
+          } else {
+            contentElement.classList.remove("numbered-content-root");
+            if (numberedHeadingsConfig.isActivated) {
+              contentElement.classList.add("disable-numbered-headings");
+            }
+          }
+        }
+      }
       isActivated = status;
+    },
+    isActivatedOnParent() {
+      return numberedHeadingsConfig.isActivatedOnParent;
     }
   }
 })
@@ -509,7 +528,7 @@ require(['jquery', 'deferred!ckeditor', 'NumberedHeadingsConfig'], function ($, 
       <code>#set ($isNumberedHeadingsEnabled = $request.getParameter("isNumberedHeadingsEnabled"))
 #if ($isNumberedHeadingsEnabled == 'true')
   #set ($rootSelectors = [
-    '#xwikicontent &gt; ',
+    '#xwikicontent:not(.disable-numbered-headings) &gt; ',
     '.numbered-content-root &gt; ',
     '.numbered-content-root &gt; .xwiki-metadata-container &gt;'
   ])
@@ -773,10 +792,12 @@ counter-reset: ch6 var(--numbered-heading-start);
     <property>
       <content>{{velocity}}
 #set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
+#set($isNumberedHeadingsEnabledOnParent = $services.numberedheadings.isNumberedHeadingsEnabledOnParent())
 #set($discard = $xwiki.ssx.use("NumberedHeadings.Code.NumberedHeadings", {'isNumberedHeadingsEnabled': $isNumberedHeadingsEnabled }))
 {{html clean="false"}}
 &lt;script id="numbered-headings-config" type="application/json"&gt;$jsontool.serialize({
-  'isActivated': $isNumberedHeadingsEnabled
+  'isActivated': $isNumberedHeadingsEnabled,
+  'isActivatedOnParent': $isNumberedHeadingsEnabledOnParent
 })&lt;/script&gt;
 {{/html}}
 {{/velocity}}</content>

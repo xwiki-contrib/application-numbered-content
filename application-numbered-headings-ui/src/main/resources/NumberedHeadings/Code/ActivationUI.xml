@@ -26,8 +26,8 @@
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
-  <parent>WebHome</parent>
   <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
   <author>xwiki:XWiki.Admin</author>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <version>1.1</version>
@@ -142,15 +142,33 @@
 /**
  * The syntax picker.
  */
-require(['jquery', 'bootstrap'], function($) {
+require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
   $(document).on('xwiki:document:saved.xwikiHeadingNumberingChange', function(event) {
     // See if there is a heading numbering selector in the saved form.
     var form = $(event.target).closest('form, .form');
     var headingNumberingSelector = form.find('#NumberedHeadings\\.Code\\.NumberedHeadingsClass_0_status');
     if (headingNumberingSelector.length) {
+      var currentStatus = config.isActivated();
+      var targetStatus = false;
+      switch (headingNumberingSelector.val()) {
+        case "activated":
+          targetStatus = true;
+          break;
+        case "deactivated":
+          targetStatus = false;
+          break;
+        default:
+          targetStatus = config.isActivatedOnParent()
+      }
+      if (currentStatus == targetStatus) {
+        return;
+      }
+
+        config.updateActivationStatus(targetStatus);
       // Check if we are viewing the document content.
       var contentWrapper = $('#xwikicontent').not('[contenteditable]');
       if (contentWrapper.length) {
+
         var notification = new XWiki.widgets.Notification(l10n['web.widgets.syntaxPicker.contentUpdate.inProgress'],
           'inprogress');
         return render().done(function(output) {
