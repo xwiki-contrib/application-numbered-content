@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.toc.internal;
+package org.xwiki.contrib.numbered.content.toc;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -33,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.BulletedListBlock;
+import org.xwiki.rendering.block.GroupBlock;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.ListBLock;
@@ -45,6 +46,7 @@ import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
 import org.xwiki.rendering.syntax.Syntax;
+import org.xwiki.stability.Unstable;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -53,10 +55,16 @@ import static java.util.Collections.singletonList;
  * Generates a ToC Tree of {@link Block} from input input parameters.
  *
  * @version $Id: 895750ff95339e6ee4316d1e267a188c14e5acb8 $
- * @since 9.6RC1
+ * @since 1.0
  */
+@Unstable
 public class TocTreeBuilder
 {
+    /**
+     * Class identifying sub-sections of a document that are ruled by their own numbering.
+     */
+    public static final String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
+
     private static final String START_PARAMETER = "start";
 
     private final TocBlockFilter tocBlockFilter;
@@ -148,12 +156,29 @@ public class TocTreeBuilder
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(0);
         for (HeaderBlock header : headers) {
-            if (header.getParent().getParent().equals(parameters.rootBlock)) {
+            if (!isInGroupBlock(header)) {
                 cacheHeader(rootBlockCache, stack, header);
             } else {
                 rootBlockCache.put(header, null);
             }
         }
+    }
+
+    private boolean isInGroupBlock(HeaderBlock header)
+    {
+        Block parent = header.getParent();
+        while (parent != null) {
+            // Stops whenever a content root is found.
+            String classes = parent.getParameter("class");
+            if (classes != null && classes.contains(NUMBERED_CONTENT_ROOT_CLASS)) {
+                return false;
+            }
+            if (parent instanceof GroupBlock) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 
     private void cacheHeader(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock header)

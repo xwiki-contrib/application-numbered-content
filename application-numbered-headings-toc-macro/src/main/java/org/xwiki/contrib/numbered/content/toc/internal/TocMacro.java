@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
+import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
 import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
 import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.rendering.block.Block;
@@ -50,6 +51,7 @@ import org.xwiki.rendering.wiki.WikiModel;
 import org.xwiki.rendering.wiki.WikiModelException;
 
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
+import static org.xwiki.contrib.numbered.content.toc.TocTreeBuilder.NUMBERED_CONTENT_ROOT_CLASS;
 import static org.xwiki.rendering.block.Block.Axes.DESCENDANT;
 import static org.xwiki.rendering.macro.toc.TocMacroParameters.Scope.PAGE;
 
@@ -148,11 +150,24 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
         List<HeaderBlock> list = new ArrayList<>();
         for (Block block : parameters.rootBlock.getBlocks(this.classBlockMatcher, DESCENDANT)) {
             HeaderBlock h = (HeaderBlock) block;
-            if (h.getLevel().getAsInt() <= parameters.depth) {
+            if (h.getLevel().getAsInt() <= parameters.depth && !isExcluded(h)) {
                 list.add(h);
             }
         }
         return list;
+    }
+
+    private boolean isExcluded(HeaderBlock h)
+    {
+        Block parent = h.getParent();
+        while (parent != null) {
+            String classes = parent.getParameter("class");
+            if (classes != null && classes.contains(NUMBERED_CONTENT_ROOT_CLASS)) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 
     private Block getRootBlockBlock(XWikiTocMacroParameters parameters) throws MacroExecutionException
