@@ -26,6 +26,7 @@ import javax.inject.Singleton;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.script.service.ScriptService;
+import org.xwiki.stability.Unstable;
 
 /**
  * Numbered Headings Script Service. Provides operations related to numbered headings, such as knowing if the current
@@ -37,6 +38,7 @@ import org.xwiki.script.service.ScriptService;
 @Component
 @Named("numberedheadings")
 @Singleton
+@Unstable
 public class NumberedHeadingsScriptService implements ScriptService
 {
     @Inject
@@ -52,5 +54,17 @@ public class NumberedHeadingsScriptService implements ScriptService
     public boolean isNumberedHeadingsEnabled() throws Exception
     {
         return this.numberedHeadingsService.isNumberedHeadingsEnabled();
+    }
+
+    /**
+     * Checks if the parent of the current document has numbered headings activated.
+     *
+     * @return {@code true} if the current document has numbered headings activated, {@code false} otherwise.
+     * @throws Exception in case of error when checking if the current document has numbered headings activated.
+     */
+
+    public boolean isNumberedHeadingsEnabledOnParent() throws Exception
+    {
+        return this.numberedHeadingsService.isNumberedHeadingsEnabledOnParent();
     }
 }

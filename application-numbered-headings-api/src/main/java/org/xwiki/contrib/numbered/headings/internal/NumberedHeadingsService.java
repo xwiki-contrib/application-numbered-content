@@ -27,7 +27,6 @@ import javax.inject.Singleton;
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.context.Execution;
-import org.xwiki.context.ExecutionContext;
 import org.xwiki.model.reference.DocumentReference;
 
 import com.xpn.xwiki.XWikiContext;
@@ -54,10 +53,8 @@ public class NumberedHeadingsService
     private Execution execution;
 
     /**
-     * Check if the current document has numbered headings activated either by looking for the {@code
-     * NumberedHeadingsTransformation#NUMBERED_HEADING_ACTIVATED_KEY} key with a {@code true} value in the {@link
-     * ExecutionContext}, or by looking at the presence of an XObject of type {@link
-     * NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
+     * Check if the current document has numbered headings activated either by looking at the presence of an XObject of
+     * type {@link NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
      *
      * @return @return {@code true} if the numbered headings are activated, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
@@ -67,17 +64,46 @@ public class NumberedHeadingsService
     {
         return isCurrentDocumentNumbered();
     }
-    private boolean isCurrentDocumentNumbered() throws Exception
+
+    /**
+     * Check if the parent of the current document has numbered headings activated either by looking at the presence of
+     * an XObject of type {@link NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}. When the current document
+     * does not have the parent, {@code false} is returned
+     *
+     * @return @return {@code true} if the current document has a parent, and numbered headings are activated on the
+     *     parent, {@code false} otherwise
+     * @throws Exception in case of error when access the document instance though the document bridge
+     * @see #isNumbered(DocumentReference)
+     */
+    public boolean isNumberedHeadingsEnabledOnParent() throws Exception
     {
-        XWikiContext property = (XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY);
-        if (property == null) {
+        XWikiDocument doc = getDocFromContext();
+        if (doc == null) {
             return false;
         }
-        XWikiDocument doc = property.getDoc();
+        DocumentReference parentReference = doc.getParentReference();
+        if (parentReference == null) {
+            return false;
+        }
+        return isNumbered(parentReference);
+    }
+
+    private boolean isCurrentDocumentNumbered() throws Exception
+    {
+        XWikiDocument doc = getDocFromContext();
         if (doc == null) {
             return false;
         }
         return isNumbered(doc.getDocumentReference());
+    }
+
+    private XWikiDocument getDocFromContext()
+    {
+        XWikiContext property = (XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY);
+        if (property == null) {
+            return null;
+        }
+        return property.getDoc();
     }
 
     /**

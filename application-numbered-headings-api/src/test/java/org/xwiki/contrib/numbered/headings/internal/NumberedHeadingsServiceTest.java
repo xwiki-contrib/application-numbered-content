@@ -152,4 +152,27 @@ class NumberedHeadingsServiceTest
         when(this.xWikiContext.getDoc()).thenReturn(null);
         assertFalse(this.numberedHeadingsService.isNumberedHeadingsEnabled());
     }
+
+    @Test
+    void isNumberedHeadingsEnabledOnParentDocIsNull() throws Exception
+    {
+        when(this.xWikiContext.getDoc()).thenReturn(null);
+        assertFalse(this.numberedHeadingsService.isNumberedHeadingsEnabledOnParent());
+    }
+
+    @Test
+    void isNumberedHeadingsEnabledOnParentNoParent() throws Exception
+    {
+        assertFalse(this.numberedHeadingsService.isNumberedHeadingsEnabledOnParent());
+    }
+
+    @Test
+    void isNumberedHeadingsEnabledOnParent() throws Exception
+    {
+        BaseObject baseObject = mock(BaseObject.class);
+        when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(baseObject);
+        when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn(STATUS_ACTIVATED);
+        when(this.xWikiDocumentPage.getParentReference()).thenReturn(DOCUMENT_REFERENCE_SPACE_1);
+        assertTrue(this.numberedHeadingsService.isNumberedHeadingsEnabledOnParent());
+    }
 }
