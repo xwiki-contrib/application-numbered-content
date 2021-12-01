@@ -148,7 +148,11 @@ public class TocTreeBuilder
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(0);
         for (HeaderBlock header : headers) {
-            cacheHeader(rootBlockCache, stack, header);
+            if (header.getParent().getParent().equals(parameters.rootBlock)) {
+                cacheHeader(rootBlockCache, stack, header);
+            } else {
+                rootBlockCache.put(header, null);
+            }
         }
     }
 
@@ -324,8 +328,11 @@ public class TocTreeBuilder
         ArrayList<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
             Map<HeaderBlock, String> headerBlockStringMap = this.cacheManager.get(rootBlock);
-            blocks.add(new RawBlock(headerBlockStringMap.get(headerBlock), Syntax.XHTML_1_0));
-            blocks.add(new SpaceBlock());
+            String rawContent = headerBlockStringMap.get(headerBlock);
+            if (rawContent != null) {
+                blocks.add(new RawBlock(rawContent, Syntax.XHTML_1_0));
+                blocks.add(new SpaceBlock());
+            }
         }
         blocks.addAll(childrenBlocks);
         LinkBlock linkBlock = new LinkBlock(blocks, reference, false);

@@ -17,10 +17,10 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.toc;
+package org.xwiki.contrib.numbered.content.toc.internal;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,12 +30,10 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
-import org.xwiki.contrib.numbered.content.toc.internal.TocTreeBuilder;
 import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
 import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
-import org.xwiki.rendering.block.MacroMarkerBlock;
 import org.xwiki.rendering.block.XDOM;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
@@ -44,7 +42,7 @@ import org.xwiki.rendering.internal.macro.toc.TreeParametersBuilder;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
 import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.macro.MacroExecutionException;
-import org.xwiki.rendering.macro.toc.TocMacroParameters;
+import org.xwiki.rendering.macro.toc.XWikiTocMacroParameters;
 import org.xwiki.rendering.parser.Parser;
 import org.xwiki.rendering.renderer.reference.link.LinkLabelGenerator;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
@@ -52,6 +50,8 @@ import org.xwiki.rendering.wiki.WikiModel;
 import org.xwiki.rendering.wiki.WikiModelException;
 
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
+import static org.xwiki.rendering.block.Block.Axes.DESCENDANT;
+import static org.xwiki.rendering.macro.toc.TocMacroParameters.Scope.PAGE;
 
 /**
  * Replace the {@link org.xwiki.rendering.internal.macro.toc.TocMacro} with a new implementation where numbered headings
@@ -63,7 +63,7 @@ import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMess
 @Component
 @Named("toc")
 @Singleton
-public class TocMacro extends AbstractMacro<TocMacroParameters>
+public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
 {
     private static final String DESCRIPTION = "Generates a Table Of Contents.";
 
@@ -101,7 +101,7 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
      */
     public TocMacro()
     {
-        super("Table Of Contents", DESCRIPTION, TocMacroParameters.class);
+        super("Table Of Contents", DESCRIPTION, XWikiTocMacroParameters.class);
 
         // Make sure this macro is executed as one of the last macros to be executed since
         // other macros can generate headers which need to be taken into account by the TOC
@@ -125,7 +125,7 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
     }
 
     @Override
-    public List<Block> execute(TocMacroParameters parameters, String content, MacroTransformationContext context)
+    public List<Block> execute(XWikiTocMacroParameters parameters, String content, MacroTransformationContext context)
         throws MacroExecutionException
     {
         boolean isNumbered;
@@ -145,33 +145,24 @@ public class TocMacro extends AbstractMacro<TocMacroParameters>
 
     private List<HeaderBlock> getHeaderBlocks(TreeParameters parameters)
     {
-        return parameters.rootBlock.getBlocks(this.classBlockMatcher, Block.Axes.DESCENDANT)
-            .stream()
-            .map(HeaderBlock.class::cast)
-            .filter(h -> {
-                // TODO: for now, excludes all blocks coming from internal Macro, a better way to fiter things 
-                // out exists probably...
-                Block parent = h.getParent();
-                while (parent != null) {
-                    if (parent instanceof MacroMarkerBlock && parent != parameters.rootBlock) {
-                        return false;
-                    }
-                    parent = parent.getParent();
-                }
-                return true;
-            })
-            .filter(h -> h.getLevel().getAsInt() <= parameters.depth)
-            .collect(Collectors.toList());
+        List<HeaderBlock> list = new ArrayList<>();
+        for (Block block : parameters.rootBlock.getBlocks(this.classBlockMatcher, DESCENDANT)) {
+            HeaderBlock h = (HeaderBlock) block;
+            if (h.getLevel().getAsInt() <= parameters.depth) {
+                list.add(h);
+            }
+        }
+        return list;
     }
 
-    private Block getRootBlockBlock(TocMacroParameters parameters) throws MacroExecutionException
+    private Block getRootBlockBlock(XWikiTocMacroParameters parameters) throws MacroExecutionException
     {
         Block rootBlock = null;
         WikiModel wikiModel = this.wikiModelProvider.get();
         if (parameters.getReference() != null) {
             if (wikiModel != null) {
                 // Remote TOC always has a PAGE scope since a LOCAL scope would have no meaning
-                parameters.setScope(TocMacroParameters.Scope.PAGE);
+                parameters.setScope(PAGE);
                 // Get the referenced source's XDOM
                 rootBlock = this.getXDOM(new DocumentResourceReference(parameters.getReference()), wikiModel);
             } else {

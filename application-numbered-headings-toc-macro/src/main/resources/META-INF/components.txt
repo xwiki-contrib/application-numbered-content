@@ -1,1 +1,1 @@
-500:org.xwiki.contrib.numbered.content.toc.TocMacro
+400:org.xwiki.contrib.numbered.content.toc.internal.TocMacro
