@@ -29,7 +29,6 @@ import com.xpn.xwiki.doc.AbstractMandatoryClassInitializer;
 import com.xpn.xwiki.objects.classes.BaseClass;
 
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.StringUtils.join;
 
 /**
  * Create or update the {@code NumberedHeadings.Code.NumberedHeadingsClass} document with all required information.
@@ -66,7 +65,7 @@ public class NumberedHeadingsClassDocumentInitializer extends AbstractMandatoryC
     /**
      * The inherits status value.
      */
-    public static final String STATUS_INHERITS = "inherits";
+    public static final String STATUS_INHERITS = "";
 
     /**
      * Default constructor.
@@ -81,6 +80,6 @@ public class NumberedHeadingsClassDocumentInitializer extends AbstractMandatoryC
     {
         // TODO: localization + add labels.
         xclass.addStaticListField(STATUS_PROPERTY, "Status",
-            join(asList(STATUS_ACTIVATED, STATUS_DEACTIVATED, STATUS_INHERITS), "|"));
+            String.join("|", STATUS_INHERITS + "=" + "Inherit", STATUS_ACTIVATED, STATUS_DEACTIVATED));
     }
 }
