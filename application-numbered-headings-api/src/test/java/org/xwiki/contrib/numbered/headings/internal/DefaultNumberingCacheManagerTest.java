@@ -36,9 +36,9 @@ import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
 import org.xwiki.test.junit5.mockito.MockComponent;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,7 +97,7 @@ class DefaultNumberingCacheManagerTest
         t.put(h1, "1");
         t.put(h2, "2");
         when(this.cache.get(blockHashCode())).thenReturn(t);
-        assertEquals(asList(h1, h2), this.defaultNumberingCacheManager.getHeaders(this.block));
+        assertThat(this.defaultNumberingCacheManager.getHeaders(this.block), containsInAnyOrder(h1, h2));
     }
 
     @Test
