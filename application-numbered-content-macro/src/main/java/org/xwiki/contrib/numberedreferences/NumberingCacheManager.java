@@ -17,10 +17,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.headings;
+package org.xwiki.contrib.numberedreferences;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.block.Block;
@@ -39,28 +40,21 @@ import org.xwiki.stability.Unstable;
 public interface NumberingCacheManager
 {
     /**
-     * Check is numbering is cached for a block.
-     *
-     * @param block a block containing content to number
-     * @return {@code true} if a cache exists for the element. {@code false} otherwise.
-     */
-    boolean containsKey(Block block);
-
-    /**
      * Return the list of headers that are cached for a given block.
      *
      * @param block the block containing the headers
      * @return the list of cached headers
      */
-    List<HeaderBlock> getHeaders(Block block);
+    Optional<List<HeaderBlock>> getHeaders(Block block);
 
     /**
      * Associate the computed value to the given block.
      *
      * @param block the block containing the content to number
-     * @param value the computed values for the content of the block
+     * @param values the computed values for the content of the block
+     * @param headers the list of headers in their order of appearance
      */
-    void put(Block block, Map<HeaderBlock, String> value);
+    void put(Block block, Map<HeaderBlock, String> values, List<HeaderBlock> headers);
 
     /**
      * Return the cache map of headers and their computed numbers.
@@ -68,5 +62,5 @@ public interface NumberingCacheManager
      * @param block the block containing the content to number
      * @return the cached map of headers and their computed numbers
      */
-    Map<HeaderBlock, String> get(Block block);
+    Optional<Map<HeaderBlock, String>> get(Block block);
 }

@@ -19,20 +19,18 @@
  */
 package org.xwiki.contrib.numberedreferences.internal;
 
-import org.xwiki.localization.ContextualLocalizationManager;
-import org.xwiki.localization.Translation;
-import org.xwiki.rendering.block.CompositeBlock;
-import org.xwiki.rendering.block.SpaceBlock;
-import org.xwiki.rendering.block.SpecialSymbolBlock;
-import org.xwiki.rendering.block.WordBlock;
+import org.xwiki.contrib.numberedreferences.NumberingService;
+import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.rendering.listener.HeaderLevel;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
 import org.xwiki.test.annotation.AllComponents;
 import org.xwiki.test.mockito.MockitoComponentManager;
 
-import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -43,32 +41,15 @@ import static org.mockito.Mockito.when;
  * @since 1.0
  */
 @AllComponents
+//@RenderingTests.Scope(value = "paragraphs-numbering/numbering_toc")
 public class IntegrationTests implements RenderingTests
 {
-    @RenderingTests.Initialized
+    @Initialized
     public void initialize(MockitoComponentManager componentManager) throws Exception
     {
-        ContextualLocalizationManager contextualLocalizationManager =
-            componentManager.registerMockComponent(ContextualLocalizationManager.class);
-
-        Translation translation1 = mock(Translation.class);
-
-        when(translation1.render(any(Integer.class))).thenAnswer(invocation -> {
-            int number = invocation.getArgument(0);
-            return new CompositeBlock(asList(new WordBlock("Figure"), new SpaceBlock(),
-                new WordBlock(String.valueOf(number)), new SpecialSymbolBlock(':')));
-        });
-
-        when(contextualLocalizationManager.getTranslation("transformation.numberedReferences.figurePrefix"))
-            .thenReturn(translation1);
-
-        Translation translation2 = mock(Translation.class);
-        when(translation2.render(any(Integer.class))).thenAnswer(invocation -> {
-            int number = invocation.getArgument(0);
-            return new CompositeBlock(asList(new WordBlock("Table"), new SpaceBlock(),
-                new WordBlock(String.valueOf(number)), new SpecialSymbolBlock(':')));
-        });
-        when(contextualLocalizationManager.getTranslation("transformation.numberedReferences.tablePrefix")).thenReturn(
-            translation2);
+        NumberingService numberingService =
+            componentManager.registerMockComponent(NumberingService.class, "testnumbered");
+        when(numberingService.getMap(any()))
+            .thenReturn(singletonMap(new HeaderBlock(emptyList(), HeaderLevel.LEVEL1, "Hh1"), "1"), emptyMap());
     }
 }

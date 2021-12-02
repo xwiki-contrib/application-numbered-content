@@ -17,15 +17,17 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.headings.internal;
+package org.xwiki.contrib.numberedreferences.internal;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.xwiki.cache.Cache;
 import org.xwiki.cache.CacheException;
 import org.xwiki.cache.CacheManager;
@@ -35,7 +37,7 @@ import org.xwiki.cache.eviction.LRUEvictionConfiguration;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.Initializable;
 import org.xwiki.component.phase.InitializationException;
-import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
+import org.xwiki.contrib.numberedreferences.NumberingCacheManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 
@@ -53,13 +55,58 @@ public class DefaultNumberingCacheManager implements NumberingCacheManager, Init
     @Inject
     private CacheManager cacheManager;
 
-    private Cache<Map<HeaderBlock, String>> cache;
+    private Cache<CachedValue> cache;
+
+    /**
+     * Internal cache object used to store the resolved numbers and the list of blocks found in the numbered context.
+     */
+    public static final class CachedValue
+    {
+        private final Map<HeaderBlock, String> numbers;
+
+        private final List<HeaderBlock> orderedBlocks;
+
+        /**
+         * Default constructor.
+         *
+         * @param numbers the list of numbered headers
+         * @param orderedBlocks the list of headers found in the numbered context
+         */
+        CachedValue(Map<HeaderBlock, String> numbers,
+            List<HeaderBlock> orderedBlocks)
+        {
+            this.numbers = numbers;
+            this.orderedBlocks = orderedBlocks;
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (this == o) {
+                return true;
+            }
+
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            CachedValue that = (CachedValue) o;
+
+            return new EqualsBuilder().append(this.numbers, that.numbers)
+                .append(this.orderedBlocks, that.orderedBlocks).isEquals();
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return new HashCodeBuilder(17, 37).append(this.numbers).append(this.orderedBlocks).toHashCode();
+        }
+    }
 
     @Override
     public void initialize() throws InitializationException
     {
         try {
-
             CacheConfiguration cacheConfiguration = new CacheConfiguration();
             cacheConfiguration.setConfigurationId("numbered.content.numbering.cache");
             // Configure cache eviction policy
@@ -75,27 +122,22 @@ public class DefaultNumberingCacheManager implements NumberingCacheManager, Init
     }
 
     @Override
-    public boolean containsKey(Block block)
+    public Optional<List<HeaderBlock>> getHeaders(Block block)
     {
-        return this.cache.get(computeKey(block)) != null;
+        CachedValue cachedValue = this.cache.get(computeKey(block));
+        return Optional.ofNullable(cachedValue).map(it -> it.orderedBlocks);
     }
 
     @Override
-    public List<HeaderBlock> getHeaders(Block block)
+    public void put(Block block, Map<HeaderBlock, String> values, List<HeaderBlock> headers)
     {
-        return new ArrayList<>(get(block).keySet());
+        this.cache.set(computeKey(block), new CachedValue(values, headers));
     }
 
     @Override
-    public void put(Block block, Map<HeaderBlock, String> value)
+    public Optional<Map<HeaderBlock, String>> get(Block block)
     {
-        this.cache.set(computeKey(block), value);
-    }
-
-    @Override
-    public Map<HeaderBlock, String> get(Block block)
-    {
-        return this.cache.get(computeKey(block));
+        return Optional.ofNullable(this.cache.get(computeKey(block))).map(it -> it.numbers);
     }
 
     private String computeKey(Block block)

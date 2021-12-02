@@ -19,28 +19,20 @@
  */
 package org.xwiki.contrib.numbered.content.toc;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
-import org.apache.commons.lang3.StringUtils;
-import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
+import org.xwiki.contrib.numberedreferences.NumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.BulletedListBlock;
-import org.xwiki.rendering.block.GroupBlock;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.ListBLock;
 import org.xwiki.rendering.block.ListItemBlock;
 import org.xwiki.rendering.block.NumberedListBlock;
 import org.xwiki.rendering.block.RawBlock;
-import org.xwiki.rendering.block.SectionBlock;
 import org.xwiki.rendering.block.SpaceBlock;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
@@ -52,7 +44,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 /**
- * Generates a ToC Tree of {@link Block} from input input parameters.
+ * Generates a ToC Tree of {@link Block} from input parameters.
  *
  * @version $Id: 895750ff95339e6ee4316d1e267a188c14e5acb8 $
  * @since 1.0
@@ -65,20 +57,18 @@ public class TocTreeBuilder
      */
     public static final String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
 
-    private static final String START_PARAMETER = "start";
-
     private final TocBlockFilter tocBlockFilter;
 
-    private final NumberingCacheManager cacheManager;
+    private final NumberingService numberingService;
 
     /**
      * @param tocBlockFilter the filter to use to generate TOC anchors
-     * @param cacheManager a numbering cache manager
+     * @param numberingService the numbering service to use to generate TOC anchors
      */
-    public TocTreeBuilder(TocBlockFilter tocBlockFilter, NumberingCacheManager cacheManager)
+    public TocTreeBuilder(TocBlockFilter tocBlockFilter, NumberingService numberingService)
     {
         this.tocBlockFilter = tocBlockFilter;
-        this.cacheManager = cacheManager;
+        this.numberingService = numberingService;
     }
 
     /**
@@ -86,11 +76,9 @@ public class TocTreeBuilder
      *
      * @param parameters the input parameters to generate the tree of {@link Block}s
      * @param headingsNumbered if {@code true} the numbers of the headings will be displayed
-     * @param headersSupplier a supplier returning the list of headers to number for the ToC
      * @return the list of {@link Block}s representing the TOC
      */
-    public List<Block> build(TreeParameters parameters, boolean headingsNumbered,
-        Supplier<List<HeaderBlock>> headersSupplier)
+    public List<Block> build(TreeParameters parameters, boolean headingsNumbered)
     {
         // TODO: edit to keep build a cache, set non-duplicated IDs, insert numbers in prefix of the headings and
         // normalize the names.
@@ -116,15 +104,7 @@ public class TocTreeBuilder
         // .........|_ ListItemBlock (TextBlock: Section5)
 
         // Get the list of headers at the root level.
-        List<HeaderBlock> headers;
-        if (this.cacheManager.containsKey(parameters.rootBlock)) {
-            headers = this.cacheManager.getHeaders(parameters.rootBlock);
-        } else {
-            headers = headersSupplier.get();
-            if (headingsNumbered) {
-                buildCache(parameters, headers);
-            }
-        }
+        List<HeaderBlock> headers = this.numberingService.getHeaders(parameters.rootBlock);
 
         // Construct table of content from sections list
         Block tocBlock = generateTree(headers, parameters.start, parameters.depth, parameters.documentReference,
@@ -136,119 +116,6 @@ public class TocTreeBuilder
         }
 
         return result;
-    }
-
-    private void buildCache(TreeParameters parameters, List<HeaderBlock> headers)
-    {
-        // If the root block is a section, remove its header block for the list of header blocks
-        // TODO: see if still relevant.
-        if (parameters.rootBlock instanceof SectionBlock) {
-            Block block = parameters.rootBlock.getChildren().get(0);
-
-            if (block instanceof HeaderBlock) {
-                headers.remove(block);
-            }
-        }
-
-        Map<HeaderBlock, String> rootBlockCache = new HashMap<>();
-        this.cacheManager.put(parameters.rootBlock, rootBlockCache);
-
-        Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(0);
-        for (HeaderBlock header : headers) {
-            if (!isInGroupBlock(header)) {
-                cacheHeader(rootBlockCache, stack, header);
-            } else {
-                rootBlockCache.put(header, null);
-            }
-        }
-    }
-
-    private boolean isInGroupBlock(HeaderBlock header)
-    {
-        Block parent = header.getParent();
-        while (parent != null) {
-            // Stops whenever a content root is found.
-            String classes = parent.getParameter("class");
-            if (classes != null && classes.contains(NUMBERED_CONTENT_ROOT_CLASS)) {
-                return false;
-            }
-            if (parent instanceof GroupBlock) {
-                return true;
-            }
-            parent = parent.getParent();
-        }
-        return false;
-    }
-
-    private void cacheHeader(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock header)
-    {
-        int level = header.getLevel().getAsInt();
-        Integer start = null;
-        if (header.getParameter(START_PARAMETER) != null) {
-            start = Integer.parseInt(header.getParameter(START_PARAMETER));
-        }
-        if (level == stack.size()) {
-            cacheHeaderSameLevel(rootBlockCache, stack, header, start);
-        } else if (level > stack.size()) {
-            cacheHeaderLevelIncreses(rootBlockCache, stack, header, level, start);
-        } else {
-            cacheHeaderLevelDecreases(rootBlockCache, stack, header, level, start);
-        }
-    }
-
-    private void cacheHeaderLevelDecreases(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
-        HeaderBlock header, int level, Integer start)
-    {
-        while (stack.size() > level) {
-            stack.pop();
-        }
-        Integer pop = stack.pop();
-        if (start != null) {
-            stack.push(start);
-        } else {
-            stack.push(pop + 1);
-        }
-        rootBlockCache.put(header, serialize(stack));
-    }
-
-    private void cacheHeaderLevelIncreses(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
-        HeaderBlock header, int level, Integer start)
-    {
-        for (int i = stack.size(); i < level; i++) {
-            if (i != level - 1) {
-                stack.push(0);
-            } else {
-                if (start != null) {
-                    stack.push(start);
-                } else {
-                    stack.push(1);
-                }
-            }
-        }
-        rootBlockCache.put(header, serialize(stack));
-    }
-
-    private void cacheHeaderSameLevel(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock header,
-        Integer start)
-    {
-        Integer pop = stack.pop();
-        if (start != null) {
-            stack.push(start);
-        } else {
-            stack.push(pop + 1);
-        }
-        rootBlockCache.put(header, serialize(stack));
-    }
-
-    private String serialize(Deque<Integer> stack)
-    {
-        List<String> ret = new ArrayList<>();
-        Iterator<Integer> integerIterator = stack.descendingIterator();
-        while (integerIterator.hasNext()) {
-            ret.add(integerIterator.next().toString());
-        }
-        return StringUtils.join(ret, ".");
     }
 
     /**
@@ -352,7 +219,7 @@ public class TocTreeBuilder
         List<Block> childrenBlocks = this.tocBlockFilter.generateLabel(headerBlock);
         ArrayList<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
-            Map<HeaderBlock, String> headerBlockStringMap = this.cacheManager.get(rootBlock);
+            Map<HeaderBlock, String> headerBlockStringMap = this.numberingService.getMap(rootBlock);
             String rawContent = headerBlockStringMap.get(headerBlock);
             if (rawContent != null) {
                 blocks.add(new RawBlock(rawContent, Syntax.XHTML_1_0));

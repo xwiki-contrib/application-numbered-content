@@ -19,16 +19,25 @@
  */
 package org.xwiki.contrib.numberedreferences.internal;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
+import org.xwiki.contrib.numberedreferences.NumberingService;
 import org.xwiki.rendering.block.Block;
+import org.xwiki.rendering.block.LinkBlock;
+import org.xwiki.rendering.block.MacroBlock;
+import org.xwiki.rendering.block.WordBlock;
+import org.xwiki.rendering.listener.reference.DocumentResourceReference;
 import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
+
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
 
 /**
  * Create a link to a section id, displaying the section number as the link label.
@@ -47,6 +56,9 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     private static final String DESCRIPTION =
         "Create a link to a section id, displaying the section number as the link label.";
 
+    @Inject
+    private List<NumberingService> numberingServices;
+
     /**
      * Create and initialize the descriptor of the macro.
      */
@@ -54,6 +66,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     {
         super("Id", DESCRIPTION, ReferenceMacroParameters.class);
         setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
+        setPriority(3000);
     }
 
     @Override
@@ -65,11 +78,31 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     @Override
     public List<Block> execute(ReferenceMacroParameters parameters, String content, MacroTransformationContext context)
     {
-        // We pass the id inside a custom ReferenceBlock.
-        // It'll be the "numberedheadings" and "numberedfigures" transformations's goals to modify the XDOM for the
-        // macro when it executes, thus computing the section/figure number and replacing the ReferenceBlock with a
-        // LinkBlock.
-        ReferenceBlock block = new ReferenceBlock(parameters.getId(), parameters.getType());
-        return Collections.singletonList(block);
+
+        DocumentResourceReference resourceReference = new DocumentResourceReference("");
+        resourceReference.setAnchor(parameters.getId());
+
+        // Ask the numbering services to compute the numbers until on of the computes a block with the requested id.
+        String number = null;
+        for (NumberingService numberingService : this.numberingServices) {
+            String headerBlockStringEntry =
+                numberingService.getMap(((Block) context.getXDOM()).getRoot()).entrySet().stream()
+                    .filter(it -> it.getKey().getId().equals(parameters.getId())).findFirst().map(Map.Entry::getValue)
+                    .orElse(null);
+            if (headerBlockStringEntry != null) {
+                number = headerBlockStringEntry;
+                break;
+            }
+        }
+        Block referenceContent;
+        if (number != null) {
+            referenceContent = new LinkBlock(singletonList(new WordBlock(number)), resourceReference, false);
+        } else {
+            // TODO: localization
+            referenceContent =
+                new MacroBlock("error", emptyMap(), String.format("Reference to id %s not found.", parameters.getId()),
+                    true);
+        }
+        return singletonList(referenceContent);
     }
 }

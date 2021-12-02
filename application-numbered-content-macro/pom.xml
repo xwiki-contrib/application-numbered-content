@@ -34,8 +34,8 @@
   <description>Provides numbered headings, figures and tables and references to them</description>
   <url>http://extensions.xwiki.org/xwiki/bin/view/Extension/Numbered%20Reference%20Macro/</url>
   <properties>
-<!--    <xwiki.jacoco.instructionRatio>0.91</xwiki.jacoco.instructionRatio>-->
-    <xwiki.jacoco.instructionRatio>0.85</xwiki.jacoco.instructionRatio>
+    <!-- Temporarily decreased. -->
+    <xwiki.jacoco.instructionRatio>0.88</xwiki.jacoco.instructionRatio>
     <!-- Extension Manager category -->
     <xwiki.extension.category>macro</xwiki.extension.category>
   </properties>
@@ -60,7 +60,13 @@
       <artifactId>xwiki-rendering-macro-figure</artifactId>
       <version>${rendering.version}</version>
     </dependency>
-    <!-- Test dependencies -->
+    <!-- Runtime dependencies. -->
+    <dependency>
+      <groupId>org.xwiki.rendering</groupId>
+      <artifactId>xwiki-rendering-macro-message</artifactId>
+      <version>${rendering.version}</version>
+    </dependency>
+    <!-- Test dependencies. -->
     <dependency>
       <groupId>org.xwiki.commons</groupId>
       <artifactId>xwiki-commons-tool-test-component</artifactId>

@@ -17,17 +17,19 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.headings.internal;
+package org.xwiki.contrib.numberedreferences.internal;
 
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.xwiki.cache.Cache;
 import org.xwiki.cache.CacheManager;
+import org.xwiki.contrib.numberedreferences.internal.DefaultNumberingCacheManager.CachedValue;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.SpaceBlock;
@@ -36,11 +38,14 @@ import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
 import org.xwiki.test.junit5.mockito.MockComponent;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,31 +66,24 @@ class DefaultNumberingCacheManagerTest
     private CacheManager cacheManager;
 
     @Mock
-    private Cache<Map<HeaderBlock, String>> cache;
+    private Cache<CachedValue> cache;
 
     private final Block block = new SpaceBlock();
 
     @BeforeEach
     void setUp() throws Exception
     {
-        when(this.cacheManager.<Map<HeaderBlock, String>>createNewCache(any())).thenReturn(this.cache);
+        when(this.cacheManager.<CachedValue>createNewCache(any())).thenReturn(this.cache);
         this.defaultNumberingCacheManager.initialize();
     }
 
     @Test
     void get()
     {
-        Map<HeaderBlock, String> expectedMap = Collections.emptyMap();
-        when(this.cache.get(blockHashCode())).thenReturn(expectedMap);
-        Map<HeaderBlock, String> actualMap = this.defaultNumberingCacheManager.get(this.block);
-        assertSame(expectedMap, actualMap);
-    }
-
-    @Test
-    void containsKey()
-    {
-        when(this.cache.get(blockHashCode())).thenReturn(null);
-        assertFalse(this.defaultNumberingCacheManager.containsKey(this.block));
+        Map<HeaderBlock, String> expectedMap = emptyMap();
+        when(this.cache.get(blockHashCode())).thenReturn(new CachedValue(emptyMap(), emptyList()));
+        Optional<Map<HeaderBlock, String>> actualMap = this.defaultNumberingCacheManager.get(this.block);
+        assertEquals(Optional.of(expectedMap), actualMap);
     }
 
     @Test
@@ -96,16 +94,17 @@ class DefaultNumberingCacheManagerTest
         HeaderBlock h2 = new HeaderBlock(singletonList(new SpaceBlock()), HeaderLevel.LEVEL2);
         t.put(h1, "1");
         t.put(h2, "2");
-        when(this.cache.get(blockHashCode())).thenReturn(t);
-        assertThat(this.defaultNumberingCacheManager.getHeaders(this.block), containsInAnyOrder(h1, h2));
+        when(this.cache.get(blockHashCode())).thenReturn(new CachedValue(t, asList(h1, h2)));
+        Optional<List<HeaderBlock>> headers = this.defaultNumberingCacheManager.getHeaders(this.block);
+        assertTrue(headers.isPresent());
+        assertThat(headers.get(), containsInAnyOrder(h1, h2));
     }
 
     @Test
     void put()
     {
-        Map<HeaderBlock, String> map = Collections.emptyMap();
-        this.defaultNumberingCacheManager.put(this.block, map);
-        verify(this.cache).set(blockHashCode(), map);
+        this.defaultNumberingCacheManager.put(this.block, emptyMap(), emptyList());
+        verify(this.cache).set(blockHashCode(), new CachedValue(emptyMap(), emptyList()));
     }
 
     private String blockHashCode()

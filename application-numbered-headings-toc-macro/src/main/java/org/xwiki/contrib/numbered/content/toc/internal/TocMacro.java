@@ -19,7 +19,6 @@
  */
 package org.xwiki.contrib.numbered.content.toc.internal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,12 +30,10 @@ import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
 import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
-import org.xwiki.contrib.numbered.headings.NumberingCacheManager;
 import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
+import org.xwiki.contrib.numberedreferences.NumberingService;
 import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.XDOM;
-import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.internal.macro.toc.TreeParametersBuilder;
@@ -51,8 +48,6 @@ import org.xwiki.rendering.wiki.WikiModel;
 import org.xwiki.rendering.wiki.WikiModelException;
 
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
-import static org.xwiki.contrib.numbered.content.toc.TocTreeBuilder.NUMBERED_CONTENT_ROOT_CLASS;
-import static org.xwiki.rendering.block.Block.Axes.DESCENDANT;
 import static org.xwiki.rendering.macro.toc.TocMacroParameters.Scope.PAGE;
 
 /**
@@ -77,8 +72,6 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
 
     private TocTreeBuilder tocTreeBuilder;
 
-    private final ClassBlockMatcher classBlockMatcher = new ClassBlockMatcher(HeaderBlock.class);
-
     /**
      * A parser that knows how to parse plain text; this is used to transform link labels into plain text.
      */
@@ -87,7 +80,8 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
     private Parser plainTextParser;
 
     @Inject
-    private NumberingCacheManager cacheManager;
+    @Named("headings")
+    private NumberingService numberingService;
 
     @Inject
     private Logger logger;
@@ -117,7 +111,8 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
     {
         super.initialize();
         this.tocTreeBuilder =
-            new TocTreeBuilder(new TocBlockFilter(this.plainTextParser, this.linkLabelGenerator), this.cacheManager);
+            new TocTreeBuilder(new TocBlockFilter(this.plainTextParser, this.linkLabelGenerator),
+                this.numberingService);
     }
 
     @Override
@@ -142,32 +137,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
 
         TreeParametersBuilder builder = new TreeParametersBuilder();
         TreeParameters treeParameters = builder.build(rootBlock, parameters, context);
-        return this.tocTreeBuilder.build(treeParameters, isNumbered, () -> getHeaderBlocks(treeParameters));
-    }
-
-    private List<HeaderBlock> getHeaderBlocks(TreeParameters parameters)
-    {
-        List<HeaderBlock> list = new ArrayList<>();
-        for (Block block : parameters.rootBlock.getBlocks(this.classBlockMatcher, DESCENDANT)) {
-            HeaderBlock h = (HeaderBlock) block;
-            if (h.getLevel().getAsInt() <= parameters.depth && !isExcluded(h)) {
-                list.add(h);
-            }
-        }
-        return list;
-    }
-
-    private boolean isExcluded(HeaderBlock h)
-    {
-        Block parent = h.getParent();
-        while (parent != null) {
-            String classes = parent.getParameter("class");
-            if (classes != null && classes.contains(NUMBERED_CONTENT_ROOT_CLASS)) {
-                return true;
-            }
-            parent = parent.getParent();
-        }
-        return false;
+        return this.tocTreeBuilder.build(treeParameters, isNumbered);
     }
 
     private Block getRootBlockBlock(XWikiTocMacroParameters parameters) throws MacroExecutionException

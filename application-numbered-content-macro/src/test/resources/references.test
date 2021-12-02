@@ -1,0 +1,51 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro on a simple case with the default parameters.
+.#-----------------------------------------------------
+{{reference section="Hh1"/}} {{reference section="Hh0"/}}
+
+= h1 =
+
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<p><span class="wikilink"><a href="#Hh1">1</a></span> <span class="box errormessage">Reference to id Hh0 not found.</span></p><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginParagraph
+beginMacroMarkerInline [reference] [section=Hh1]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [Hh1]]] [false]
+onWord [1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [Hh1]]] [false]
+endMacroMarkerInline [reference] [section=Hh1]
+onSpace
+beginMacroMarkerInline [reference] [section=Hh0]
+beginMacroMarkerInline [error] [] [Reference to id Hh0 not found.]
+beginFormat [NONE] [[class]=[box errormessage]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+onWord [Reference]
+onSpace
+onWord [to]
+onSpace
+onWord [id]
+onSpace
+onWord [Hh0]
+onSpace
+onWord [not]
+onSpace
+onWord [found]
+onSpecialSymbol [.]
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFormat [NONE] [[class]=[box errormessage]]
+endMacroMarkerInline [error] [] [Reference to id Hh0 not found.]
+endMacroMarkerInline [reference] [section=Hh0]
+endParagraph
+beginSection
+beginHeader [1, Hh1]
+onWord [h1]
+endHeader [1, Hh1]
+endSection
+endDocument

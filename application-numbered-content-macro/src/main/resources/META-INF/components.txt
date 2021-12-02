@@ -1,2 +1,3 @@
-org.xwiki.contrib.numberedreferences.internal.NumberedFiguresTransformation
 org.xwiki.contrib.numberedreferences.internal.ReferenceMacro
+org.xwiki.contrib.numberedreferences.internal.DefaultNumberingCacheManager
+
