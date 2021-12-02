@@ -178,18 +178,24 @@ require(['jquery', 'deferred!ckeditor', 'NumberedHeadingsConfig'], function ($, 
   }
 
   ckeditorPromise.done(ckeditor =&gt; {
-    ckeditor.plugins.add('xwiki-numberedHeadings', {
-      requires: 'dialog',
-      init: function (editor) {
-        handleEnterKey(editor);
-        handleIndentation(editor);
-        handleHeaderRightClick(editor);
-      }
-    });
+    if (!('xwiki-numberedHeadings' in ckeditor.plugins.registered)) {
+      ckeditor.plugins.add('xwiki-numberedHeadings', {
+        requires: 'dialog',
+        init: function (editor) {
+          handleEnterKey(editor);
+          handleIndentation(editor);
+          handleHeaderRightClick(editor);
+        }
+      });
 
-    ckeditor.on('instanceCreated', event =&gt; {
-      event.editor.config.extraPlugins = 'xwiki-numberedHeadings';
-    });
+      ckeditor.on('instanceCreated', event =&gt; {
+        if(event.editor.config.extraPlugins !== '') {
+          event.editor.config.extraPlugins = 'xwiki-numberedHeadings';
+        } else {
+          event.editor.config.extraPlugins += ',xwiki-numberedHeadings';
+        }
+      });
+    }
 
     //
     // Enter specific plugin.
