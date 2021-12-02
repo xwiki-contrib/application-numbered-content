@@ -34,6 +34,7 @@ import org.xwiki.rendering.block.ListItemBlock;
 import org.xwiki.rendering.block.NumberedListBlock;
 import org.xwiki.rendering.block.RawBlock;
 import org.xwiki.rendering.block.SpaceBlock;
+import org.xwiki.rendering.block.SpecialSymbolBlock;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
@@ -216,7 +217,6 @@ public class TocTreeBuilder
         DocumentResourceReference reference = new DocumentResourceReference(documentReference);
         reference.setAnchor(headerBlock.getId());
 
-        List<Block> childrenBlocks = this.tocBlockFilter.generateLabel(headerBlock);
         ArrayList<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
             Map<HeaderBlock, String> headerBlockStringMap = this.numberingService.getMap(rootBlock);
@@ -226,10 +226,24 @@ public class TocTreeBuilder
                 blocks.add(new SpaceBlock());
             }
         }
-        blocks.addAll(childrenBlocks);
+        blocks.addAll(cleanupEntryLabel(headerBlock));
         LinkBlock linkBlock = new LinkBlock(blocks, reference, false);
 
         return new ListItemBlock(singletonList(linkBlock));
+    }
+
+    private List<Block> cleanupEntryLabel(HeaderBlock headerBlock)
+    {
+        List<Block> blocks = this.tocBlockFilter.generateLabel(headerBlock);
+        while (!blocks.isEmpty()) {
+            Block block = blocks.get(blocks.size() - 1);
+            if (block instanceof SpecialSymbolBlock || block instanceof SpaceBlock) {
+                blocks.remove(blocks.size() - 1);
+            } else {
+                break;
+            }
+        }
+        return blocks;
     }
 
     /**

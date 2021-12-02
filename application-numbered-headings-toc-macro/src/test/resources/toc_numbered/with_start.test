@@ -1,0 +1,103 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro when some headings has start attributes.
+.#-----------------------------------------------------
+{{toc depth="2"/}}
+
+= h1 =
+
+== h2 ==
+
+== h2bis ==
+
+(% start="10" %)
+= h1bis =
+
+(% start="100" %)
+== h2tes ==
+
+=== h3 ===
+
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<ul><li><span class="wikilink"><a href="#Hh1">1 h1</a></span><ul><li><span class="wikilink"><a href="#Hh2">1.1 h2</a></span></li><li><span class="wikilink"><a href="#Hh2bis">1.2 h2bis</a></span></li></ul></li><li><span class="wikilink"><a href="#Hh1bis">10 h1bis</a></span><ul><li><span class="wikilink"><a href="#Hh2tes">10.100 h2tes</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hh2bis" class="wikigeneratedid"><span>h2bis</span></h2><h1 id="Hh1bis" class="wikigeneratedid" start="10"><span>h1bis</span></h1><h2 id="Hh2tes" class="wikigeneratedid" start="100"><span>h2tes</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [toc] [depth=2]
+beginList [BULLETED]
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
+onRawText [1] [xhtml/1.0]
+onSpace
+onWord [h1]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
+beginList [BULLETED]
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
+onRawText [1.1] [xhtml/1.0]
+onSpace
+onWord [h2]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
+endListItem
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
+onRawText [1.2] [xhtml/1.0]
+onSpace
+onWord [h2bis]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
+endListItem
+endList [BULLETED]
+endListItem
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
+onRawText [10] [xhtml/1.0]
+onSpace
+onWord [h1bis]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
+beginList [BULLETED]
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]
+onRawText [10.100] [xhtml/1.0]
+onSpace
+onWord [h2tes]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]
+endListItem
+endList [BULLETED]
+endListItem
+endList [BULLETED]
+endMacroMarkerStandalone [toc] [depth=2]
+beginSection
+beginHeader [1, Hh1]
+onWord [h1]
+endHeader [1, Hh1]
+beginSection
+beginHeader [2, Hh2]
+onWord [h2]
+endHeader [2, Hh2]
+endSection
+beginSection
+beginHeader [2, Hh2bis]
+onWord [h2bis]
+endHeader [2, Hh2bis]
+endSection
+endSection
+beginSection
+beginHeader [1, Hh1bis] [[start]=[10]]
+onWord [h1bis]
+endHeader [1, Hh1bis] [[start]=[10]]
+beginSection
+beginHeader [2, Hh2tes] [[start]=[100]]
+onWord [h2tes]
+endHeader [2, Hh2tes] [[start]=[100]]
+beginSection
+beginHeader [3, Hh3]
+onWord [h3]
+endHeader [3, Hh3]
+endSection
+endSection
+endSection
+endDocument
