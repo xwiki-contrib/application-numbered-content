@@ -43,6 +43,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.REFERENCE;
 import static org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsClassDocumentInitializer.STATUS_ACTIVATED;
@@ -110,6 +112,17 @@ class NumberedHeadingsServiceTest
     }
 
     @Test
+    void isNumberedHeadingsEnabledOnMemory() throws Exception
+    {
+        BaseObject baseObject = mock(BaseObject.class);
+        when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn("activated");
+        when(this.xWikiDocumentPage.getXObject(REFERENCE)).thenReturn(baseObject);
+        assertTrue(this.numberedHeadingsService.isNumberedHeadingsEnabled());
+        // The current document must not be resolved from its reference, the in memory instance must be used directly.
+        verify(this.documentAccessBridge, never()).getDocumentInstance(DOCUMENT_REFERENCE_PAGE);
+    }
+
+    @Test
     void isNumberedHeadingsEnabledXWikiContextMissing() throws Exception
     {
         when(this.context.getProperty(EXECUTIONCONTEXT_KEY)).thenReturn(null);
@@ -120,7 +133,7 @@ class NumberedHeadingsServiceTest
     void isNumberedBridgeException() throws Exception
     {
         NullPointerException nullPointerException = new NullPointerException();
-        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_PAGE))
+        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_1))
             .thenThrow(nullPointerException);
         Exception exception =
             assertThrows(Exception.class, () -> this.numberedHeadingsService.isNumberedHeadingsEnabled());

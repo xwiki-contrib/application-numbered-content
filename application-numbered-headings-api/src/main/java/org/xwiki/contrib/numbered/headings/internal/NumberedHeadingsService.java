@@ -62,7 +62,14 @@ public class NumberedHeadingsService
      */
     public boolean isNumberedHeadingsEnabled() throws Exception
     {
-        return isCurrentDocumentNumbered();
+        XWikiDocument doc = getDocFromContext();
+        if (doc == null) {
+            return false;
+        }
+        if (isNumbered(doc)) {
+            return true;
+        }
+        return isNumbered(doc.getParentReference());
     }
 
     /**
@@ -81,20 +88,8 @@ public class NumberedHeadingsService
         if (doc == null) {
             return false;
         }
-        DocumentReference parentReference = doc.getParentReference();
-        if (parentReference == null) {
-            return false;
-        }
-        return isNumbered(parentReference);
-    }
 
-    private boolean isCurrentDocumentNumbered() throws Exception
-    {
-        XWikiDocument doc = getDocFromContext();
-        if (doc == null) {
-            return false;
-        }
-        return isNumbered(doc.getDocumentReference());
+        return isNumbered(doc.getParentReference());
     }
 
     private XWikiDocument getDocFromContext()
@@ -113,27 +108,37 @@ public class NumberedHeadingsService
      * @param documentReference the document reference to check
      * @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
-     * @see #isCurrentDocumentNumbered()
      */
     private boolean isNumbered(DocumentReference documentReference) throws Exception
     {
-        DocumentReference currentReference = documentReference;
-        do {
-            XWikiDocument actualDoc =
-                (XWikiDocument) this.documentAccessBridge.getDocumentInstance(currentReference);
-            BaseObject xObject = actualDoc.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE);
-            // We stop as soon as we find an object.
-            if (xObject != null) {
-                String activatePropertyValue =
-                    xObject.getStringValue(NumberedHeadingsClassDocumentInitializer.STATUS_PROPERTY);
-                // If the value is inherits, we continue looking up the hierarchy, otherwise we use the configured 
-                // activation setting.
-                if (!Objects.equals(activatePropertyValue, "inherits")) {
-                    return Objects.equals(activatePropertyValue, "activated");
+        if (documentReference != null) {
+            DocumentReference currentReference = documentReference;
+            do {
+                XWikiDocument actualDoc =
+                    (XWikiDocument) this.documentAccessBridge.getDocumentInstance(currentReference);
+                if (isNumbered(actualDoc)) {
+                    return true;
                 }
-            }
-            currentReference = actualDoc.getParentReference();
-        } while (currentReference != null);
+                currentReference = actualDoc.getParentReference();
+            } while (currentReference != null);
+        }
         return false;
+    }
+
+    private boolean isNumbered(XWikiDocument actualDoc)
+    {
+        BaseObject xObject = actualDoc.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE);
+        // We stop as soon as we find an object.
+        boolean isNumbered = false;
+        if (xObject != null) {
+            String activatePropertyValue =
+                xObject.getStringValue(NumberedHeadingsClassDocumentInitializer.STATUS_PROPERTY);
+            // If the value is inherits, we continue looking up the hierarchy, otherwise we use the configured 
+            // activation setting.
+            if (!Objects.equals(activatePropertyValue, "inherits")) {
+                isNumbered = Objects.equals(activatePropertyValue, "activated");
+            }
+        }
+        return isNumbered;
     }
 }

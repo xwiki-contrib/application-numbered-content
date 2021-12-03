@@ -38,7 +38,7 @@
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Numbered Headings API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
-    <xwiki.jacoco.instructionRatio>0.80</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.82</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
