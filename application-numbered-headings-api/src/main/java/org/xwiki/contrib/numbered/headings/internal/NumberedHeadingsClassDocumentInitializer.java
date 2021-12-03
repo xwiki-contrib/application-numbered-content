@@ -78,8 +78,7 @@ public class NumberedHeadingsClassDocumentInitializer extends AbstractMandatoryC
     @Override
     protected void createClass(BaseClass xclass)
     {
-        // TODO: localization + add labels.
         xclass.addStaticListField(STATUS_PROPERTY, "Status",
-            String.join("|", STATUS_INHERITS + "=" + "Inherit", STATUS_ACTIVATED, STATUS_DEACTIVATED));
+            String.join("|", STATUS_INHERITS, STATUS_ACTIVATED, STATUS_DEACTIVATED));
     }
 }

@@ -354,7 +354,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
     &lt;dl&gt;
       &lt;dt#if ($hasEdit) class="editableProperty"#end data-property="NumberedHeadings.Code.NumberedHeadingsClass.status"
       data-property-type="object" data-object-policy="updateOrCreate"&gt;
-        &lt;label&gt;$escapetool.xml('Activate Heading Numbering')&lt;/label&gt; ## TODO: localization
+        &lt;label&gt;$escapetool.xml($services.localization.render('numbered.headings.activationUI.label'))&lt;/label&gt;
       &lt;/dt&gt;
       &lt;dd&gt;#displayObjectProperty('NumberedHeadings.Code.NumberedHeadingsClass.status' 'view' true)&lt;/dd&gt;
     &lt;/dl&gt;
@@ -372,7 +372,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
     </property>
     <property>
       <parameters>show=true
-title=Heading Numbering ##TODO: localization
+title=$services.localization.render('numbered.headings.activationUI.parameters.title')
 itemnumber=-1
 name=heading
 order=1000</parameters>

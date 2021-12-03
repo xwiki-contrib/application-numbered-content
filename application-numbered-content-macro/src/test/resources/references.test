@@ -10,7 +10,7 @@
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<p><span class="wikilink"><a href="#Hh1">1</a></span> <span class="box errormessage">Reference to id Hh0 not found.</span></p><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1>
+<p><span class="wikilink"><a href="#Hh1">1</a></span> <span class="box errormessage">numbered.content.reference.macro.error.referenceNotFound [Hh0]</span></p><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -23,24 +23,27 @@ endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [Hh
 endMacroMarkerInline [reference] [section=Hh1]
 onSpace
 beginMacroMarkerInline [reference] [section=Hh0]
-beginMacroMarkerInline [error] [] [Reference to id Hh0 not found.]
+beginMacroMarkerInline [error] [] [numbered.content.reference.macro.error.referenceNotFound [Hh0]]
 beginFormat [NONE] [[class]=[box errormessage]]
 beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
-onWord [Reference]
-onSpace
-onWord [to]
-onSpace
-onWord [id]
-onSpace
-onWord [Hh0]
-onSpace
-onWord [not]
-onSpace
-onWord [found]
+onWord [numbered]
 onSpecialSymbol [.]
+onWord [content]
+onSpecialSymbol [.]
+onWord [reference]
+onSpecialSymbol [.]
+onWord [macro]
+onSpecialSymbol [.]
+onWord [error]
+onSpecialSymbol [.]
+onWord [referenceNotFound]
+onSpace
+onSpecialSymbol [[]
+onWord [Hh0]
+onSpecialSymbol []]
 endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 endFormat [NONE] [[class]=[box errormessage]]
-endMacroMarkerInline [error] [] [Reference to id Hh0 not found.]
+endMacroMarkerInline [error] [] [numbered.content.reference.macro.error.referenceNotFound [Hh0]]
 endMacroMarkerInline [reference] [section=Hh0]
 endParagraph
 beginSection

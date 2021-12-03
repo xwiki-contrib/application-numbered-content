@@ -247,13 +247,13 @@
       <creationRestrictionsAreSuggestions>0</creationRestrictionsAreSuggestions>
     </property>
     <property>
-      <description/>
+      <description>numbered.heading.template.description</description>
     </property>
     <property>
       <icon/>
     </property>
     <property>
-      <name>Numbered Headings Template</name>
+      <name>numbered.heading.template.title</name>
     </property>
     <property>
       <spaces/>

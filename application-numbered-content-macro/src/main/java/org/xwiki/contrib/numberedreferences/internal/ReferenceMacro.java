@@ -28,6 +28,7 @@ import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numberedreferences.NumberingService;
+import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.MacroBlock;
@@ -58,6 +59,9 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
 
     @Inject
     private List<NumberingService> numberingServices;
+
+    @Inject
+    private ContextualLocalizationManager l10n;
 
     /**
      * Create and initialize the descriptor of the macro.
@@ -98,10 +102,10 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         if (number != null) {
             referenceContent = new LinkBlock(singletonList(new WordBlock(number)), resourceReference, false);
         } else {
-            // TODO: localization
-            referenceContent =
-                new MacroBlock("error", emptyMap(), String.format("Reference to id %s not found.", parameters.getId()),
-                    true);
+            String errorMessage =
+                this.l10n.getTranslationPlain("numbered.content.reference.macro.error.referenceNotFound",
+                    parameters.getId());
+            referenceContent = new MacroBlock("error", emptyMap(), errorMessage, true);
         }
         return singletonList(referenceContent);
     }

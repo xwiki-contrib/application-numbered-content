@@ -44,6 +44,7 @@
       <groupId>org.xwiki.contrib.numbered.content</groupId>
       <artifactId>application-numbered-headings-api</artifactId>
       <version>${project.version}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>

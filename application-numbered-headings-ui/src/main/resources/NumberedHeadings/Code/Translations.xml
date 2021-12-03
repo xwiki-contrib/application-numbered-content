@@ -20,30 +20,38 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.4" reference="NumberedHeadings.Code.NumberedHeadingsTemplate" locale="">
+<xwikidoc version="1.4" reference="NumberedHeadings.Code.Translations" locale="">
   <web>NumberedHeadings.Code</web>
-  <name>NumberedHeadingsTemplate</name>
+  <name>Translations</name>
   <language/>
-  <defaultLanguage/>
+  <defaultLanguage>en</defaultLanguage>
   <translation>0</translation>
   <creator>xwiki:XWiki.Admin</creator>
-  <parent>Main.WebHome</parent>
+  <parent>WebHome</parent>
   <author>xwiki:XWiki.Admin</author>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <version>1.1</version>
-  <title>NumberedHeadingsTemplate</title>
+  <title>Translations</title>
   <comment/>
   <minorEdit>false</minorEdit>
-  <syntaxId>xwiki/2.1</syntaxId>
+  <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
-  <content>= Lorem Ipsum =</content>
+  <content>numbered.headings.codeSpace.title=Code
+numbered.headings.codeSpace.description=This is the place where the Numbered Headings application code is located.
+numbered.headings.activationUI.label=Activate Heading Numbering
+numbered.headings.activationUI.parameters.title=Heading Numbering
+numbered.headings.ckeditor.headerConfigurationAction.title=Header Config
+numbered.headings.ckeditor.headerConfigurationAction.start.title=Start
+numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Header start number must be a whole number.
+numbered.heading.template.title=Numbered Headings Template
+numbered.heading.template.description=Creates a page with numbered headings activated.</content>
   <object>
-    <name>NumberedHeadings.Code.NumberedHeadingsTemplate</name>
+    <name>NumberedHeadings.Code.Translations</name>
     <number>0</number>
-    <className>NumberedHeadings.Code.NumberedHeadingsClass</className>
-    <guid>9c475724-5a1e-4918-ac05-29b5ec161723</guid>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>44a93f4e-bc32-4899-b5d3-b841c2728f60</guid>
     <class>
-      <name>NumberedHeadings.Code.NumberedHeadingsClass</name>
+      <name>XWiki.TranslationDocumentClass</name>
       <customClass/>
       <customMapping/>
       <defaultViewSheet/>
@@ -51,27 +59,27 @@
       <defaultWeb/>
       <nameField/>
       <validationScript/>
-      <status>
+      <scope>
         <cache>0</cache>
         <disabled>0</disabled>
         <displayType>select</displayType>
         <freeText>forbidden</freeText>
         <largeStorage>0</largeStorage>
         <multiSelect>0</multiSelect>
-        <name>status</name>
+        <name>scope</name>
         <number>1</number>
-        <prettyName>Status</prettyName>
+        <prettyName>Scope</prettyName>
         <relationalStorage>0</relationalStorage>
         <separator> </separator>
         <separators>|, </separators>
         <size>1</size>
         <unmodifiable>0</unmodifiable>
-        <values>|activated|deactivated</values>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </status>
+      </scope>
     </class>
     <property>
-      <status>activated</status>
+      <scope>WIKI</scope>
     </property>
   </object>
 </xwikidoc>

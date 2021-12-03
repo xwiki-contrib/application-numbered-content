@@ -19,9 +19,21 @@
  */
 package org.xwiki.contrib.numberedreferences.internal;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import org.mockito.stubbing.Answer;
 import org.xwiki.contrib.numberedreferences.NumberingService;
+import org.xwiki.localization.LocalizationContext;
+import org.xwiki.localization.LocalizationManager;
+import org.xwiki.localization.Translation;
+import org.xwiki.rendering.block.Block;
+import org.xwiki.rendering.block.CompositeBlock;
 import org.xwiki.rendering.block.HeaderBlock;
-import org.xwiki.rendering.listener.HeaderLevel;
+import org.xwiki.rendering.block.SpaceBlock;
+import org.xwiki.rendering.block.SpecialSymbolBlock;
+import org.xwiki.rendering.block.WordBlock;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
 import org.xwiki.test.annotation.AllComponents;
@@ -31,7 +43,10 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.xwiki.rendering.listener.HeaderLevel.LEVEL1;
 
 /**
  * Run all tests found in {@code *.test} files located in the classpath. These {@code *.test} files must follow the
@@ -41,7 +56,6 @@ import static org.mockito.Mockito.when;
  * @since 1.0
  */
 @AllComponents
-//@RenderingTests.Scope(value = "paragraphs-numbering/numbering_toc")
 public class IntegrationTests implements RenderingTests
 {
     @Initialized
@@ -49,7 +63,37 @@ public class IntegrationTests implements RenderingTests
     {
         NumberingService numberingService =
             componentManager.registerMockComponent(NumberingService.class, "testnumbered");
-        when(numberingService.getMap(any()))
-            .thenReturn(singletonMap(new HeaderBlock(emptyList(), HeaderLevel.LEVEL1, "Hh1"), "1"), emptyMap());
+        when(numberingService.getMap(any())).thenReturn(singletonMap(new HeaderBlock(emptyList(), LEVEL1, "Hh1"), "1"),
+            emptyMap());
+
+        Locale defaultLocale = Locale.getDefault();
+        LocalizationContext localizationContext = componentManager.registerMockComponent(LocalizationContext.class);
+        when(localizationContext.getCurrentLocale()).thenReturn(defaultLocale);
+        LocalizationManager localizationManager = componentManager.registerMockComponent(LocalizationManager.class);
+
+        // Mock the translation by retuning the passed key. Optionally with the list of arguments between brackets separated by commas.
+        // For instance "my.translation.key [A, B]".
+        when(localizationManager.getTranslation(any(), eq(defaultLocale))).thenAnswer(invocation -> {
+            Translation translation = mock(Translation.class);
+            String translationKey = invocation.getArgument(0);
+            when(translation.render(any())).thenAnswer((Answer<Block>) invocationRender -> {
+                List<Block> blocks = new ArrayList<>();
+                blocks.add(new WordBlock(translationKey));
+                Object[] parameters = invocationRender.getArguments();
+                if (parameters.length > 0) {
+                    blocks.add(new SpaceBlock());
+                    blocks.add(new SpecialSymbolBlock('['));
+                    for (int i = 0; i < parameters.length; i++) {
+                        blocks.add(new WordBlock(String.valueOf(parameters[i])));
+                        if (i < parameters.length - 1) {
+                            blocks.add(new SpecialSymbolBlock(','));
+                        }
+                    }
+                    blocks.add(new SpecialSymbolBlock(']'));
+                }
+                return new CompositeBlock(blocks);
+            });
+            return translation;
+        });
     }
 }
