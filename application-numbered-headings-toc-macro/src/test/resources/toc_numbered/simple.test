@@ -9,18 +9,18 @@
 
 == h2 ==
 
-== h2bis ==
+== hello world ! ==
 
-= h1bis =
+= HellWorld =
 
-== h2tes ==
+== Hello WorlD ==
 
 === h3 ===
 
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<ul><li><span class="wikilink"><a href="#Hh1">1 h1</a></span><ul><li><span class="wikilink"><a href="#Hh2">1.1 h2</a></span></li><li><span class="wikilink"><a href="#Hh2bis">1.2 h2bis</a></span></li></ul></li><li><span class="wikilink"><a href="#Hh1bis">2 h1bis</a></span><ul><li><span class="wikilink"><a href="#Hh2tes">2.1 h2tes</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hh2bis" class="wikigeneratedid"><span>h2bis</span></h2><h1 id="Hh1bis" class="wikigeneratedid"><span>h1bis</span></h1><h2 id="Hh2tes" class="wikigeneratedid"><span>h2tes</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
+<ul><li><span class="wikilink"><a href="#Hh1">1 H1</a></span><ul><li><span class="wikilink"><a href="#Hh2">1.1 H2</a></span></li><li><span class="wikilink"><a href="#Hhelloworld21">1.2 Hello World</a></span></li></ul></li><li><span class="wikilink"><a href="#HHellWorld">2 Hellworld</a></span><ul><li><span class="wikilink"><a href="#HHelloWorlD">2.1 Hello World</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hhelloworld21" class="wikigeneratedid"><span>hello world !</span></h2><h1 id="HHellWorld" class="wikigeneratedid"><span>HellWorld</span></h1><h2 id="HHelloWorlD" class="wikigeneratedid"><span>Hello WorlD</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -31,38 +31,42 @@ beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
 onRawText [1] [xhtml/1.0]
 onSpace
-onWord [h1]
+onWord [H1]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
 onRawText [1.1] [xhtml/1.0]
 onSpace
-onWord [h2]
+onWord [H2]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
 endListItem
 beginListItem
-beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hhelloworld21]]] [false]
 onRawText [1.2] [xhtml/1.0]
 onSpace
-onWord [h2bis]
-endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
+onWord [Hello]
+onSpace
+onWord [World]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hhelloworld21]]] [false]
 endListItem
 endList [BULLETED]
 endListItem
 beginListItem
-beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHellWorld]]] [false]
 onRawText [2] [xhtml/1.0]
 onSpace
-onWord [h1bis]
-endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
+onWord [Hellworld]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHellWorld]]] [false]
 beginList [BULLETED]
 beginListItem
-beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorlD]]] [false]
 onRawText [2.1] [xhtml/1.0]
 onSpace
-onWord [h2tes]
-endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]
+onWord [Hello]
+onSpace
+onWord [World]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorlD]]] [false]
 endListItem
 endList [BULLETED]
 endListItem
@@ -78,19 +82,25 @@ onWord [h2]
 endHeader [2, Hh2]
 endSection
 beginSection
-beginHeader [2, Hh2bis]
-onWord [h2bis]
-endHeader [2, Hh2bis]
+beginHeader [2, Hhelloworld21]
+onWord [hello]
+onSpace
+onWord [world]
+onSpace
+onSpecialSymbol [!]
+endHeader [2, Hhelloworld21]
 endSection
 endSection
 beginSection
-beginHeader [1, Hh1bis]
-onWord [h1bis]
-endHeader [1, Hh1bis]
+beginHeader [1, HHellWorld]
+onWord [HellWorld]
+endHeader [1, HHellWorld]
 beginSection
-beginHeader [2, Hh2tes]
-onWord [h2tes]
-endHeader [2, Hh2tes]
+beginHeader [2, HHelloWorlD]
+onWord [Hello]
+onSpace
+onWord [WorlD]
+endHeader [2, HHelloWorlD]
 beginSection
 beginHeader [3, Hh3]
 onWord [h3]

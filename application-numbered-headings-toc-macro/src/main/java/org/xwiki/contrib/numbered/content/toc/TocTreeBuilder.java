@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.apache.commons.text.CaseUtils;
 import org.xwiki.contrib.numberedreferences.NumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.BulletedListBlock;
@@ -35,6 +37,7 @@ import org.xwiki.rendering.block.NumberedListBlock;
 import org.xwiki.rendering.block.RawBlock;
 import org.xwiki.rendering.block.SpaceBlock;
 import org.xwiki.rendering.block.SpecialSymbolBlock;
+import org.xwiki.rendering.block.WordBlock;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
@@ -235,6 +238,8 @@ public class TocTreeBuilder
     private List<Block> cleanupEntryLabel(HeaderBlock headerBlock)
     {
         List<Block> blocks = this.tocBlockFilter.generateLabel(headerBlock);
+
+        // Remove all the trailing spaces and special symbols. For instance "Hello World !" becomes "Hello World"
         while (!blocks.isEmpty()) {
             Block block = blocks.get(blocks.size() - 1);
             if (block instanceof SpecialSymbolBlock || block instanceof SpaceBlock) {
@@ -243,7 +248,19 @@ public class TocTreeBuilder
                 break;
             }
         }
-        return blocks;
+
+        // Normalize the title by replacing each word with a normalized form where the first letter is upper case and 
+        // the rest lower case. 
+        return blocks.stream().map(block -> {
+            Block newBlock;
+            if (block instanceof WordBlock) {
+                WordBlock wordBlock = (WordBlock) block;
+                newBlock = new WordBlock(CaseUtils.toCamelCase(wordBlock.getWord(), true));
+            } else {
+                newBlock = block;
+            }
+            return newBlock;
+        }).collect(Collectors.toList());
     }
 
     /**

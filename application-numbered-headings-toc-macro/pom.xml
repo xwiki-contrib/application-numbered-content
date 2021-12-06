@@ -36,7 +36,7 @@
   <properties>
     <!-- Extension Manager category -->
     <xwiki.extension.category>macro</xwiki.extension.category>
-    <xwiki.jacoco.instructionRatio>0.80</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.82</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
