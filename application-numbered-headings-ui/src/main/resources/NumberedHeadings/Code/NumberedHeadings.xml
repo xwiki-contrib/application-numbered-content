@@ -193,50 +193,19 @@ require(
         ckeditor.plugins.add('xwiki-numberedHeadings', {
           requires: 'dialog',
           init: function (editor) {
-            handleEnterKey(editor);
             handleIndentation(editor);
             handleHeaderRightClick(editor);
           }
         });
 
         ckeditor.on('instanceCreated', event =&gt; {
-          if (event.editor.config.extraPlugins !== '') {
+          if (event.editor.config.extraPlugins === '') {
             event.editor.config.extraPlugins = 'xwiki-numberedHeadings';
           } else {
             event.editor.config.extraPlugins += ',xwiki-numberedHeadings';
           }
         });
       }
-
-      //
-      // Enter specific plugin.
-      //
-      const handleEnterKey = function (editor) {
-        editor.on('afterCommandExec', event =&gt; {
-          if (event.data.name === 'enter') {
-            afterEnterKey(editor);
-          }
-        });
-      };
-
-      const afterEnterKey = function (editor) {
-        const selection = editor.getSelection();
-        // We intercept the Enter key only if the selection is collapsed, and numbered content is activated.
-        if (selection.isCollapsed() &amp;&amp; activated(editor)) {
-          const parentBlock = selection.getStartElement()
-            .getAscendant(element =&gt; ckeditor.dtd.$block[element.getName()], true);
-          const previousBlock = parentBlock.getPrevious();
-          if (parentBlock.is('p') &amp;&amp; /h[1-6]/.test(previousBlock.getName())) {
-            if (previousBlock.getText().trim().length) {
-              const bookmarks = selection.createBookmarks2();
-              parentBlock.renameNode(previousBlock.getName());
-              selection.selectBookmarks(bookmarks);
-            } else {
-              previousBlock.remove();
-            }
-          }
-        }
-      };
 
       //
       // Indentation specific code.
