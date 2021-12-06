@@ -36,6 +36,11 @@ import org.xwiki.rendering.block.HeaderBlock;
 public interface NumberingService
 {
     /**
+     * Class identifying sub-sections of a document that are ruled by their own numbering.
+     */
+    String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
+
+    /**
      * Return a list of headers found in a root block.
      *
      * @param rootBlock the root block to analyze

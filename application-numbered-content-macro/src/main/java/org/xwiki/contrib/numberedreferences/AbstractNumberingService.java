@@ -43,9 +43,6 @@ import org.xwiki.rendering.block.HeaderBlock;
  */
 public abstract class AbstractNumberingService implements NumberingService
 {
-    // TODO: duplicated
-    private static final String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
-
     private static final String START_PARAMETER = "start";
 
     @Inject

@@ -56,10 +56,6 @@ import static java.util.Collections.singletonList;
 @Unstable
 public class TocTreeBuilder
 {
-    /**
-     * Class identifying sub-sections of a document that are ruled by their own numbering.
-     */
-    public static final String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
 
     private final TocBlockFilter tocBlockFilter;
 

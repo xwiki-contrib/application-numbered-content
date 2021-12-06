@@ -46,5 +46,24 @@
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.xwiki.contrib</groupId>
+      <artifactId>application-ckeditor-ui</artifactId>
+      <version>${ckeditor.version}</version>
+      <scope>runtime</scope>
+      <type>xar</type>
+      <exclusions>
+        <!-- Exclude to avoid conflicts with older versions of XWiki platform and rendering
+         deps drawn by the contrib dependency -->
+        <exclusion>
+          <groupId>org.xwiki.platform</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.xwiki.rendering</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 </project>

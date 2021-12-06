@@ -44,8 +44,6 @@ import static org.xwiki.rendering.block.Block.Axes.DESCENDANT;
 @Singleton
 public class HeadingsNumberingService extends AbstractNumberingService
 {
-    private static final String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
-
     private final ClassBlockMatcher classBlockMatcher = new ClassBlockMatcher(HeaderBlock.class);
 
     @Override
