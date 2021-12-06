@@ -143,7 +143,8 @@ class AbstractNumberingServiceTest
         verify(this.cacheManager).put(any(), mapCaptor.capture(), any());
 
         Map<HeaderBlock, String> expectedMap = new HashMap<>();
-        expectedMap.put(expectedHeaders.get(1), "1");
+        expectedMap.put(expectedHeaders.get(0), "1");
+        expectedMap.put(expectedHeaders.get(1), "2");
         assertEquals(expectedMap, mapCaptor.getValue());
         assertSame(expectedHeaders, obtainedHeaders);
     }

@@ -32,7 +32,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.GroupBlock;
 import org.xwiki.rendering.block.HeaderBlock;
 
 /**
@@ -96,29 +95,8 @@ public abstract class AbstractNumberingService implements NumberingService
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(0);
         for (HeaderBlock header : headers) {
-            if (!isInGroupBlock(header)) {
-                cacheHeader(rootBlockCache, stack, header);
-            } else {
-                rootBlockCache.put(header, null);
-            }
+            cacheHeader(rootBlockCache, stack, header);
         }
-    }
-
-    private boolean isInGroupBlock(HeaderBlock header)
-    {
-        Block parent = header.getParent();
-        while (parent != null) {
-            // Stops whenever a content root is found.
-            String classes = parent.getParameter("class");
-            if (classes != null && classes.contains(NUMBERED_CONTENT_ROOT_CLASS)) {
-                return false;
-            }
-            if (parent instanceof GroupBlock) {
-                return true;
-            }
-            parent = parent.getParent();
-        }
-        return false;
     }
 
     private void cacheHeader(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock header)

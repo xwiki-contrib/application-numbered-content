@@ -424,7 +424,8 @@ require(
         })
       }
     }
-  })
+  }
+)
 </code>
     </property>
     <property>
@@ -545,14 +546,14 @@ require(
       <code>#set ($isNumberedHeadingsEnabled = $request.getParameter("isNumberedHeadingsEnabled"))
 #if ($isNumberedHeadingsEnabled == 'true')
   #set ($rootSelectors = [
-    '#xwikicontent:not(.disable-numbered-headings) &gt; ',
-    '.numbered-content-root &gt; ',
-    '.numbered-content-root &gt; .xwiki-metadata-container &gt;'
+    '#xwikicontent:not(.disable-numbered-headings) ',
+    '.numbered-content-root ',
+    '.numbered-content-root &gt; .xwiki-metadata-container '
   ])
 #else
   #set ($rootSelectors = [
-    '.numbered-content-root &gt; ',
-    '.numbered-content-root &gt; .xwiki-metadata-container &gt;'
+    '.numbered-content-root' ,
+    '.numbered-content-root &gt; .xwiki-metadata-container '
   ])
 #end
 
@@ -562,32 +563,32 @@ require(
   #end
 #end
 
-#buildSelector($rootSelectors 'h1:first-child') {
+#buildSelector($rootSelectors '&gt; 1:first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch1 ch2 ch3 ch4 ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h2:first-child') {
+#buildSelector($rootSelectors '&gt; h2:first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch2 ch3 ch4 ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h3:first-child') {
+#buildSelector($rootSelectors '&gt; h3:first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch3 ch4 ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h4:first-child') {
+#buildSelector($rootSelectors '&gt; h4:first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch4 ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h5:first-child') {
+#buildSelector($rootSelectors '&gt; h5:first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h6:first-child') {
+#buildSelector($rootSelectors '&gt; h6:first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch6;
 }
