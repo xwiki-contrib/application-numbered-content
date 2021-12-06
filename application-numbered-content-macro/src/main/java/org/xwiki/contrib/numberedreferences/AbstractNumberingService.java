@@ -45,6 +45,8 @@ public abstract class AbstractNumberingService implements NumberingService
 {
     private static final String START_PARAMETER = "start";
 
+    private static final String SKIP_PARAMETER = "skip";
+
     @Inject
     protected NumberingCacheManager cacheManager;
 
@@ -92,7 +94,9 @@ public abstract class AbstractNumberingService implements NumberingService
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(0);
         for (HeaderBlock header : headers) {
-            cacheHeader(rootBlockCache, stack, header);
+            if (header.getParameter(SKIP_PARAMETER) == null) {
+                cacheHeader(rootBlockCache, stack, header);
+            }
         }
     }
 

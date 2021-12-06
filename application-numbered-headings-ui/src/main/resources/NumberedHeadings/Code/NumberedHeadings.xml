@@ -129,7 +129,9 @@
   keys: [
     'ckeditor.headerConfigurationAction.title',
     'ckeditor.headerConfigurationAction.start.title',
-    'ckeditor.headerConfigurationAction.start.title.error.invalidNumber'
+    'ckeditor.headerConfigurationAction.start.title.error.invalidNumber',
+    'ckeditor.skipNumberingHeader.activate.title',
+    'ckeditor.skipNumberingHeader.deactivate.title'
   ]
 });
 
@@ -302,6 +304,31 @@ require(
         });
       }
 
+      /**
+       * Activate the action only when the condition is reached (ie, click on a hX header).
+       *
+       * @param def the command definition
+       * @param activatedStatus when true, expect the right-clicked element to have the skip attribute, otherwise,
+       *   expect it not have the skip attribute 
+       */
+      function createDefSkip(def, activatedStatus) {
+        return CKEDITOR.tools.extend(def || {}, {
+          contextSensitive: 1,
+          refresh: function (editor, path) {
+            let headerNode = path.contains('h1', 1)
+              || path.contains('h2', 1)
+              || path.contains('h3', 1)
+              || path.contains('h4', 1)
+              || path.contains('h5', 1)
+              || path.contains('h6', 1);
+            const isHeader = activated(editor) &amp;&amp; headerNode;
+            const isSkippedHeader = isHeader &amp;&amp; headerNode.$.attributes["skip"] !== undefined;
+            this.setState(isHeader &amp;&amp; isSkippedHeader === activatedStatus ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED);
+          }
+        });
+      }
+
+
       function getHeadingElement(editor) {
         var range;
         try {
@@ -375,6 +402,18 @@ require(
         requiredContent: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
       })));
 
+      editor.addCommand('activateSkipNumberingCmd', createDefSkip({
+        exec: function (editor) {
+          getHeadingElement(editor).$.setAttribute("skip", "true");
+        }
+      }, false));
+
+      editor.addCommand('deactivateSkipNumberingCmd', createDefSkip({
+        exec: function (editor) {
+          getHeadingElement(editor).$.removeAttribute("skip")
+        }
+      }, true));
+
       // If the "menu" plugin is loaded, register the menu item.
       if (editor.addMenuItems) {
         editor.addMenuItem('headerConfig', {
@@ -383,12 +422,26 @@ require(
           group: 'clipboard',
           order: 12
         });
+        editor.addMenuItem('activateSkipNumbering', {
+          label: l10n['ckeditor.skipNumberingHeader.activate.title'],
+          command: 'activateSkipNumberingCmd',
+          group: 'clipboard',
+          order: 13
+        });
+        editor.addMenuItem('deactivateSkipNumbering', {
+          label: l10n['ckeditor.skipNumberingHeader.deactivate.title'],
+          command: 'deactivateSkipNumberingCmd',
+          group: 'clipboard',
+          order: 14
+        });
       }
 
       if (editor.contextMenu) {
         editor.contextMenu.addListener(function () {
           return {
-            headerConfig: CKEDITOR.TRISTATE_ON
+            headerConfig: CKEDITOR.TRISTATE_ON,
+            activateSkipNumbering: CKEDITOR.TRISTATE_ON,
+            deactivateSkipNumbering: CKEDITOR.TRISTATE_ON,
           }
         })
       }
@@ -562,57 +615,57 @@ counter-reset: ch5 ch6;
 counter-reset: ch6;
 }
 
-#buildSelector($rootSelectors 'h1::before') {
+#buildSelector($rootSelectors 'h1:not([skip])::before') {
 content: counter(ch1) '\00a0';
 padding-right: 1em;
 }
 
-#buildSelector($rootSelectors 'h1') {
+#buildSelector($rootSelectors 'h1:not([skip])') {
 counter-reset: ch2 ch3 ch4 ch5 ch6;
 counter-increment: ch1;
 }
 
-#buildSelector($rootSelectors 'h2::before') {
+#buildSelector($rootSelectors 'h2:not([skip])::before') {
 content: counter(ch1) '.' counter(ch2) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h2') {
+#buildSelector($rootSelectors 'h2:not([skip])') {
 counter-reset: ch3 ch4 ch5 ch6;
 counter-increment: ch2;
 }
 
-#buildSelector($rootSelectors 'h3::before') {
+#buildSelector($rootSelectors 'h3:not([skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h3') {
+#buildSelector($rootSelectors 'h3:not([skip])') {
 counter-reset: ch4 ch5 ch6;
 counter-increment: ch3;
 }
 
-#buildSelector($rootSelectors 'h4::before') {
+#buildSelector($rootSelectors 'h4:not([skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '.' counter(ch4) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h4') {
+#buildSelector($rootSelectors 'h4:not([skip])') {
 counter-reset: ch5 ch6;
 counter-increment: ch4;
 }
 
-#buildSelector($rootSelectors 'h5::before') {
+#buildSelector($rootSelectors 'h5:not([skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '.' counter(ch4) '.' counter(ch5) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h5') {
+#buildSelector($rootSelectors 'h5:not([skip])') {
 counter-reset: ch6;
 counter-increment: ch5;
 }
 
-#buildSelector($rootSelectors 'h6::before') {
+#buildSelector($rootSelectors 'h6:not([skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '.' counter(ch4) '.' counter(ch5) '.' counter(ch6) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h6') {
+#buildSelector($rootSelectors 'h6:not([skip])') {
 counter-increment: ch6;
 }
 

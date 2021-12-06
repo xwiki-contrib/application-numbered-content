@@ -43,6 +43,8 @@ numbered.headings.activationUI.parameters.title=Heading Numbering
 numbered.headings.ckeditor.headerConfigurationAction.title=Header Config
 numbered.headings.ckeditor.headerConfigurationAction.start.title=Start
 numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Header start number must be a whole number.
+numbered.headings.ckeditor.skipNumberingHeader.activate.title=Skip numbering: Activate
+numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=Skip numbering: Deactivate
 numbered.heading.template.title=Numbered Headings Template
 numbered.heading.template.description=Creates a page with numbered headings activated.</content>
   <object>

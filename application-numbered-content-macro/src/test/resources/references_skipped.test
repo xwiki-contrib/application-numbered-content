@@ -1,0 +1,51 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro on a simple case with the default parameters.
+.#-----------------------------------------------------
+Header {{reference section="Hh1"/}}
+
+(% skip="true" %)
+= h1 =
+
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<p>Header <span class="box errormessage">numbered.content.reference.macro.error.referenceNotFound [Hh1]</span></p><h1 id="Hh1" class="wikigeneratedid" skip="true"><span>h1</span></h1>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginParagraph
+onWord [Header]
+onSpace
+beginMacroMarkerInline [reference] [section=Hh1]
+beginMacroMarkerInline [error] [] [numbered.content.reference.macro.error.referenceNotFound [Hh1]]
+beginFormat [NONE] [[class]=[box errormessage]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+onWord [numbered]
+onSpecialSymbol [.]
+onWord [content]
+onSpecialSymbol [.]
+onWord [reference]
+onSpecialSymbol [.]
+onWord [macro]
+onSpecialSymbol [.]
+onWord [error]
+onSpecialSymbol [.]
+onWord [referenceNotFound]
+onSpace
+onSpecialSymbol [[]
+onWord [Hh1]
+onSpecialSymbol []]
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFormat [NONE] [[class]=[box errormessage]]
+endMacroMarkerInline [error] [] [numbered.content.reference.macro.error.referenceNotFound [Hh1]]
+endMacroMarkerInline [reference] [section=Hh1]
+endParagraph
+beginSection
+beginHeader [1, Hh1] [[skip]=[true]]
+onWord [h1]
+endHeader [1, Hh1] [[skip]=[true]]
+endSection
+endDocument

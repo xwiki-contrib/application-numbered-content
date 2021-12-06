@@ -108,7 +108,7 @@ class AbstractNumberingServiceTest
         when(this.cacheManager.getHeaders(rootBlock)).thenReturn(Optional.empty());
 
         List<HeaderBlock> expectedHeaders = asList(
-            new HeaderBlock(emptyList(), LEVEL1,singletonMap("start", "10")),
+            new HeaderBlock(emptyList(), LEVEL1, singletonMap("start", "10")),
             new HeaderBlock(emptyList(), LEVEL1)
         );
         this.numberingService.setHeaders(expectedHeaders);
@@ -120,6 +120,28 @@ class AbstractNumberingServiceTest
         Map<HeaderBlock, String> expectedMap = new HashMap<>();
         expectedMap.put(expectedHeaders.get(0), "10");
         expectedMap.put(expectedHeaders.get(1), "11");
+        assertEquals(expectedMap, mapCaptor.getValue());
+        assertSame(expectedHeaders, obtainedHeaders);
+    }
+
+    @Test
+    void getHeadersNotCachedWithSkipParameter()
+    {
+        XDOM rootBlock = new XDOM(emptyList());
+        when(this.cacheManager.getHeaders(rootBlock)).thenReturn(Optional.empty());
+
+        List<HeaderBlock> expectedHeaders = asList(
+            new HeaderBlock(emptyList(), LEVEL1, singletonMap("skip", "true")),
+            new HeaderBlock(emptyList(), LEVEL1)
+        );
+        this.numberingService.setHeaders(expectedHeaders);
+        List<HeaderBlock> obtainedHeaders = this.numberingService.getHeaders(rootBlock);
+
+        ArgumentCaptor<Map<HeaderBlock, String>> mapCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(this.cacheManager).put(any(), mapCaptor.capture(), any());
+
+        Map<HeaderBlock, String> expectedMap = new HashMap<>();
+        expectedMap.put(expectedHeaders.get(1), "1");
         assertEquals(expectedMap, mapCaptor.getValue());
         assertSame(expectedHeaders, obtainedHeaders);
     }

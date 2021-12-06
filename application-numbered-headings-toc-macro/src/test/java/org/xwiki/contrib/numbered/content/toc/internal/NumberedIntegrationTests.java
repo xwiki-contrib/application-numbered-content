@@ -63,8 +63,6 @@ public class NumberedIntegrationTests implements RenderingTests
             mapCache.put(invocation.getArgument(0), invocation.getArgument(1));
             return null;
         }).when(cache).set(any(), any());
-        when(cache.get(any())).thenAnswer(invocation -> {
-            return mapCache.get(invocation.getArgument(0));
-        });
+        when(cache.get(any())).thenAnswer(invocation -> mapCache.get(invocation.getArgument(0)));
     }
 }
