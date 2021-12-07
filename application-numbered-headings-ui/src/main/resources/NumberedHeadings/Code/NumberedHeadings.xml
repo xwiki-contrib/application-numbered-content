@@ -174,7 +174,11 @@ require(
   function ($, ckeditorPromise, config, l10n) {
 
     function activatedByClass(editor) {
-      let ascendant = editor.getSelection().getStartElement()
+      let selection = editor.getSelection();
+      if(!selection) {
+        return false;
+      }
+      let ascendant = selection.getStartElement()
         .getAscendant(element =&gt; {
           if (!element.getAttribute) {
             return false;
@@ -266,7 +270,7 @@ require(
 
       const indentHeading = function (editor) {
         const selection = editor.getSelection();
-        if (selection.isCollapsed()) {
+        if (selection &amp;&amp; selection.isCollapsed()) {
           const heading = selection.getStartElement().getAscendant(element =&gt; this.context[element.getName()], true);
           var level = parseInt(heading.getName().substring(1));
           level += this.isIndent ? 1 : -1;
@@ -309,7 +313,7 @@ require(
        *
        * @param def the command definition
        * @param activatedStatus when true, expect the right-clicked element to have the skip attribute, otherwise,
-       *   expect it not have the skip attribute 
+       *   expect it not have the skip attribute
        */
       function createDefSkip(def, activatedStatus) {
         return CKEDITOR.tools.extend(def || {}, {
@@ -568,13 +572,14 @@ require(
       <code>#set ($isNumberedHeadingsEnabled = $request.getParameter("isNumberedHeadingsEnabled"))
 #if ($isNumberedHeadingsEnabled == 'true')
   #set ($rootSelectors = [
-    '#xwikicontent:not(.disable-numbered-headings) ',
     '.numbered-content-root ',
-    '.numbered-content-root &gt; .xwiki-metadata-container '
+    '.numbered-content-root &gt; .xwiki-metadata-container ',
+    '#xwikicontent:not(.disable-numbered-headings) ',
+    '#body[contenteditable="true"]:not(.disable-numbered-headings) '
   ])
 #else
   #set ($rootSelectors = [
-    '.numbered-content-root' ,
+    '.numbered-content-root ' ,
     '.numbered-content-root &gt; .xwiki-metadata-container '
   ])
 #end
@@ -585,34 +590,34 @@ require(
   #end
 #end
 
-#buildSelector($rootSelectors '&gt; 1:first-child') {
+#buildSelector($rootSelectors '&gt; h1:not([skip]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
-counter-reset: ch1 ch2 ch3 ch4 ch5 ch6;
+counter-reset: ch1 ch2 ch3 ch4 ch5 ch6 !important;
 }
 
-#buildSelector($rootSelectors '&gt; h2:first-child') {
+#buildSelector($rootSelectors '&gt; h2:not([skip]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
-counter-reset: ch2 ch3 ch4 ch5 ch6;
+counter-reset: ch2 ch3 ch4 ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h3:first-child') {
+#buildSelector($rootSelectors '&gt; h3:not([skip]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
-counter-reset: ch3 ch4 ch5 ch6;
+counter-reset: ch3 ch4 ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h4:first-child') {
+#buildSelector($rootSelectors '&gt; h4:not([skip]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
-counter-reset: ch4 ch5 ch6;
+counter-reset: ch4 ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h5:first-child') {
+#buildSelector($rootSelectors '&gt; h5:not([skip]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
-counter-reset: ch5 ch6;
+counter-reset: ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h6:first-child') {
+#buildSelector($rootSelectors '&gt; h6:not([skip]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
-counter-reset: ch6;
+counter-reset: ch6 !important;
 }
 
 #buildSelector($rootSelectors 'h1:not([skip])::before') {
@@ -831,9 +836,6 @@ counter-reset: ch6 var(--numbered-heading-start);
     </property>
     <property>
       <content>{{velocity}}
-#set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
-#set($isNumberedHeadingsEnabledOnParent = $services.numberedheadings.isNumberedHeadingsEnabledOnParent())
-#set($discard = $xwiki.ssx.use("NumberedHeadings.Code.NumberedHeadings", {'isNumberedHeadingsEnabled': $isNumberedHeadingsEnabled }))
 {{html clean="false"}}
 &lt;script id="numbered-headings-config" type="application/json"&gt;$jsontool.serialize({
   'isActivated': $isNumberedHeadingsEnabled,
@@ -847,6 +849,156 @@ counter-reset: ch6 var(--numbered-heading-start);
     </property>
     <property>
       <name>org.xwiki.contrib.numbered.headings.header.after.config</name>
+    </property>
+    <property>
+      <parameters/>
+    </property>
+    <property>
+      <scope>wiki</scope>
+    </property>
+  </object>
+  <object>
+    <name>NumberedHeadings.Code.NumberedHeadings</name>
+    <number>1</number>
+    <className>XWiki.UIExtensionClass</className>
+    <guid>91aeb884-0484-499a-908d-98eec296baae</guid>
+    <class>
+      <name>XWiki.UIExtensionClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <async_cached>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_cached</name>
+        <number>3</number>
+        <prettyName>Cached</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_cached>
+      <async_context>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>1</multiSelect>
+        <name>async_context</name>
+        <number>4</number>
+        <prettyName>Context elements</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>, </separator>
+        <separators>|, </separators>
+        <size>5</size>
+        <unmodifiable>0</unmodifiable>
+        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.parameters=Request parameters|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </async_context>
+      <async_enabled>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_enabled</name>
+        <number>2</number>
+        <prettyName>Asynchronous rendering</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_enabled>
+      <content>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>content</name>
+        <number>1</number>
+        <prettyName>Executed Content</prettyName>
+        <rows>25</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </content>
+      <extensionPointId>
+        <disabled>0</disabled>
+        <name>extensionPointId</name>
+        <number>5</number>
+        <prettyName>Extension Point ID</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </extensionPointId>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>6</number>
+        <prettyName>Extension ID</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parameters>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>parameters</name>
+        <number>7</number>
+        <prettyName>Extension Parameters</prettyName>
+        <rows>10</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </parameters>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>8</number>
+        <prettyName>Extension Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>wiki=Current Wiki|user=Current User|global=Global</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <async_cached>1</async_cached>
+    </property>
+    <property>
+      <async_context/>
+    </property>
+    <property>
+      <async_enabled>0</async_enabled>
+    </property>
+    <property>
+      <content>{{velocity}}
+#set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
+#set ($origdoc = $xwiki.getDocument('NumberedHeadings.Code.NumberedHeadings'))
+#set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
+  'isNumberedHeadingsEnabled': $isNumberedHeadingsEnabled,
+  'locale': $services.localization.getCurrentLocale(),
+  'docVersion': $origdoc.getVersion()
+})))
+{{html clean='false'}}
+&lt;link rel='stylesheet' type='text/css' href="$ssxHref" pouet="$services.localization.getCurrentLocale()"/&gt;
+{{/html}}
+{{/velocity}}</content>
+    </property>
+    <property>
+      <extensionPointId>org.xwiki.platform.html.head</extensionPointId>
+    </property>
+    <property>
+      <name>org.xwiki.contrib.numbered.headings.html.head.skin</name>
     </property>
     <property>
       <parameters/>
