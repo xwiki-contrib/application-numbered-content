@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.xwiki.cache.Cache;
 import org.xwiki.cache.CacheManager;
-import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
+import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsConfiguration;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
 import org.xwiki.test.annotation.AllComponents;
@@ -34,7 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.xwiki.contrib.numberedreferences.internal.DefaultNumberingCacheManager.CachedValue;
+import static org.xwiki.contrib.numberedreferences.internal.DefaultHeadersNumberingCacheManager.CachedValue;
 
 /**
  * Run all tests found in {@code *.test} files located in the classpath. These {@code *.test} files must follow the
@@ -52,8 +52,8 @@ public class NumberedIntegrationTests implements RenderingTests
     @Initialized
     public void initialize(MockitoComponentManager componentManager) throws Exception
     {
-        NumberedHeadingsService numberedHeadingService =
-            componentManager.registerMockComponent(NumberedHeadingsService.class);
+        NumberedHeadingsConfiguration numberedHeadingService =
+            componentManager.registerMockComponent(NumberedHeadingsConfiguration.class);
         when(numberedHeadingService.isNumberedHeadingsEnabled()).thenReturn(true);
         CacheManager cacheManager = componentManager.registerMockComponent(CacheManager.class);
         Cache cache = mock(Cache.class);

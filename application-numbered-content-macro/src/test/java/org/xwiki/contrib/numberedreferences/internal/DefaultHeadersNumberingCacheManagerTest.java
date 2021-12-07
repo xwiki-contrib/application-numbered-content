@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.xwiki.cache.Cache;
 import org.xwiki.cache.CacheManager;
-import org.xwiki.contrib.numberedreferences.internal.DefaultNumberingCacheManager.CachedValue;
+import org.xwiki.contrib.numberedreferences.internal.DefaultHeadersNumberingCacheManager.CachedValue;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.SpaceBlock;
@@ -51,16 +51,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Test of {@link DefaultNumberingCacheManager}.
+ * Test of {@link DefaultHeadersNumberingCacheManager}.
  *
  * @version $Id$
  * @since 1.0
  */
 @ComponentTest
-class DefaultNumberingCacheManagerTest
+class DefaultHeadersNumberingCacheManagerTest
 {
     @InjectMockComponents
-    private DefaultNumberingCacheManager defaultNumberingCacheManager;
+    private DefaultHeadersNumberingCacheManager defaultNumberingCacheManager;
 
     @MockComponent
     private CacheManager cacheManager;

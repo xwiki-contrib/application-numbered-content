@@ -24,25 +24,25 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsConfiguration;
+import org.xwiki.contrib.numbered.headings.internal.NumberedFiguresConfiguration;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
 
 /**
- * Numbered Headings Script Service. Provides operations related to numbered headings, such as knowing if the current
+ * Numbered Figures Script Service. Provides operations related to numbered headings, such as knowing if the current
  * page should be numbered.
  *
  * @version $Id$
  * @since 1.0
  */
 @Component
-@Named("numberedheadings")
+@Named("numberedfigures")
 @Singleton
 @Unstable
-public class NumberedHeadingsScriptService implements ScriptService
+public class NumberedFiguresScriptService implements ScriptService
 {
     @Inject
-    private NumberedHeadingsConfiguration numberedHeadingsConfiguration;
+    private NumberedFiguresConfiguration numberedFiguresConfiguration;
 
     /**
      * Checks if the current document has numbered headings activated.
@@ -51,9 +51,9 @@ public class NumberedHeadingsScriptService implements ScriptService
      * @throws Exception in case of error when checking if the current document has numbered headings activated.
      */
     // TODO: change the thrown exception. 
-    public boolean isNumberedHeadingsEnabled() throws Exception
+    public boolean isNumberedFiguresEnabled() throws Exception
     {
-        return this.numberedHeadingsConfiguration.isNumberedHeadingsEnabled();
+        return this.numberedFiguresConfiguration.isNumberedFiguresEnabled();
     }
 
     /**
@@ -63,8 +63,8 @@ public class NumberedHeadingsScriptService implements ScriptService
      * @throws Exception in case of error when checking if the current document has numbered headings activated.
      */
 
-    public boolean isNumberedHeadingsEnabledOnParent() throws Exception
+    public boolean isNumberedFiguresEnabledOnParent() throws Exception
     {
-        return this.numberedHeadingsConfiguration.isNumberedHeadingsEnabledOnParent();
+        return this.numberedFiguresConfiguration.isNumberedFiguresEnabledOnParent();
     }
 }

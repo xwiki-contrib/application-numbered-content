@@ -37,12 +37,12 @@ import org.xwiki.cache.eviction.LRUEvictionConfiguration;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.Initializable;
 import org.xwiki.component.phase.InitializationException;
-import org.xwiki.contrib.numberedreferences.NumberingCacheManager;
+import org.xwiki.contrib.numberedreferences.HeadersNumberingCacheManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 
 /**
- * The default implementation of {@link NumberingCacheManager}, based on a {@link CacheManager} with an {@link
+ * The default implementation of {@link HeadersNumberingCacheManager}, based on a {@link CacheManager} with an {@link
  * LRUEvictionConfiguration} eviction configuration.
  *
  * @version $Id$
@@ -50,7 +50,7 @@ import org.xwiki.rendering.block.HeaderBlock;
  */
 @Component
 @Singleton
-public class DefaultNumberingCacheManager implements NumberingCacheManager, Initializable
+public class DefaultHeadersNumberingCacheManager implements HeadersNumberingCacheManager, Initializable
 {
     @Inject
     private CacheManager cacheManager;

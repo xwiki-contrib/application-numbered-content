@@ -27,7 +27,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numberedreferences.NumberingService;
+import org.xwiki.contrib.numberedreferences.HeaderNumberingService;
 import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.LinkBlock;
@@ -58,7 +58,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         "Create a link to a section id, displaying the section number as the link label.";
 
     @Inject
-    private List<NumberingService> numberingServices;
+    private List<HeaderNumberingService> headerNumberingServices;
 
     @Inject
     private ContextualLocalizationManager l10n;
@@ -88,9 +88,9 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
 
         // Ask the numbering services to compute the numbers until on of the computes a block with the requested id.
         String number = null;
-        for (NumberingService numberingService : this.numberingServices) {
+        for (HeaderNumberingService headerNumberingService : this.headerNumberingServices) {
             String headerBlockStringEntry =
-                numberingService.getMap(((Block) context.getXDOM()).getRoot()).entrySet().stream()
+                headerNumberingService.getMap(((Block) context.getXDOM()).getRoot()).entrySet().stream()
                     .filter(it -> it.getKey().getId().equals(parameters.getId())).findFirst().map(Map.Entry::getValue)
                     .orElse(null);
             if (headerBlockStringEntry != null) {

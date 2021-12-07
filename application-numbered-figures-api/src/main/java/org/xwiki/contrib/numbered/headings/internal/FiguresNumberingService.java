@@ -17,34 +17,22 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numberedreferences;
+package org.xwiki.contrib.numbered.headings.internal;
 
-import java.util.List;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.component.annotation.Component;
 
 /**
- * A implementation of {@link AbstractNumberingService} use to test the abstract class with a concrete implementation.
+ * Compute the numbers for the figures and save the result in a cache.
  *
  * @version $Id$
  * @since 1.0
  */
-public class TestNumberingService extends AbstractNumberingService
+@Component
+@Named("figures")
+@Singleton
+public class FiguresNumberingService
 {
-    private List<HeaderBlock> headerBlocks = null;
-
-    @Override
-    public List<HeaderBlock> getHeaderBlocks(Block rootBlock)
-    {
-        return this.headerBlocks;
-    }
-
-    /**
-     * @param headerBlocks initializes the class with a list of header blocks
-     */
-    public void setHeaders(List<HeaderBlock> headerBlocks)
-    {
-        this.headerBlocks = headerBlocks;
-    }
 }

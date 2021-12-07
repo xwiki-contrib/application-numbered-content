@@ -21,46 +21,38 @@ package org.xwiki.contrib.numberedreferences;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
-import org.xwiki.stability.Unstable;
 
 /**
- * Cache manager for the Numbered Contents. The keys are the root block containing the numbered content, the keys are
- * maps of numbered contents and their corresponding values.
+ * Provide the operations to compute the numbering of contents.
  *
  * @version $Id$
  * @since 1.0
  */
 @Role
-@Unstable
-public interface NumberingCacheManager
+public interface HeaderNumberingService
 {
     /**
-     * Return the list of headers that are cached for a given block.
-     *
-     * @param block the block containing the headers
-     * @return the list of cached headers
+     * Class identifying sub-sections of a document that are ruled by their own numbering.
      */
-    Optional<List<HeaderBlock>> getHeaders(Block block);
+    String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
 
     /**
-     * Associate the computed value to the given block.
+     * Return a list of headers found in a root block.
      *
-     * @param block the block containing the content to number
-     * @param values the computed values for the content of the block
-     * @param headers the list of headers in their order of appearance
+     * @param rootBlock the root block to analyze
+     * @return the list of headers found in the root block
      */
-    void put(Block block, Map<HeaderBlock, String> values, List<HeaderBlock> headers);
+    List<HeaderBlock> getHeaders(Block rootBlock);
 
     /**
-     * Return the cache map of headers and their computed numbers.
+     * Return a map of the headers found in a root block associated with their computed numbering.
      *
-     * @param block the block containing the content to number
-     * @return the cached map of headers and their computed numbers
+     * @param rootBlock the root block to analyze
+     * @return the computed map
      */
-    Optional<Map<HeaderBlock, String>> get(Block block);
+    Map<HeaderBlock, String> getMap(Block rootBlock);
 }

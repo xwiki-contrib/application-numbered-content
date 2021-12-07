@@ -19,7 +19,7 @@
  */
 package org.xwiki.contrib.numbered.content.toc.internal;
 
-import org.xwiki.contrib.numberedreferences.NumberingCacheManager;
+import org.xwiki.contrib.numberedreferences.HeadersNumberingCacheManager;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
 import org.xwiki.test.annotation.AllComponents;
@@ -41,6 +41,6 @@ public class IntegrationTests implements RenderingTests
     @Initialized
     public void initialize(MockitoComponentManager componentManager) throws Exception
     {
-        componentManager.registerMockComponent(NumberingCacheManager.class);
+        componentManager.registerMockComponent(HeadersNumberingCacheManager.class);
     }
 }

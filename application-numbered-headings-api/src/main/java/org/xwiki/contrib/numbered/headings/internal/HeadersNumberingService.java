@@ -26,7 +26,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numberedreferences.AbstractNumberingService;
+import org.xwiki.contrib.numberedreferences.AbstractHeadersNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
@@ -42,7 +42,7 @@ import static org.xwiki.rendering.block.Block.Axes.DESCENDANT;
 @Component
 @Named("headings")
 @Singleton
-public class HeadingsNumberingService extends AbstractNumberingService
+public class HeadersNumberingService extends AbstractHeadersNumberingService
 {
     private final ClassBlockMatcher classBlockMatcher = new ClassBlockMatcher(HeaderBlock.class);
 

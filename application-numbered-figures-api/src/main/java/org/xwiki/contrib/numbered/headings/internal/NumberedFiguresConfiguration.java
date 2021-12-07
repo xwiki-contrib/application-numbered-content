@@ -42,9 +42,9 @@ import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
  * @version $Id$
  * @since 1.0
  */
-@Component(roles = NumberedHeadingsService.class)
+@Component(roles = NumberedFiguresConfiguration.class)
 @Singleton
-public class NumberedHeadingsService
+public class NumberedFiguresConfiguration
 {
     @Inject
     private DocumentAccessBridge documentAccessBridge;
@@ -54,13 +54,13 @@ public class NumberedHeadingsService
 
     /**
      * Check if the current document has numbered headings activated either by looking at the presence of an XObject of
-     * type {@link NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
+     * type {@link NumberedFiguresClassDocumentInitializer#STATUS_PROPERTY}.
      *
      * @return @return {@code true} if the numbered headings are activated, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
      * @see #isNumbered(DocumentReference)
      */
-    public boolean isNumberedHeadingsEnabled() throws Exception
+    public boolean isNumberedFiguresEnabled() throws Exception
     {
         XWikiDocument doc = getDocFromContext();
         if (doc == null) {
@@ -74,7 +74,7 @@ public class NumberedHeadingsService
 
     /**
      * Check if the parent of the current document has numbered headings activated either by looking at the presence of
-     * an XObject of type {@link NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}. When the current document
+     * an XObject of type {@link NumberedFiguresClassDocumentInitializer#STATUS_PROPERTY}. When the current document
      * does not have the parent, {@code false} is returned
      *
      * @return @return {@code true} if the current document has a parent, and numbered headings are activated on the
@@ -82,7 +82,7 @@ public class NumberedHeadingsService
      * @throws Exception in case of error when access the document instance though the document bridge
      * @see #isNumbered(DocumentReference)
      */
-    public boolean isNumberedHeadingsEnabledOnParent() throws Exception
+    public boolean isNumberedFiguresEnabledOnParent() throws Exception
     {
         XWikiDocument doc = getDocFromContext();
         if (doc == null) {
@@ -103,7 +103,7 @@ public class NumberedHeadingsService
 
     /**
      * Checks if a document has numbered headings activated by looking at the presence of an XObject of type {@link
-     * NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
+     * NumberedFiguresClassDocumentInitializer#STATUS_PROPERTY}.
      *
      * @param documentReference the document reference to check
      * @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
@@ -127,12 +127,12 @@ public class NumberedHeadingsService
 
     private boolean isNumbered(XWikiDocument actualDoc)
     {
-        BaseObject xObject = actualDoc.getXObject(NumberedHeadingsClassDocumentInitializer.REFERENCE);
+        BaseObject xObject = actualDoc.getXObject(NumberedFiguresClassDocumentInitializer.REFERENCE);
         // We stop as soon as we find an object.
         boolean isNumbered = false;
         if (xObject != null) {
             String activatePropertyValue =
-                xObject.getStringValue(NumberedHeadingsClassDocumentInitializer.STATUS_PROPERTY);
+                xObject.getStringValue(NumberedFiguresClassDocumentInitializer.STATUS_PROPERTY);
             // If the value is inherits, we continue looking up the hierarchy, otherwise we use the configured 
             // activation setting.
             if (!Objects.equals(activatePropertyValue, "inherits")) {

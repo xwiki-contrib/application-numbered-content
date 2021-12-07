@@ -35,16 +35,16 @@ import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test of {@link HeadingsNumberingService}.
+ * Test of {@link HeadersNumberingService}.
  *
  * @version $Id$
  * @since 1.0
  */
 @ComponentTest
-class HeadingsNumberingServiceTest
+class HeadersNumberingServiceTest
 {
     @InjectMockComponents
-    private HeadingsNumberingService headingsNumberingService;
+    private HeadersNumberingService headingsNumberingService;
 
     @Test
     void getHeaderBlocks()

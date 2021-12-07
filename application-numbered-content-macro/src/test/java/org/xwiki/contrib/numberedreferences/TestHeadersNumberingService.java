@@ -17,39 +17,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numberedreferences.internal;
+package org.xwiki.contrib.numberedreferences;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numberedreferences.AbstractNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
-import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
 /**
- * Numbering Service used for the integration tests, selects all the headers in the document.
+ * A implementation of {@link AbstractHeadersNumberingService} use to test the abstract class with a concrete implementation.
  *
  * @version $Id$
  * @since 1.0
  */
-@Component
-@Singleton
-@Named("numberservicetest")
-public class IntegrationTestNumberingService extends AbstractNumberingService
+public class TestHeadersNumberingService extends AbstractHeadersNumberingService
 {
+    private List<HeaderBlock> headerBlocks = null;
+
     @Override
     public List<HeaderBlock> getHeaderBlocks(Block rootBlock)
     {
-        List<HeaderBlock> list = new ArrayList<>();
-        for (Block block : rootBlock.getBlocks(new ClassBlockMatcher(HeaderBlock.class),
-            Block.Axes.DESCENDANT)) {
-            list.add((HeaderBlock) block);
-        }
-        return list;
+        return this.headerBlocks;
+    }
+
+    /**
+     * @param headerBlocks initializes the class with a list of header blocks
+     */
+    public void setHeaders(List<HeaderBlock> headerBlocks)
+    {
+        this.headerBlocks = headerBlocks;
     }
 }

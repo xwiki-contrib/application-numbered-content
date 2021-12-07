@@ -1,0 +1,4 @@
+org.xwiki.contrib.numbered.headings.internal.NumberedFiguresClassDocumentInitializer
+org.xwiki.contrib.numbered.headings.internal.FiguresNumberingService
+org.xwiki.contrib.numbered.headings.internal.NumberedFiguresConfiguration
+org.xwiki.contrib.numbered.headings.script.NumberedFiguresScriptService

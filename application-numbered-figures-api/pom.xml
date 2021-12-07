@@ -30,15 +30,15 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application-numbered-headings-api</artifactId>
+  <artifactId>application-numbered-figures-api</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Numbered Headings - API</name>
-  <description>Automatically add numbering on the headings of a page.</description>
+  <name>Numbered Figures - API</name>
+  <description>Automatically add numbering on the figures of a page.</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Headings API</xwiki.extension.name>
+    <xwiki.extension.name>Numbered Figures API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
-    <xwiki.jacoco.instructionRatio>0.82</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.00</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
@@ -47,56 +47,14 @@
       <version>${commons.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-macro</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-api</artifactId>
-      <version>${rendering.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-oldcore</artifactId>
       <version>${platform.version}</version>
     </dependency>
-    <!-- Test dependencies. -->
     <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-test</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-localization-api</artifactId>
-      <version>${platform.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-syntax-xwiki21</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-syntax-event</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-macro-id</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- Required to test with oldcore as a dependency. -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>test</scope>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-macro</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>

@@ -44,20 +44,20 @@ import static org.xwiki.rendering.listener.HeaderLevel.LEVEL1;
 import static org.xwiki.rendering.listener.HeaderLevel.LEVEL2;
 
 /**
- * Test of {@link AbstractNumberingService}.
+ * Test of {@link AbstractHeadersNumberingService}.
  *
  * @version $Id$
  * @since 1.0
  */
 @ComponentTest
-class AbstractNumberingServiceTest
+class AbstractHeadersNumberingServiceTest
 {
     // Proxy to the AbstractNumberingService.
     @InjectMockComponents
-    private TestNumberingService numberingService;
+    private TestHeadersNumberingService numberingService;
 
     @MockComponent
-    protected NumberingCacheManager cacheManager;
+    protected HeadersNumberingCacheManager cacheManager;
 
     /**
      * getHeaders getMap

@@ -35,20 +35,20 @@ import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 
 /**
- * Provides a default behavious for the {@link NumberingService} components where the numbered contents are saved in a
- * {@link NumberingCacheManager}.
+ * Provides a default behavious for the {@link HeaderNumberingService} components where the numbered contents are saved in a
+ * {@link HeadersNumberingCacheManager}.
  *
  * @version $Id$
  * @since 1.0
  */
-public abstract class AbstractNumberingService implements NumberingService
+public abstract class AbstractHeadersNumberingService implements HeaderNumberingService
 {
     private static final String START_PARAMETER = "start";
 
     private static final String SKIP_PARAMETER = "skip";
 
     @Inject
-    protected NumberingCacheManager cacheManager;
+    protected HeadersNumberingCacheManager cacheManager;
 
     @Override
     public List<HeaderBlock> getHeaders(Block rootBlock)

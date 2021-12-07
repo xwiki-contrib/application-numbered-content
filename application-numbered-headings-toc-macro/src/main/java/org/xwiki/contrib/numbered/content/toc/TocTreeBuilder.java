@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.text.CaseUtils;
-import org.xwiki.contrib.numberedreferences.NumberingService;
+import org.xwiki.contrib.numberedreferences.HeaderNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.BulletedListBlock;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -59,16 +59,16 @@ public class TocTreeBuilder
 
     private final TocBlockFilter tocBlockFilter;
 
-    private final NumberingService numberingService;
+    private final HeaderNumberingService headerNumberingService;
 
     /**
      * @param tocBlockFilter the filter to use to generate TOC anchors
-     * @param numberingService the numbering service to use to generate TOC anchors
+     * @param headerNumberingService the numbering service to use to generate TOC anchors
      */
-    public TocTreeBuilder(TocBlockFilter tocBlockFilter, NumberingService numberingService)
+    public TocTreeBuilder(TocBlockFilter tocBlockFilter, HeaderNumberingService headerNumberingService)
     {
         this.tocBlockFilter = tocBlockFilter;
-        this.numberingService = numberingService;
+        this.headerNumberingService = headerNumberingService;
     }
 
     /**
@@ -104,7 +104,7 @@ public class TocTreeBuilder
         // .........|_ ListItemBlock (TextBlock: Section5)
 
         // Get the list of headers at the root level.
-        List<HeaderBlock> headers = this.numberingService.getHeaders(parameters.rootBlock);
+        List<HeaderBlock> headers = this.headerNumberingService.getHeaders(parameters.rootBlock);
 
         // Construct table of content from sections list
         Block tocBlock = generateTree(headers, parameters.start, parameters.depth, parameters.documentReference,
@@ -218,7 +218,7 @@ public class TocTreeBuilder
 
         ArrayList<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
-            Map<HeaderBlock, String> headerBlockStringMap = this.numberingService.getMap(rootBlock);
+            Map<HeaderBlock, String> headerBlockStringMap = this.headerNumberingService.getMap(rootBlock);
             String rawContent = headerBlockStringMap.get(headerBlock);
             if (rawContent != null) {
                 blocks.add(new RawBlock(rawContent, Syntax.XHTML_1_0));

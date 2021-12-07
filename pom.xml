@@ -87,8 +87,10 @@
   </build>
   <modules>
     <module>application-numbered-content-macro</module>
+    <module>application-numbered-figures-api</module>
+    <module>application-numbered-figures-ui</module>
     <module>application-numbered-headings-api</module>
-    <module>application-numbered-headings-ui</module>
     <module>application-numbered-headings-toc-macro</module>
+    <module>application-numbered-headings-ui</module>
   </modules>
 </project>

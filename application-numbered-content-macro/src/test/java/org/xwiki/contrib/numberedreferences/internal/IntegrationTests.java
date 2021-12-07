@@ -63,7 +63,7 @@ public class IntegrationTests implements RenderingTests
         CacheManager cacheManager = componentManager.registerMockComponent(CacheManager.class);
         Cache cache = mock(Cache.class);
         when(cacheManager.createNewCache(any())).thenReturn(cache);
-        Map<String, DefaultNumberingCacheManager.CachedValue> mapCache = new HashMap<>();
+        Map<String, DefaultHeadersNumberingCacheManager.CachedValue> mapCache = new HashMap<>();
         doAnswer(invocation -> {
             mapCache.put(invocation.getArgument(0), invocation.getArgument(1));
             return null;

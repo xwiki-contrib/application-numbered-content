@@ -30,8 +30,8 @@ import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
 import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
-import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsService;
-import org.xwiki.contrib.numberedreferences.NumberingService;
+import org.xwiki.contrib.numbered.headings.internal.NumberedHeadingsConfiguration;
+import org.xwiki.contrib.numberedreferences.HeaderNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.XDOM;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
@@ -65,7 +65,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
     private static final String DESCRIPTION = "Generates a Table Of Contents.";
 
     @Inject
-    private NumberedHeadingsService numberedHeadingsService;
+    private NumberedHeadingsConfiguration numberedHeadingsConfiguration;
 
     @Inject
     private Provider<WikiModel> wikiModelProvider;
@@ -81,7 +81,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
 
     @Inject
     @Named("headings")
-    private NumberingService numberingService;
+    private HeaderNumberingService headerNumberingService;
 
     @Inject
     private Logger logger;
@@ -112,7 +112,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
         super.initialize();
         this.tocTreeBuilder =
             new TocTreeBuilder(new TocBlockFilter(this.plainTextParser, this.linkLabelGenerator),
-                this.numberingService);
+                this.headerNumberingService);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
     {
         boolean isNumbered;
         try {
-            isNumbered = this.numberedHeadingsService.isNumberedHeadingsEnabled();
+            isNumbered = this.numberedHeadingsConfiguration.isNumberedHeadingsEnabled();
         } catch (Exception e) {
             isNumbered = false;
             this.logger.warn("Cannot check if numbered headings are enabled. Cause: [{}]", getRootCauseMessage(e));
