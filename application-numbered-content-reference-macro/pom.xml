@@ -65,6 +65,20 @@
       <artifactId>application-numbered-content-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-figures-api</artifactId>
+      <version>${project.version}</version>
+      <optional>true</optional>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-headings-default</artifactId>
+      <version>${project.version}</version>
+      <optional>true</optional>
+      <scope>runtime</scope>
+    </dependency>
     <!-- Runtime dependencies. -->
     <dependency>
       <groupId>org.xwiki.rendering</groupId>
@@ -106,6 +120,12 @@
       <groupId>org.xwiki.rendering</groupId>
       <artifactId>xwiki-rendering-syntax-xhtml</artifactId>
       <version>${rendering.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Required to test with oldcore as a dependency. -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

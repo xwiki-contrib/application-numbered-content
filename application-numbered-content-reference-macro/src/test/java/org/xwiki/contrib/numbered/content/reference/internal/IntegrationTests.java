@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.mockito.stubbing.Answer;
+import org.xwiki.contrib.numbered.content.headings.internal.DefaultFiguresNumberingService;
+import org.xwiki.contrib.numbered.content.headings.internal.HeadersNumberingService;
 import org.xwiki.localization.LocalizationContext;
 import org.xwiki.localization.LocalizationManager;
 import org.xwiki.localization.Translation;
@@ -49,7 +51,7 @@ import static org.mockito.Mockito.when;
  * @version $Id$
  * @since 1.0
  */
-@AllComponents
+@AllComponents(excludes = { HeadersNumberingService.class, DefaultFiguresNumberingService.class })
 public class IntegrationTests implements RenderingTests
 {
     @Initialized
