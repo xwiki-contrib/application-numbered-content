@@ -50,10 +50,9 @@ public class HeadersNumberingService extends AbstractHeadersNumberingService
     public List<HeaderBlock> getHeaderBlocks(Block rootBlock)
     {
         List<HeaderBlock> list = new ArrayList<>();
-        for (Block block : rootBlock.getBlocks(this.classBlockMatcher, DESCENDANT)) {
-            HeaderBlock h = (HeaderBlock) block;
-            if (!isExcluded(h)) {
-                list.add(h);
+        for (HeaderBlock block : rootBlock.<HeaderBlock>getBlocks(this.classBlockMatcher, DESCENDANT)) {
+            if (!isExcluded(block)) {
+                list.add(block);
             }
         }
         return list;

@@ -972,7 +972,7 @@ counter-reset: ch6 var(--numbered-heading-start);
       </scope>
     </class>
     <property>
-      <async_cached>1</async_cached>
+      <async_cached>0</async_cached>
     </property>
     <property>
       <async_context/>
@@ -990,7 +990,7 @@ counter-reset: ch6 var(--numbered-heading-start);
   'docVersion': $origdoc.getVersion()
 })))
 {{html clean='false'}}
-&lt;link rel='stylesheet' type='text/css' href="$ssxHref" pouet="$services.localization.getCurrentLocale()"/&gt;
+&lt;link rel='stylesheet' type='text/css' href="$ssxHref"/&gt;
 {{/html}}
 {{/velocity}}</content>
     </property>

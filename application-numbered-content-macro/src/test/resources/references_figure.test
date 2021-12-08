@@ -1,0 +1,133 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro on a simple case with the default parameters.
+.#-----------------------------------------------------
+See figure {{reference figure="f1"/}}.
+
+{{figure}}
+[[image:http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png||width="100"]]
+
+{{figureCaption}}
+{{id name="f1"/}}An image
+{{/figureCaption}}
+{{/figure}}
+
+See table {{reference figure="t1"/}}.
+
+{{figure}}
+|a|b
+|c|d
+
+{{figureCaption}}
+{{id name="t1"/}}A table
+{{/figureCaption}}
+{{/figure}}
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<p>See figure <span class="wikilink"><a href="#f1">f1</a></span>.</p><p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/></p><p><span id="f1"></span>An image</p><p>See table <span class="wikilink"><a href="#t1">t1</a></span>.</p><table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table><p><span id="t1"></span>A table</p>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginParagraph
+onWord [See]
+onSpace
+onWord [figure]
+onSpace
+beginMacroMarkerInline [reference] [figure=f1]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [f1]]] [false]
+onWord [f1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [f1]]] [false]
+endMacroMarkerInline [reference] [figure=f1]
+onSpecialSymbol [.]
+endParagraph
+beginMacroMarkerStandalone [figure] [] [[[image:http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png||width="100"]]
+
+{{figureCaption}}
+{{id name="f1"/}}An image
+{{/figureCaption}}]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginFigure
+beginParagraph
+onImage [Typed = [false] Type = [url] Reference = [http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png]] [false] [[width]=[100]]
+endParagraph
+beginMacroMarkerStandalone [figureCaption] [] [{{id name="f1"/}}An image]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginFigureCaption
+beginMacroMarkerInline [id] [name=f1]
+onId [f1]
+endMacroMarkerInline [id] [name=f1]
+onWord [An]
+onSpace
+onWord [image]
+endFigureCaption
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endMacroMarkerStandalone [figureCaption] [] [{{id name="f1"/}}An image]
+endFigure
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endMacroMarkerStandalone [figure] [] [[[image:http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png||width="100"]]
+
+{{figureCaption}}
+{{id name="f1"/}}An image
+{{/figureCaption}}]
+beginParagraph
+onWord [See]
+onSpace
+onWord [table]
+onSpace
+beginMacroMarkerInline [reference] [figure=t1]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [t1]]] [false]
+onWord [t1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [t1]]] [false]
+endMacroMarkerInline [reference] [figure=t1]
+onSpecialSymbol [.]
+endParagraph
+beginMacroMarkerStandalone [figure] [] [|a|b
+|c|d
+
+{{figureCaption}}
+{{id name="t1"/}}A table
+{{/figureCaption}}]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginFigure
+beginTable
+beginTableRow
+beginTableCell
+onWord [a]
+endTableCell
+beginTableCell
+onWord [b]
+endTableCell
+endTableRow
+beginTableRow
+beginTableCell
+onWord [c]
+endTableCell
+beginTableCell
+onWord [d]
+endTableCell
+endTableRow
+endTable
+beginMacroMarkerStandalone [figureCaption] [] [{{id name="t1"/}}A table]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginFigureCaption
+beginMacroMarkerInline [id] [name=t1]
+onId [t1]
+endMacroMarkerInline [id] [name=t1]
+onWord [A]
+onSpace
+onWord [table]
+endFigureCaption
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endMacroMarkerStandalone [figureCaption] [] [{{id name="t1"/}}A table]
+endFigure
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endMacroMarkerStandalone [figure] [] [|a|b
+|c|d
+
+{{figureCaption}}
+{{id name="t1"/}}A table
+{{/figureCaption}}]
+endDocument

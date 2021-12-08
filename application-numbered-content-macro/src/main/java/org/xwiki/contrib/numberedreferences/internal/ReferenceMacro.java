@@ -21,18 +21,23 @@ package org.xwiki.contrib.numberedreferences.internal;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
+import org.xwiki.contrib.numberedreferences.FiguresNumberingService;
 import org.xwiki.contrib.numberedreferences.HeaderNumberingService;
 import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.block.Block;
+import org.xwiki.rendering.block.FigureBlock;
+import org.xwiki.rendering.block.IdBlock;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.MacroBlock;
 import org.xwiki.rendering.block.WordBlock;
+import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
 import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
@@ -61,6 +66,9 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     private List<HeaderNumberingService> headerNumberingServices;
 
     @Inject
+    private List<FiguresNumberingService> figuresNumberingServices;
+
+    @Inject
     private ContextualLocalizationManager l10n;
 
     /**
@@ -82,31 +90,68 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     @Override
     public List<Block> execute(ReferenceMacroParameters parameters, String content, MacroTransformationContext context)
     {
-
         DocumentResourceReference resourceReference = new DocumentResourceReference("");
-        resourceReference.setAnchor(parameters.getId());
+        String id = parameters.getId();
+        resourceReference.setAnchor(id);
 
         // Ask the numbering services to compute the numbers until on of the computes a block with the requested id.
-        String number = null;
-        for (HeaderNumberingService headerNumberingService : this.headerNumberingServices) {
-            String headerBlockStringEntry =
-                headerNumberingService.getMap(((Block) context.getXDOM()).getRoot()).entrySet().stream()
-                    .filter(it -> it.getKey().getId().equals(parameters.getId())).findFirst().map(Map.Entry::getValue)
-                    .orElse(null);
-            if (headerBlockStringEntry != null) {
-                number = headerBlockStringEntry;
-                break;
-            }
+        Block rootBlock = ((Block) context.getXDOM()).getRoot();
+
+        // Chain the search, first in the headers, then in the figures.
+        String number = headerNumber(id, rootBlock);
+        if (number == null) {
+            number = figuresNumber(id, rootBlock);
         }
+
         Block referenceContent;
         if (number != null) {
             referenceContent = new LinkBlock(singletonList(new WordBlock(number)), resourceReference, false);
         } else {
             String errorMessage =
                 this.l10n.getTranslationPlain("numbered.content.reference.macro.error.referenceNotFound",
-                    parameters.getId());
+                    id);
             referenceContent = new MacroBlock("error", emptyMap(), errorMessage, true);
         }
         return singletonList(referenceContent);
+    }
+
+    private String headerNumber(String id, Block rootBlock)
+    {
+        String number = null;
+        for (HeaderNumberingService headerNumberingService : this.headerNumberingServices) {
+
+            String headerBlockNumber =
+                headerNumberingService.getMap(rootBlock).entrySet().stream()
+                    .filter(it -> it.getKey().getId().equals(id)).findFirst().map(Map.Entry::getValue)
+                    .orElse(null);
+            if (headerBlockNumber != null) {
+                number = headerBlockNumber;
+                break;
+            }
+        }
+        return number;
+    }
+
+    private String figuresNumber(String id, Block rootBlock)
+    {
+        String number = null;
+        for (FiguresNumberingService figureNumberingService : this.figuresNumberingServices) {
+
+            String figureBlockNumbre =
+                figureNumberingService.getMap(rootBlock).entrySet().stream()
+                    .filter(it -> hasId(it.getKey(), id)).findFirst().map(Map.Entry::getValue)
+                    .orElse(null);
+            if (figureBlockNumbre != null) {
+                number = figureBlockNumbre;
+                break;
+            }
+        }
+        return number;
+    }
+
+    private boolean hasId(FigureBlock figureBlock, String id)
+    {
+        return figureBlock.<IdBlock>getBlocks(new ClassBlockMatcher(IdBlock.class), Block.Axes.DESCENDANT).stream()
+            .anyMatch(it -> Objects.equals(it.getName(), id));
     }
 }

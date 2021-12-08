@@ -35,12 +35,13 @@ import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 
 /**
- * Provides a default behavious for the {@link HeaderNumberingService} components where the numbered contents are saved in a
- * {@link HeadersNumberingCacheManager}.
+ * Provides a default behaviour for the {@link HeaderNumberingService} components where the numbered contents are saved
+ * in a {@link HeadersNumberingCacheManager}.
  *
  * @version $Id$
  * @since 1.0
  */
+// TODO can be moved to a header specific module
 public abstract class AbstractHeadersNumberingService implements HeaderNumberingService
 {
     private static final String START_PARAMETER = "start";
@@ -110,7 +111,7 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
         if (level == stack.size()) {
             cacheHeaderSameLevel(rootBlockCache, stack, header, start);
         } else if (level > stack.size()) {
-            cacheHeaderLevelIncreses(rootBlockCache, stack, header, level, start);
+            cacheHeaderLevelIncreases(rootBlockCache, stack, header, level, start);
         } else {
             cacheHeaderLevelDecreases(rootBlockCache, stack, header, level, start);
         }
@@ -131,7 +132,7 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
         rootBlockCache.put(header, serialize(stack));
     }
 
-    private void cacheHeaderLevelIncreses(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
+    private void cacheHeaderLevelIncreases(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
         HeaderBlock header, int level, Integer start)
     {
         for (int i = stack.size(); i < level; i++) {

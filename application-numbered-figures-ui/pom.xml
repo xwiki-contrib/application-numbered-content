@@ -40,4 +40,12 @@
     <xwiki.extension.name>Numbered Figures Application</xwiki.extension.name>
     <xwiki.extension.category>application</xwiki.extension.category>
   </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-figures-api</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
 </project>

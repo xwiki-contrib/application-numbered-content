@@ -19,16 +19,18 @@
  */
 package org.xwiki.contrib.numberedreferences.internal;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numberedreferences.AbstractHeadersNumberingService;
+import org.xwiki.contrib.numberedreferences.FiguresNumberingService;
 import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.rendering.block.FigureBlock;
+import org.xwiki.rendering.block.IdBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
 /**
@@ -39,17 +41,24 @@ import org.xwiki.rendering.block.match.ClassBlockMatcher;
  */
 @Component
 @Singleton
-@Named("integrationtestheaders")
-public class IntegrationTestHeadersNumberingService extends AbstractHeadersNumberingService
+@Named("integrationtestfigures")
+public class IntegrationTestFiguresNumberingService implements FiguresNumberingService
 {
     @Override
-    public List<HeaderBlock> getHeaderBlocks(Block rootBlock)
+    public List<FigureBlock> getFigures(Block rootBlock)
     {
-        List<HeaderBlock> list = new ArrayList<>();
-        for (Block block : rootBlock.getBlocks(new ClassBlockMatcher(HeaderBlock.class),
+        return rootBlock.getBlocks(new ClassBlockMatcher(FigureBlock.class), Block.Axes.DESCENDANT);
+    }
+
+    @Override
+    public Map<FigureBlock, String> getMap(Block rootBlock)
+    {
+        Map<FigureBlock, String> ret = new HashMap<>();
+        for (FigureBlock block : rootBlock.<FigureBlock>getBlocks(new ClassBlockMatcher(FigureBlock.class),
             Block.Axes.DESCENDANT)) {
-            list.add((HeaderBlock) block);
+            IdBlock firstBlock = block.getFirstBlock(new ClassBlockMatcher(IdBlock.class), Block.Axes.DESCENDANT);
+            ret.put(block, firstBlock.getName());
         }
-        return list;
+        return ret;
     }
 }

@@ -17,22 +17,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.headings.internal;
+package org.xwiki.contrib.numberedreferences;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import java.util.List;
+import java.util.Map;
 
-import org.xwiki.component.annotation.Component;
+import org.xwiki.component.annotation.Role;
+import org.xwiki.rendering.block.Block;
+import org.xwiki.rendering.block.FigureBlock;
 
 /**
- * Compute the numbers for the figures and save the result in a cache.
+ * Provide the operations to compute the numbering of figures.
  *
  * @version $Id$
  * @since 1.0
  */
-@Component
-@Named("figures")
-@Singleton
-public class FiguresNumberingService
+@Role
+public interface FiguresNumberingService
 {
+    /**
+     * Return a list of figures found in a root block.
+     *
+     * @param rootBlock the root block to analyze
+     * @return the list of figures found in the root block
+     */
+    List<FigureBlock> getFigures(Block rootBlock);
+
+    /**
+     * Return a map of the figures found in a root block associated with their computed numbering.
+     *
+     * @param rootBlock the root block to analyze
+     * @return the computed map
+     */
+    Map<FigureBlock, String> getMap(Block rootBlock);
 }
