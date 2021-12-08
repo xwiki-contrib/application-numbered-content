@@ -1,0 +1,5 @@
+org.xwiki.contrib.numbered.content.headings.internal.DefaultFiguresNumberingCacheManager
+org.xwiki.contrib.numbered.content.headings.internal.DefaultFiguresNumberingService
+org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresClassDocumentInitializer
+org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresConfiguration
+org.xwiki.contrib.numbered.content.headings.script.NumberedFiguresScriptService

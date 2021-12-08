@@ -1,2 +1,0 @@
-org.xwiki.contrib.numberedreferences.internal.IntegrationTestHeadersNumberingService
-org.xwiki.contrib.numberedreferences.internal.IntegrationTestFiguresNumberingService

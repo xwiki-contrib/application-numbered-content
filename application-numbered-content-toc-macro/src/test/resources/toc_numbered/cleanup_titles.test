@@ -1,0 +1,120 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Verify that different combinations of heading contents are properly cleaned. 
+.#-----------------------------------------------------
+{{toc depth="2"/}}
+
+= Hello World ! =
+
+= Hello World!! =
+
+= Hello World... =
+
+= Hello World: =
+
+= Hello World : =
+
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<ul><li><span class="wikilink"><a href="#HHelloWorld21">0 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld2121">1 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld...">2 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld:">3 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld:-1">4 Hello World</a></span></li></ul><h1 id="HHelloWorld21" class="wikigeneratedid"><span>Hello World !</span></h1><h1 id="HHelloWorld2121" class="wikigeneratedid"><span>Hello World!!</span></h1><h1 id="HHelloWorld..." class="wikigeneratedid"><span>Hello World...</span></h1><h1 id="HHelloWorld:" class="wikigeneratedid"><span>Hello World:</span></h1><h1 id="HHelloWorld:-1" class="wikigeneratedid"><span>Hello World :</span></h1>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [toc] [depth=2]
+beginList [BULLETED]
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld21]]] [false]
+onRawText [0] [xhtml/1.0]
+onSpace
+onWord [Hello]
+onSpace
+onWord [World]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld21]]] [false]
+endListItem
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld2121]]] [false]
+onRawText [1] [xhtml/1.0]
+onSpace
+onWord [Hello]
+onSpace
+onWord [World]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld2121]]] [false]
+endListItem
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld...]]] [false]
+onRawText [2] [xhtml/1.0]
+onSpace
+onWord [Hello]
+onSpace
+onWord [World]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld...]]] [false]
+endListItem
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:]]] [false]
+onRawText [3] [xhtml/1.0]
+onSpace
+onWord [Hello]
+onSpace
+onWord [World]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:]]] [false]
+endListItem
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:-1]]] [false]
+onRawText [4] [xhtml/1.0]
+onSpace
+onWord [Hello]
+onSpace
+onWord [World]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:-1]]] [false]
+endListItem
+endList [BULLETED]
+endMacroMarkerStandalone [toc] [depth=2]
+beginSection
+beginHeader [1, HHelloWorld21]
+onWord [Hello]
+onSpace
+onWord [World]
+onSpace
+onSpecialSymbol [!]
+endHeader [1, HHelloWorld21]
+endSection
+beginSection
+beginHeader [1, HHelloWorld2121]
+onWord [Hello]
+onSpace
+onWord [World]
+onSpecialSymbol [!]
+onSpecialSymbol [!]
+endHeader [1, HHelloWorld2121]
+endSection
+beginSection
+beginHeader [1, HHelloWorld...]
+onWord [Hello]
+onSpace
+onWord [World]
+onSpecialSymbol [.]
+onSpecialSymbol [.]
+onSpecialSymbol [.]
+endHeader [1, HHelloWorld...]
+endSection
+beginSection
+beginHeader [1, HHelloWorld:]
+onWord [Hello]
+onSpace
+onWord [World]
+onSpecialSymbol [:]
+endHeader [1, HHelloWorld:]
+endSection
+beginSection
+beginHeader [1, HHelloWorld:-1]
+onWord [Hello]
+onSpace
+onWord [World]
+onSpace
+onSpecialSymbol [:]
+endHeader [1, HHelloWorld:-1]
+endSection
+endDocument
