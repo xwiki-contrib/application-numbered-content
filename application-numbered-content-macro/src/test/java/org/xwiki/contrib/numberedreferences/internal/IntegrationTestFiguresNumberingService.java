@@ -30,11 +30,10 @@ import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numberedreferences.FiguresNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
-import org.xwiki.rendering.block.IdBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
 /**
- * Numbering Service used for the integration tests, selects all the headers in the document.
+ * Numbering Service used for the integration tests, selects all the figures in the document.
  *
  * @version $Id$
  * @since 1.0
@@ -45,19 +44,20 @@ import org.xwiki.rendering.block.match.ClassBlockMatcher;
 public class IntegrationTestFiguresNumberingService implements FiguresNumberingService
 {
     @Override
-    public List<FigureBlock> getFigures(Block rootBlock)
+    public List<FigureBlock> getFiguresList(Block rootBlock)
     {
         return rootBlock.getBlocks(new ClassBlockMatcher(FigureBlock.class), Block.Axes.DESCENDANT);
     }
 
     @Override
-    public Map<FigureBlock, String> getMap(Block rootBlock)
+    public Map<FigureBlock, String> getFiguresMap(Block rootBlock)
     {
         Map<FigureBlock, String> ret = new HashMap<>();
+        int i = 1;
         for (FigureBlock block : rootBlock.<FigureBlock>getBlocks(new ClassBlockMatcher(FigureBlock.class),
             Block.Axes.DESCENDANT)) {
-            IdBlock firstBlock = block.getFirstBlock(new ClassBlockMatcher(IdBlock.class), Block.Axes.DESCENDANT);
-            ret.put(block, firstBlock.getName());
+            ret.put(block, String.valueOf(i));
+            i++;
         }
         return ret;
     }

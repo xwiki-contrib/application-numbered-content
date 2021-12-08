@@ -19,14 +19,15 @@
  */
 package org.xwiki.contrib.numberedreferences.internal;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numberedreferences.AbstractHeadersNumberingService;
+import org.xwiki.contrib.numberedreferences.HeaderNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
@@ -40,16 +41,29 @@ import org.xwiki.rendering.block.match.ClassBlockMatcher;
 @Component
 @Singleton
 @Named("integrationtestheaders")
-public class IntegrationTestHeadersNumberingService extends AbstractHeadersNumberingService
+public class IntegrationTestHeadersNumberingService implements HeaderNumberingService
 {
     @Override
-    public List<HeaderBlock> getHeaderBlocks(Block rootBlock)
+    public List<HeaderBlock> getHeadersList(Block rootBlock)
     {
-        List<HeaderBlock> list = new ArrayList<>();
-        for (Block block : rootBlock.getBlocks(new ClassBlockMatcher(HeaderBlock.class),
+        return rootBlock.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT);
+    }
+
+    @Override
+    public Map<HeaderBlock, String> getHeadersMap(Block rootBlock)
+    {
+        Map<HeaderBlock, String> ret = new HashMap<>();
+        // The headers are numbered linearly, regardless of their levels.
+        int i = 1;
+        for (HeaderBlock block : rootBlock.<HeaderBlock>getBlocks(new ClassBlockMatcher(HeaderBlock.class),
             Block.Axes.DESCENDANT)) {
-            list.add((HeaderBlock) block);
+            if (block.getParameter("skip") == null) {
+                ret.put(block, String.valueOf(i));
+                i++;
+            } else {
+                ret.put(block, null);
+            }
         }
-        return list;
+        return ret;
     }
 }

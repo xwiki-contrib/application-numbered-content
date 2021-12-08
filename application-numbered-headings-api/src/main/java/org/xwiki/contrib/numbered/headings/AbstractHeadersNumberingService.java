@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numberedreferences;
+package org.xwiki.contrib.numbered.headings;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -31,8 +31,11 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.xwiki.contrib.numbered.headings.internal.HeadersNumberingCacheManager;
+import org.xwiki.contrib.numberedreferences.HeaderNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.stability.Unstable;
 
 /**
  * Provides a default behaviour for the {@link HeaderNumberingService} components where the numbered contents are saved
@@ -41,7 +44,7 @@ import org.xwiki.rendering.block.HeaderBlock;
  * @version $Id$
  * @since 1.0
  */
-// TODO can be moved to a header specific module
+@Unstable
 public abstract class AbstractHeadersNumberingService implements HeaderNumberingService
 {
     private static final String START_PARAMETER = "start";
@@ -49,10 +52,10 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
     private static final String SKIP_PARAMETER = "skip";
 
     @Inject
-    protected HeadersNumberingCacheManager cacheManager;
+    private HeadersNumberingCacheManager cacheManager;
 
     @Override
-    public List<HeaderBlock> getHeaders(Block rootBlock)
+    public List<HeaderBlock> getHeadersList(Block rootBlock)
     {
         Optional<List<HeaderBlock>> headersOpt = this.cacheManager.getHeaders(rootBlock);
         List<HeaderBlock> headers;
@@ -66,7 +69,7 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
     }
 
     @Override
-    public Map<HeaderBlock, String> getMap(Block rootBlock)
+    public Map<HeaderBlock, String> getHeadersMap(Block rootBlock)
     {
         Optional<Map<HeaderBlock, String>> headersOpt = this.cacheManager.get(rootBlock);
         Map<HeaderBlock, String> headers;

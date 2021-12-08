@@ -1,4 +1,6 @@
-/*
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
  * See the NOTICE file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -16,35 +18,23 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
-package org.xwiki.contrib.numberedreferences;
+-->
 
-import java.util.List;
-
-import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.HeaderBlock;
-
-/**
- * A implementation of {@link AbstractHeadersNumberingService} use to test the abstract class with a concrete implementation.
- *
- * @version $Id$
- * @since 1.0
- */
-public class TestHeadersNumberingService extends AbstractHeadersNumberingService
-{
-    private List<HeaderBlock> headerBlocks = null;
-
-    @Override
-    public List<HeaderBlock> getHeaderBlocks(Block rootBlock)
-    {
-        return this.headerBlocks;
-    }
-
-    /**
-     * @param headerBlocks initializes the class with a list of header blocks
-     */
-    public void setHeaders(List<HeaderBlock> headerBlocks)
-    {
-        this.headerBlocks = headerBlocks;
-    }
-}
+<xwikidoc version="1.4" reference="NumberedFigures.Code.WebHome" locale="">
+  <web>NumberedFigures.Code</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>$services.localization.render('numbered.figures.codeSpace.title')</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{translation key="numbered.figures.codeSpace.description"/}}</content>
+</xwikidoc>

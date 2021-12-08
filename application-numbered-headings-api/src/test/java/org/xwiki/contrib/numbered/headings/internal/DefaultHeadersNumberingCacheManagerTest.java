@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numberedreferences.internal;
+package org.xwiki.contrib.numbered.headings.internal;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.xwiki.cache.Cache;
 import org.xwiki.cache.CacheManager;
-import org.xwiki.contrib.numberedreferences.internal.DefaultHeadersNumberingCacheManager.CachedValue;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.SpaceBlock;
@@ -49,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.xwiki.contrib.numbered.headings.internal.DefaultHeadersNumberingCacheManager.CachedValue;
 
 /**
  * Test of {@link DefaultHeadersNumberingCacheManager}.

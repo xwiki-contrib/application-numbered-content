@@ -139,25 +139,28 @@
       </use>
     </class>
     <property>
-      <cache>long</cache>
+      <cache>forbid</cache>
     </property>
     <property>
-      <code>#set ($isNumberedFiguresEnabled = $request.getParameter("isNumberedFiguresEnabled"))
+      <code>## TODO: The selectors are currently ckeditor specific (cke) to make the figure numbered visible in edit mode.
+#set ($isNumberedFiguresEnabled = $request.getParameter("isNumberedFiguresEnabled"))
 #if ($isNumberedFiguresEnabled == 'true')
 
-#xwikicontent figure:first-child {
+#xwikicontent figure:first-child,
+#xwikicontent content div[data-cke-display-name="macro:figure"]:first-child {
   counter-reset: cfigure !important;
 }
 
-#xwikicontent figure {
+#xwikicontent figure,
+#xwikicontent div[data-cke-display-name="macro:figure"] {
   counter-increment: cfigure;
 }
 
-#xwikicontent figcaption::before {
-  content: 'Figure ' counter(cfigure) ':\00a0';
+#xwikicontent figure figcaption::before,
+#xwikicontent div[data-cke-display-name="macro:figure"] div[data-cke-display-name="macro:figureCaption"] p::before {
+  content: "$services.localization.render('numbered.figures.numbered.figureCaption.label') " counter(cfigure) ':\00a0';
 }
-#end
-</code>
+#end</code>
     </property>
     <property>
       <contentType>CSS</contentType>

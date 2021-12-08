@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numberedreferences;
+package org.xwiki.contrib.numbered.headings.internal;
 
 import java.util.List;
 import java.util.Map;
@@ -26,17 +26,15 @@ import java.util.Optional;
 import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
-import org.xwiki.stability.Unstable;
 
 /**
- * Cache manager for the Numbered Contents. The keys are the root block containing the numbered content, the keys are
- * maps of numbered contents and their corresponding values.
+ * Cache manager for the numbered figures. The keys are the root block containing the numbered content, the values are
+ * maps of numbered figures and their corresponding values.
  *
  * @version $Id$
  * @since 1.0
  */
 @Role
-@Unstable
 public interface FiguresNumberingCacheManager
 {
     /**
@@ -50,8 +48,8 @@ public interface FiguresNumberingCacheManager
     /**
      * Associate the computed value to the given block.
      *
-     * @param block the block containing the content to number
-     * @param values the computed values for the content of the block
+     * @param block the block containing the figures to number
+     * @param values the computed values for the figures of the block
      * @param figures the list of figures in their order of appearance
      */
     void put(Block block, Map<FigureBlock, String> values, List<FigureBlock> figures);
@@ -59,7 +57,7 @@ public interface FiguresNumberingCacheManager
     /**
      * Return the cache map of figures and their computed numbers.
      *
-     * @param block the block containing the content to number
+     * @param block the block containing the figures to number
      * @return the cached map of figures and their computed numbers
      */
     Optional<Map<FigureBlock, String>> get(Block block);

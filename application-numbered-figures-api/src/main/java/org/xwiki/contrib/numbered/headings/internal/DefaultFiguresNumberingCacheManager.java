@@ -37,7 +37,6 @@ import org.xwiki.cache.eviction.LRUEvictionConfiguration;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.Initializable;
 import org.xwiki.component.phase.InitializationException;
-import org.xwiki.contrib.numberedreferences.FiguresNumberingCacheManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
 
@@ -107,7 +106,7 @@ public class DefaultFiguresNumberingCacheManager implements FiguresNumberingCach
     {
         try {
             CacheConfiguration cacheConfiguration = new CacheConfiguration();
-            cacheConfiguration.setConfigurationId("numbered.content.numbering.cache");
+            cacheConfiguration.setConfigurationId("numbered.content.figures.cache");
             // Configure cache eviction policy
             LRUEvictionConfiguration lru = new LRUEvictionConfiguration();
             lru.setMaxEntries(1000);

@@ -121,7 +121,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         for (HeaderNumberingService headerNumberingService : this.headerNumberingServices) {
 
             String headerBlockNumber =
-                headerNumberingService.getMap(rootBlock).entrySet().stream()
+                headerNumberingService.getHeadersMap(rootBlock).entrySet().stream()
                     .filter(it -> it.getKey().getId().equals(id)).findFirst().map(Map.Entry::getValue)
                     .orElse(null);
             if (headerBlockNumber != null) {
@@ -138,7 +138,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         for (FiguresNumberingService figureNumberingService : this.figuresNumberingServices) {
 
             String figureBlockNumbre =
-                figureNumberingService.getMap(rootBlock).entrySet().stream()
+                figureNumberingService.getFiguresMap(rootBlock).entrySet().stream()
                     .filter(it -> hasId(it.getKey(), id)).findFirst().map(Map.Entry::getValue)
                     .orElse(null);
             if (figureBlockNumbre != null) {

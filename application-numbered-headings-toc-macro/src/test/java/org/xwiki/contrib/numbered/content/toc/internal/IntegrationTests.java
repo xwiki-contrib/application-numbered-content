@@ -19,7 +19,7 @@
  */
 package org.xwiki.contrib.numbered.content.toc.internal;
 
-import org.xwiki.contrib.numberedreferences.HeadersNumberingCacheManager;
+import org.xwiki.contrib.numbered.headings.internal.HeadersNumberingCacheManager;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
 import org.xwiki.test.annotation.AllComponents;

@@ -25,6 +25,7 @@ import java.util.Map;
 import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.stability.Unstable;
 
 /**
  * Provide the operations to compute the numbering of contents.
@@ -33,6 +34,7 @@ import org.xwiki.rendering.block.HeaderBlock;
  * @since 1.0
  */
 @Role
+@Unstable
 public interface HeaderNumberingService
 {
     /**
@@ -46,7 +48,7 @@ public interface HeaderNumberingService
      * @param rootBlock the root block to analyze
      * @return the list of headers found in the root block
      */
-    List<HeaderBlock> getHeaders(Block rootBlock);
+    List<HeaderBlock> getHeadersList(Block rootBlock);
 
     /**
      * Return a map of the headers found in a root block associated with their computed numbering.
@@ -54,5 +56,5 @@ public interface HeaderNumberingService
      * @param rootBlock the root block to analyze
      * @return the computed map
      */
-    Map<HeaderBlock, String> getMap(Block rootBlock);
+    Map<HeaderBlock, String> getHeadersMap(Block rootBlock);
 }

@@ -28,7 +28,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numberedreferences.FiguresNumberingCacheManager;
 import org.xwiki.contrib.numberedreferences.FiguresNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
@@ -48,7 +47,7 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
     protected FiguresNumberingCacheManager cacheManager;
 
     @Override
-    public List<FigureBlock> getFigures(Block rootBlock)
+    public List<FigureBlock> getFiguresList(Block rootBlock)
     {
         Optional<List<FigureBlock>> figuresOpt = this.cacheManager.getFigures(rootBlock);
         List<FigureBlock> headers;
@@ -62,7 +61,7 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
     }
 
     @Override
-    public Map<FigureBlock, String> getMap(Block rootBlock)
+    public Map<FigureBlock, String> getFiguresMap(Block rootBlock)
     {
         Optional<Map<FigureBlock, String>> figuresOpt = this.cacheManager.get(rootBlock);
         Map<FigureBlock, String> figures;

@@ -34,7 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.xwiki.contrib.numberedreferences.internal.DefaultHeadersNumberingCacheManager.CachedValue;
+import static org.xwiki.contrib.numbered.headings.internal.DefaultHeadersNumberingCacheManager.CachedValue;
 
 /**
  * Run all tests found in {@code *.test} files located in the classpath. These {@code *.test} files must follow the

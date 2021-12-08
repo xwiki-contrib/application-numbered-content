@@ -56,7 +56,6 @@ import static java.util.Collections.singletonList;
 @Unstable
 public class TocTreeBuilder
 {
-
     private final TocBlockFilter tocBlockFilter;
 
     private final HeaderNumberingService headerNumberingService;
@@ -104,7 +103,7 @@ public class TocTreeBuilder
         // .........|_ ListItemBlock (TextBlock: Section5)
 
         // Get the list of headers at the root level.
-        List<HeaderBlock> headers = this.headerNumberingService.getHeaders(parameters.rootBlock);
+        List<HeaderBlock> headers = this.headerNumberingService.getHeadersList(parameters.rootBlock);
 
         // Construct table of content from sections list
         Block tocBlock = generateTree(headers, parameters.start, parameters.depth, parameters.documentReference,
@@ -218,7 +217,7 @@ public class TocTreeBuilder
 
         ArrayList<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
-            Map<HeaderBlock, String> headerBlockStringMap = this.headerNumberingService.getMap(rootBlock);
+            Map<HeaderBlock, String> headerBlockStringMap = this.headerNumberingService.getHeadersMap(rootBlock);
             String rawContent = headerBlockStringMap.get(headerBlock);
             if (rawContent != null) {
                 blocks.add(new RawBlock(rawContent, Syntax.XHTML_1_0));

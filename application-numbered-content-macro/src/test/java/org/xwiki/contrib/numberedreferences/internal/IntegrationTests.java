@@ -20,14 +20,10 @@
 package org.xwiki.contrib.numberedreferences.internal;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.mockito.stubbing.Answer;
-import org.xwiki.cache.Cache;
-import org.xwiki.cache.CacheManager;
 import org.xwiki.localization.LocalizationContext;
 import org.xwiki.localization.LocalizationManager;
 import org.xwiki.localization.Translation;
@@ -43,7 +39,6 @@ import org.xwiki.test.mockito.MockitoComponentManager;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -60,16 +55,6 @@ public class IntegrationTests implements RenderingTests
     @Initialized
     public void initialize(MockitoComponentManager componentManager) throws Exception
     {
-        CacheManager cacheManager = componentManager.registerMockComponent(CacheManager.class);
-        Cache cache = mock(Cache.class);
-        when(cacheManager.createNewCache(any())).thenReturn(cache);
-        Map<String, DefaultHeadersNumberingCacheManager.CachedValue> mapCache = new HashMap<>();
-        doAnswer(invocation -> {
-            mapCache.put(invocation.getArgument(0), invocation.getArgument(1));
-            return null;
-        }).when(cache).set(any(), any());
-        when(cache.get(any())).thenAnswer(invocation -> mapCache.get(invocation.getArgument(0)));
-
         Locale defaultLocale = Locale.getDefault();
         LocalizationContext localizationContext = componentManager.registerMockComponent(LocalizationContext.class);
         when(localizationContext.getCurrentLocale()).thenReturn(defaultLocale);

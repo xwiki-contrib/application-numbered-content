@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numberedreferences.internal;
+package org.xwiki.contrib.numbered.headings.internal;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,6 @@ import org.xwiki.cache.eviction.LRUEvictionConfiguration;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.Initializable;
 import org.xwiki.component.phase.InitializationException;
-import org.xwiki.contrib.numberedreferences.HeadersNumberingCacheManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 
@@ -108,7 +107,7 @@ public class DefaultHeadersNumberingCacheManager implements HeadersNumberingCach
     {
         try {
             CacheConfiguration cacheConfiguration = new CacheConfiguration();
-            cacheConfiguration.setConfigurationId("numbered.content.numbering.cache");
+            cacheConfiguration.setConfigurationId("numbered.content.headings.cache");
             // Configure cache eviction policy
             LRUEvictionConfiguration lru = new LRUEvictionConfiguration();
             lru.setMaxEntries(1000);

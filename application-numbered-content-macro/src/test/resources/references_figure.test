@@ -26,7 +26,7 @@ See table {{reference figure="t1"/}}.
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<p>See figure <span class="wikilink"><a href="#f1">f1</a></span>.</p><p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/></p><p><span id="f1"></span>An image</p><p>See table <span class="wikilink"><a href="#t1">t1</a></span>.</p><table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table><p><span id="t1"></span>A table</p>
+<p>See figure <span class="wikilink"><a href="#f1">1</a></span>.</p><p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/></p><p><span id="f1"></span>An image</p><p>See table <span class="wikilink"><a href="#t1">2</a></span>.</p><table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table><p><span id="t1"></span>A table</p>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -38,7 +38,7 @@ onWord [figure]
 onSpace
 beginMacroMarkerInline [reference] [figure=f1]
 beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [f1]]] [false]
-onWord [f1]
+onWord [1]
 endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [f1]]] [false]
 endMacroMarkerInline [reference] [figure=f1]
 onSpecialSymbol [.]
@@ -79,7 +79,7 @@ onWord [table]
 onSpace
 beginMacroMarkerInline [reference] [figure=t1]
 beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [t1]]] [false]
-onWord [t1]
+onWord [2]
 endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [t1]]] [false]
 endMacroMarkerInline [reference] [figure=t1]
 onSpecialSymbol [.]

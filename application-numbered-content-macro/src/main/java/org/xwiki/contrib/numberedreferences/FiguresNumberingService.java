@@ -25,6 +25,7 @@ import java.util.Map;
 import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
+import org.xwiki.stability.Unstable;
 
 /**
  * Provide the operations to compute the numbering of figures.
@@ -33,6 +34,7 @@ import org.xwiki.rendering.block.FigureBlock;
  * @since 1.0
  */
 @Role
+@Unstable
 public interface FiguresNumberingService
 {
     /**
@@ -41,7 +43,7 @@ public interface FiguresNumberingService
      * @param rootBlock the root block to analyze
      * @return the list of figures found in the root block
      */
-    List<FigureBlock> getFigures(Block rootBlock);
+    List<FigureBlock> getFiguresList(Block rootBlock);
 
     /**
      * Return a map of the figures found in a root block associated with their computed numbering.
@@ -49,5 +51,5 @@ public interface FiguresNumberingService
      * @param rootBlock the root block to analyze
      * @return the computed map
      */
-    Map<FigureBlock, String> getMap(Block rootBlock);
+    Map<FigureBlock, String> getFiguresMap(Block rootBlock);
 }
