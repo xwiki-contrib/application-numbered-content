@@ -1,1 +1,51 @@
+<?xml version="1.1" encoding="UTF-8"?>
 
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
+<xwikidoc version="1.4" reference="NumberedHeadings.Code.Translations" locale="fr">
+  <web>NumberedHeadings.Code</web>
+  <name>Translations</name>
+  <language>fr</language>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>1</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Translations</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content>numbered.headings.codeSpace.title=Code
+numbered.headings.codeSpace.description=C'est l'endroit où se trouve le code de l'application Titres numérotés.
+numbered.headings.activationUI.label=Activer la numérotation des titres
+numbered.headings.activationUI.parameters.title=Numérotation des titres
+numbered.headings.ckeditor.headerConfigurationAction.title=Configuration du titre
+numbered.headings.ckeditor.headerConfigurationAction.start.title=Recommencer à
+numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Le numéro de départ du titre doit être un nombre entier.
+numbered.headings.ckeditor.skipNumberingHeader.activate.title=Activer le saut de numérotation
+numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=Désactiver le saut de numérotation
+numbered.heading.template.title=Modèle de titres numérotés
+numbered.heading.template.description=Crée une page avec des titres numérotés activés.
+</content>
+  </xwikidoc>
