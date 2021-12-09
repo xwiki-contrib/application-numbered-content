@@ -37,15 +37,15 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content>numbered.headings.codeSpace.title=Code
-numbered.headings.codeSpace.description=C'est l'endroit où se trouve le code de l'application Titres numérotés.
+numbered.headings.codeSpace.description=C'est l'endroit où se trouve le code de l'application numérotation des titres (Numbered Headings).
 numbered.headings.activationUI.label=Activer la numérotation des titres
 numbered.headings.activationUI.parameters.title=Numérotation des titres
-numbered.headings.ckeditor.headerConfigurationAction.title=Configuration du titre
+numbered.headings.ckeditor.headerConfigurationAction.title=Paramétrage des titres
 numbered.headings.ckeditor.headerConfigurationAction.start.title=Recommencer à
 numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Le numéro de départ du titre doit être un nombre entier.
 numbered.headings.ckeditor.skipNumberingHeader.activate.title=Activer le saut de numérotation
 numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=Désactiver le saut de numérotation
 numbered.heading.template.title=Modèle de titres numérotés
-numbered.heading.template.description=Crée une page avec des titres numérotés activés.
+numbered.heading.template.description=Crée une page avec la numérotation des titres activée.
 </content>
   </xwikidoc>
