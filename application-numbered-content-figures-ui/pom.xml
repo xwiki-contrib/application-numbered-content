@@ -31,7 +31,6 @@
   </parent>
 
   <artifactId>application-numbered-content-figures-ui</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>Numbered Content - Figures - UI</name>
   <description>Provides the User Interface and CKEditor plugins for Numbered Figures.</description>
   <packaging>xar</packaging>

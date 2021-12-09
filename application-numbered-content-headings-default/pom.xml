@@ -31,7 +31,6 @@
   </parent>
 
   <artifactId>application-numbered-content-headings-default</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>Numbered Content - Headings - Default</name>
   <description>Default implementation of the automatic numbering of headings in a page.</description>
   <properties>

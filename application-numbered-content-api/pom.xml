@@ -30,7 +30,6 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>application-numbered-content-api</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>Numbered Content - API</name>
   <description>A common API for all numbered contents.</description>
   <properties>

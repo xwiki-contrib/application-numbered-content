@@ -29,7 +29,6 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>application-numbered-content-reference-macro</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>Numbered Content - Reference Macro</name>
   <description>Provides numbered headings, figures and tables and references to them.</description>
   <properties>

@@ -31,7 +31,6 @@
   </parent>
 
   <artifactId>application-numbered-content-figures-api</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>Numbered Content - Figures - API</name>
   <description>Automatically add numbering on the figures of a page.</description>
   <properties>

@@ -27,7 +27,7 @@
     <groupId>org.xwiki.contrib</groupId>
     <artifactId>parent-platform</artifactId>
     <!-- TODO: change 14.0+ once the Information tab UIXP is released. -->
-    <version>13.8</version>
+    <version>13.10</version>
   </parent>
   
   <packaging>pom</packaging>

@@ -29,8 +29,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>application-numbered-content-toc-macro</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>Numbered Heading Table of Content</name>
+  <name>Numbered Content - Table of Content</name>
   <description>Override the default Table of Content and displays the headings numbers when they are 
     activated.</description>
   <properties>
