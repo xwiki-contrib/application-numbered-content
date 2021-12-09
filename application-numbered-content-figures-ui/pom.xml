@@ -32,7 +32,7 @@
 
   <artifactId>application-numbered-content-figures-ui</artifactId>
   <name>Numbered Content - Figures - UI</name>
-  <description>Provides the User Interface and CKEditor plugins for Numbered Figures.</description>
+  <description>Provides the User Interface for Numbered Figures.</description>
   <packaging>xar</packaging>
   <properties>
     <!-- Name to display by the Extension Manager -->
@@ -44,6 +44,12 @@
       <groupId>org.xwiki.contrib.numbered.content</groupId>
       <artifactId>application-numbered-content-figures-api</artifactId>
       <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.rendering</groupId>
+      <artifactId>xwiki-rendering-macro-figure</artifactId>
+      <version>${rendering.version}</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>

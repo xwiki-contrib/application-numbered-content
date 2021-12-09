@@ -40,29 +40,20 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-api</artifactId>
-      <version>${rendering.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-transformation-macro</artifactId>
-      <version>${rendering.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-localization-api</artifactId>
       <version>${platform.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-macro-figure</artifactId>
-      <version>${rendering.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
       <artifactId>application-numbered-content-api</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <!-- Runtime dependencies. -->
+    <dependency>
+      <groupId>org.xwiki.rendering</groupId>
+      <artifactId>xwiki-rendering-macro-message</artifactId>
+      <version>${rendering.version}</version>
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
@@ -77,12 +68,6 @@
       <version>${project.version}</version>
       <optional>true</optional>
       <scope>runtime</scope>
-    </dependency>
-    <!-- Runtime dependencies. -->
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-macro-message</artifactId>
-      <version>${rendering.version}</version>
     </dependency>
     <!-- Test dependencies. -->
     <dependency>
@@ -106,6 +91,12 @@
     <dependency>
       <groupId>org.xwiki.rendering</groupId>
       <artifactId>xwiki-rendering-macro-id</artifactId>
+      <version>${rendering.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.rendering</groupId>
+      <artifactId>xwiki-rendering-macro-figure</artifactId>
       <version>${rendering.version}</version>
       <scope>test</scope>
     </dependency>
