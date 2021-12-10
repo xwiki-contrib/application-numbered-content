@@ -43,6 +43,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER;
+import static org.xwiki.contrib.numbered.content.HeaderNumberingService.START_PARAMETER;
 import static org.xwiki.rendering.listener.HeaderLevel.LEVEL1;
 import static org.xwiki.rendering.listener.HeaderLevel.LEVEL2;
 
@@ -127,7 +129,7 @@ class HeadersNumberingServiceTest
     @Test
     void getHeadersNotCachedWithStartParameter()
     {
-        HeaderBlock h10 = new HeaderBlock(emptyList(), LEVEL1, singletonMap("start", "10"));
+        HeaderBlock h10 = new HeaderBlock(emptyList(), LEVEL1, singletonMap(START_PARAMETER, "10"));
         HeaderBlock h11 = new HeaderBlock(emptyList(), LEVEL1);
         XDOM rootBlock = new XDOM(asList(h10, h11));
         when(this.cacheManager.getHeaders(rootBlock)).thenReturn(Optional.empty());
@@ -147,7 +149,7 @@ class HeadersNumberingServiceTest
     @Test
     void getHeadersNotCachedWithSkipParameter()
     {
-        HeaderBlock hskip = new HeaderBlock(emptyList(), LEVEL1, singletonMap("skip", "true"));
+        HeaderBlock hskip = new HeaderBlock(emptyList(), LEVEL1, singletonMap(SKIP_PARAMETER, "true"));
         HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
 
         XDOM rootBlock = new XDOM(asList(hskip, h1));

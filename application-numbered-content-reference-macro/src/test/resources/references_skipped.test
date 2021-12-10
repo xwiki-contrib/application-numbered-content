@@ -5,13 +5,13 @@
 .#-----------------------------------------------------
 Header {{reference section="Hh1"/}}
 
-(% skip="true" %)
+(% data-numbered-headings-skip="true" %)
 = h1 =
 
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<p>Header <span class="box errormessage">numbered.content.reference.macro.error.referenceNotFound [Hh1]</span></p><h1 id="Hh1" class="wikigeneratedid" skip="true"><span>h1</span></h1>
+<p>Header <span class="box errormessage">numbered.content.reference.macro.error.referenceNotFound [Hh1]</span></p><h1 id="Hh1" class="wikigeneratedid" data-numbered-headings-skip="true"><span>h1</span></h1>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -44,8 +44,8 @@ endMacroMarkerInline [error] [] [numbered.content.reference.macro.error.referenc
 endMacroMarkerInline [reference] [section=Hh1]
 endParagraph
 beginSection
-beginHeader [1, Hh1] [[skip]=[true]]
+beginHeader [1, Hh1] [[data-numbered-headings-skip]=[true]]
 onWord [h1]
-endHeader [1, Hh1] [[skip]=[true]]
+endHeader [1, Hh1] [[data-numbered-headings-skip]=[true]]
 endSection
 endDocument

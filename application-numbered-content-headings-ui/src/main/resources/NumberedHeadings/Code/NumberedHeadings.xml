@@ -326,7 +326,7 @@ require(
               || path.contains('h5', 1)
               || path.contains('h6', 1);
             const isHeader = activated(editor) &amp;&amp; headerNode;
-            const isSkippedHeader = isHeader &amp;&amp; headerNode.$.attributes["skip"] !== undefined;
+            const isSkippedHeader = isHeader &amp;&amp; headerNode.$.attributes["data-numbered-headings-skip"] !== undefined;
             this.setState(isHeader &amp;&amp; isSkippedHeader === activatedStatus ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED);
           }
         });
@@ -371,18 +371,18 @@ require(
               validate: CKEDITOR.dialog.validate.integer(
                 l10n['ckeditor.headerConfigurationAction.start.title.error.invalidNumber']),
               setup: function (element) {
-                const value = parseInt(element.$.style.getPropertyValue("--numbered-heading-start"), 10) + 1 || '';
+                const value = parseInt(element.$.style.getPropertyValue("--numbered-headings-start"), 10) + 1 || '';
                 this.setValue(value);
               },
               commit: function (element) {
                 const value = this.getValue().trim();
                 if (value !== '') {
                   const parsedValue = parseInt(value, 10);
-                  element.setAttribute("start", parsedValue);
-                  element.$.style.setProperty("--numbered-heading-start", parsedValue - 1);
+                  element.setAttribute("data-numbered-headings-start", parsedValue);
+                  element.$.style.setProperty("--numbered-headings-start", parsedValue - 1);
                 } else {
-                  element.removeAttribute("start");
-                  element.$.style.removeProperty("--numbered-heading-start");
+                  element.removeAttribute("data-numbered-headings-start");
+                  element.$.style.removeProperty("--numbered-headings-start");
                 }
               },
             }]
@@ -408,13 +408,13 @@ require(
 
       editor.addCommand('activateSkipNumberingCmd', createDefSkip({
         exec: function (editor) {
-          getHeadingElement(editor).$.setAttribute("skip", "true");
+          getHeadingElement(editor).$.setAttribute("data-numbered-headings-skip", "true");
         }
       }, false));
 
       editor.addCommand('deactivateSkipNumberingCmd', createDefSkip({
         exec: function (editor) {
-          getHeadingElement(editor).$.removeAttribute("skip")
+          getHeadingElement(editor).$.removeAttribute("data-numbered-headings-skip")
         }
       }, true));
 
@@ -590,112 +590,112 @@ require(
   #end
 #end
 
-#buildSelector($rootSelectors '&gt; h1:not([skip]):not([start]):first-child') {
+#buildSelector($rootSelectors '&gt; h1:not([data-numbered-headings-skip]):not([data-numbered-headings-start]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch1 ch2 ch3 ch4 ch5 ch6 !important;
 }
 
-#buildSelector($rootSelectors '&gt; h2:not([skip]):not([start]):first-child') {
+#buildSelector($rootSelectors '&gt; h2:not([data-numbered-headings-skip]):not([data-numbered-headings-start]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch2 ch3 ch4 ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h3:not([skip]):not([start]):first-child') {
+#buildSelector($rootSelectors '&gt; h3:not([data-numbered-headings-skip]):not([data-numbered-headings-start]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch3 ch4 ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h4:not([skip]):not([start]):first-child') {
+#buildSelector($rootSelectors '&gt; h4:not([data-numbered-headings-skip]):not([data-numbered-headings-start]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch4 ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h5:not([skip]):not([start]):first-child') {
+#buildSelector($rootSelectors '&gt; h5:not([data-numbered-headings-skip]):not([data-numbered-headings-start]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch5 ch6  !important;
 }
 
-#buildSelector($rootSelectors '&gt; h6:not([skip]):not([start]):first-child') {
+#buildSelector($rootSelectors '&gt; h6:not([data-numbered-headings-skip]):not([data-numbered-headings-start]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch6 !important;
 }
 
-#buildSelector($rootSelectors 'h1:not([skip])::before') {
+#buildSelector($rootSelectors 'h1:not([data-numbered-headings-skip])::before') {
 content: counter(ch1) '\00a0';
 padding-right: 1em;
 }
 
-#buildSelector($rootSelectors 'h1:not([skip])') {
+#buildSelector($rootSelectors 'h1:not([data-numbered-headings-skip])') {
 counter-reset: ch2 ch3 ch4 ch5 ch6;
 counter-increment: ch1;
 }
 
-#buildSelector($rootSelectors 'h2:not([skip])::before') {
+#buildSelector($rootSelectors 'h2:not([data-numbered-headings-skip])::before') {
 content: counter(ch1) '.' counter(ch2) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h2:not([skip])') {
+#buildSelector($rootSelectors 'h2:not([data-numbered-headings-skip])') {
 counter-reset: ch3 ch4 ch5 ch6;
 counter-increment: ch2;
 }
 
-#buildSelector($rootSelectors 'h3:not([skip])::before') {
+#buildSelector($rootSelectors 'h3:not([data-numbered-headings-skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h3:not([skip])') {
+#buildSelector($rootSelectors 'h3:not([data-numbered-headings-skip])') {
 counter-reset: ch4 ch5 ch6;
 counter-increment: ch3;
 }
 
-#buildSelector($rootSelectors 'h4:not([skip])::before') {
+#buildSelector($rootSelectors 'h4:not([data-numbered-headings-skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '.' counter(ch4) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h4:not([skip])') {
+#buildSelector($rootSelectors 'h4:not([data-numbered-headings-skip])') {
 counter-reset: ch5 ch6;
 counter-increment: ch4;
 }
 
-#buildSelector($rootSelectors 'h5:not([skip])::before') {
+#buildSelector($rootSelectors 'h5:not([data-numbered-headings-skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '.' counter(ch4) '.' counter(ch5) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h5:not([skip])') {
+#buildSelector($rootSelectors 'h5:not([data-numbered-headings-skip])') {
 counter-reset: ch6;
 counter-increment: ch5;
 }
 
-#buildSelector($rootSelectors 'h6:not([skip])::before') {
+#buildSelector($rootSelectors 'h6:not([data-numbered-headings-skip])::before') {
 content: counter(ch1) '.' counter(ch2) '.' counter(ch3) '.' counter(ch4) '.' counter(ch5) '.' counter(ch6) '\00a0';
 }
 
-#buildSelector($rootSelectors 'h6:not([skip])') {
+#buildSelector($rootSelectors 'h6:not([data-numbered-headings-skip])') {
 counter-increment: ch6;
 }
 
-#buildSelector($rootSelectors 'h1[start]') {
-counter-reset: ch1 var(--numbered-heading-start) ch2 ch3 ch4 ch5 ch6;
+#buildSelector($rootSelectors 'h1[data-numbered-headings-start]') {
+counter-reset: ch1 var(--numbered-headings-start) ch2 ch3 ch4 ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h2[start]') {
-counter-reset: ch2 var(--numbered-heading-start) ch3 ch4 ch5 ch6;
+#buildSelector($rootSelectors 'h2[data-numbered-headings-start]') {
+counter-reset: ch2 var(--numbered-headings-start) ch3 ch4 ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h3[start]') {
-counter-reset: ch3 var(--numbered-heading-start) ch4 ch5 ch6;
+#buildSelector($rootSelectors 'h3[data-numbered-headings-start]') {
+counter-reset: ch3 var(--numbered-headings-start) ch4 ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h4[start]') {
-counter-reset: ch4 var(--numbered-heading-start) ch5 ch6;
+#buildSelector($rootSelectors 'h4[data-numbered-headings-start]') {
+counter-reset: ch4 var(--numbered-headings-start) ch5 ch6;
 }
 
-#buildSelector($rootSelectors 'h5[start]') {
-counter-reset: ch5 var(--numbered-heading-start) ch6;
+#buildSelector($rootSelectors 'h5[data-numbered-headings-start]') {
+counter-reset: ch5 var(--numbered-headings-start) ch6;
 }
 
-#buildSelector($rootSelectors 'h6[start]') {
-counter-reset: ch6 var(--numbered-heading-start);
+#buildSelector($rootSelectors 'h6[data-numbered-headings-start]') {
+counter-reset: ch6 var(--numbered-headings-start);
 }</code>
     </property>
     <property>

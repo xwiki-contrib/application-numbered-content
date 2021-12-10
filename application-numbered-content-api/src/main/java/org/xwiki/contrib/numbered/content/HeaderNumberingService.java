@@ -45,12 +45,12 @@ public interface HeaderNumberingService
     /**
      * The constant for the start parameter.
      */
-    String START_PARAMETER = "start";
+    String START_PARAMETER = "data-numbered-headings-start";
 
     /**
      * The constant for the skip parameter.
      */
-    String SKIP_PARAMETER = "skip";
+    String SKIP_PARAMETER = "data-numbered-headings-skip";
     
     /**
      * Return a list of headers found in a root block.

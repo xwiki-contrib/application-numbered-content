@@ -5,15 +5,15 @@
 .#-----------------------------------------------------
 {{toc depth="2"/}}
 
-(% skip="true" %)
+(% data-numbered-headings-skip="true" %)
 = h1 =
 
 == h2 ==
 
-(% skip="true" %)
+(% data-numbered-headings-skip="true" %)
 == hello world ! ==
 
-(% skip="true" %)
+(% data-numbered-headings-skip="true" %)
 = HellWorld =
 
 == Hello WorlD ==
@@ -23,7 +23,7 @@
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<ul><li><span class="wikilink"><a href="#Hh1">H1</a></span><ul><li><span class="wikilink"><a href="#Hh2">0 H2</a></span></li><li><span class="wikilink"><a href="#Hhelloworld21">Hello World</a></span></li></ul></li><li><span class="wikilink"><a href="#HHellWorld">Hellworld</a></span><ul><li><span class="wikilink"><a href="#HHelloWorlD">1 Hello World</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid" skip="true"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hhelloworld21" class="wikigeneratedid" skip="true"><span>hello world !</span></h2><h1 id="HHellWorld" class="wikigeneratedid" skip="true"><span>HellWorld</span></h1><h2 id="HHelloWorlD" class="wikigeneratedid"><span>Hello WorlD</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
+<ul><li><span class="wikilink"><a href="#Hh1">H1</a></span><ul><li><span class="wikilink"><a href="#Hh2">0 H2</a></span></li><li><span class="wikilink"><a href="#Hhelloworld21">Hello World</a></span></li></ul></li><li><span class="wikilink"><a href="#HHellWorld">Hellworld</a></span><ul><li><span class="wikilink"><a href="#HHelloWorlD">1 Hello World</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid" data-numbered-headings-skip="true"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hhelloworld21" class="wikigeneratedid" data-numbered-headings-skip="true"><span>hello world !</span></h2><h1 id="HHellWorld" class="wikigeneratedid" data-numbered-headings-skip="true"><span>HellWorld</span></h1><h2 id="HHelloWorlD" class="wikigeneratedid"><span>Hello WorlD</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -70,28 +70,28 @@ endListItem
 endList [BULLETED]
 endMacroMarkerStandalone [toc] [depth=2]
 beginSection
-beginHeader [1, Hh1] [[skip]=[true]]
+beginHeader [1, Hh1] [[data-numbered-headings-skip]=[true]]
 onWord [h1]
-endHeader [1, Hh1] [[skip]=[true]]
+endHeader [1, Hh1] [[data-numbered-headings-skip]=[true]]
 beginSection
 beginHeader [2, Hh2]
 onWord [h2]
 endHeader [2, Hh2]
 endSection
 beginSection
-beginHeader [2, Hhelloworld21] [[skip]=[true]]
+beginHeader [2, Hhelloworld21] [[data-numbered-headings-skip]=[true]]
 onWord [hello]
 onSpace
 onWord [world]
 onSpace
 onSpecialSymbol [!]
-endHeader [2, Hhelloworld21] [[skip]=[true]]
+endHeader [2, Hhelloworld21] [[data-numbered-headings-skip]=[true]]
 endSection
 endSection
 beginSection
-beginHeader [1, HHellWorld] [[skip]=[true]]
+beginHeader [1, HHellWorld] [[data-numbered-headings-skip]=[true]]
 onWord [HellWorld]
-endHeader [1, HHellWorld] [[skip]=[true]]
+endHeader [1, HHellWorld] [[data-numbered-headings-skip]=[true]]
 beginSection
 beginHeader [2, HHelloWorlD]
 onWord [Hello]

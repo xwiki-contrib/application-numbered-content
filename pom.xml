@@ -82,6 +82,47 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.2</version>
       </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <configuration>
+          <analysisConfiguration>
+            <revapi.differences>
+              <criticality>highlight</criticality>
+              <differences>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.field.constantValueChanged</code>
+                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER</old>
+                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER</new>
+                  <justification>Unstable API: skip value replaced by data-numbered-headings-skip.</justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.field.constantValueChanged</code>
+                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.START_PARAMETER</old>
+                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.START_PARAMETER</new>
+                  <justification>Unstable API: skip value replaced by data-numbered-headings-start.</justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.field.constantValueChanged</code>
+                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</old>
+                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</new>
+                  <justification>Unstable API: skip value replaced by data-numbered-headings-skip.</justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.field.constantValueChanged</code>
+                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.START_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</old>
+                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.START_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</new>
+                  <justification>Unstable API: skip value replaced by data-numbered-headings-start.</justification>
+                </item>
+              </differences>
+            </revapi.differences>
+          </analysisConfiguration>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <modules>
