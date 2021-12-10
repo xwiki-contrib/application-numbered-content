@@ -622,7 +622,6 @@ counter-reset: ch6 !important;
 
 #buildSelector($rootSelectors 'h1:not([data-numbered-headings-skip])::before') {
 content: counter(ch1) '\00a0';
-padding-right: 1em;
 }
 
 #buildSelector($rootSelectors 'h1:not([data-numbered-headings-skip])') {
