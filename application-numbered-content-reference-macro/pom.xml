@@ -30,7 +30,7 @@
   </parent>
   <artifactId>application-numbered-content-reference-macro</artifactId>
   <name>Numbered Content - Reference Macro</name>
-  <description>Provides numbered headings, figures and tables and references to them.</description>
+  <description>Provides Numbered Headings and Figures, and references to them.</description>
   <properties>
     <xwiki.jacoco.instructionRatio>0.92</xwiki.jacoco.instructionRatio>
     <!-- Name to display by the Extension Manager -->
@@ -57,15 +57,17 @@
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-figures-api</artifactId>
+      <artifactId>application-numbered-content-figures-ui</artifactId>
       <version>${project.version}</version>
+      <type>xar</type>
       <optional>true</optional>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-headings-default</artifactId>
+      <artifactId>application-numbered-content-headings-ui</artifactId>
       <version>${project.version}</version>
+      <type>xar</type>
       <optional>true</optional>
       <scope>runtime</scope>
     </dependency>
