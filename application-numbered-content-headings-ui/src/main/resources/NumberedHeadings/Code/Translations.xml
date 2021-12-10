@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.4" reference="NumberedHeadings.Code.Translations" locale="">
+<xwikidoc version="1.5" reference="NumberedHeadings.Code.Translations" locale="">
   <web>NumberedHeadings.Code</web>
   <name>Translations</name>
   <language/>
@@ -29,6 +29,7 @@
   <creator>xwiki:XWiki.Admin</creator>
   <parent>WebHome</parent>
   <author>xwiki:XWiki.Admin</author>
+  <originalMetadataAuthor>xwiki:XWiki.Admin</originalMetadataAuthor>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <version>1.1</version>
   <title>Translations</title>
@@ -40,6 +41,9 @@
 numbered.headings.codeSpace.description=This is the place where the Numbered Headings application code is located.
 numbered.headings.activationUI.label=Activate Heading Numbering
 numbered.headings.activationUI.parameters.title=Heading Numbering
+numbered.headings.activationUI.contentUpdate.inProgress=Updating content...
+numbered.headings.activationUI.contentUpdate.done=Content updated
+numbered.headings.activationUI.contentUpdate.failed=Content update failed
 numbered.headings.ckeditor.headerConfigurationAction.title=Header Config
 numbered.headings.ckeditor.headerConfigurationAction.start.title=Start
 numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Header start number must be a whole number.
