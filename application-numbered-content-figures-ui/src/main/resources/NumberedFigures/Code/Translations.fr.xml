@@ -37,7 +37,7 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Code
-numbered.figures.codeSpace.description=C'est l'espace où se trouve le code de l'application des figures numérotées.
-numbered.figures.numbered.figureCaption.label=Figure
+numbered.figures.codeSpace.description=C'est l'espace où se trouve le code de l'application de numérotation des illustrations.
+numbered.figures.numbered.figureCaption.label=Illustration
 </content>
   </xwikidoc>
