@@ -35,6 +35,7 @@ import org.xwiki.cache.config.CacheConfiguration;
 import org.xwiki.cache.eviction.EntryEvictionConfiguration;
 import org.xwiki.cache.eviction.LRUEvictionConfiguration;
 import org.xwiki.component.annotation.Component;
+import org.xwiki.component.phase.Disposable;
 import org.xwiki.component.phase.Initializable;
 import org.xwiki.component.phase.InitializationException;
 import org.xwiki.rendering.block.Block;
@@ -49,7 +50,7 @@ import org.xwiki.rendering.block.HeaderBlock;
  */
 @Component
 @Singleton
-public class DefaultHeadersNumberingCacheManager implements HeadersNumberingCacheManager, Initializable
+public class DefaultHeadersNumberingCacheManager implements HeadersNumberingCacheManager, Initializable, Disposable
 {
     @Inject
     private CacheManager cacheManager;
@@ -117,6 +118,14 @@ public class DefaultHeadersNumberingCacheManager implements HeadersNumberingCach
             this.cache = this.cacheManager.createNewCache(cacheConfiguration);
         } catch (CacheException e) {
             throw new InitializationException("Failed to create the cache.", e);
+        }
+    }
+
+    @Override
+    public void dispose()
+    {
+        if (this.cache != null) {
+            this.cache.dispose();
         }
     }
 
