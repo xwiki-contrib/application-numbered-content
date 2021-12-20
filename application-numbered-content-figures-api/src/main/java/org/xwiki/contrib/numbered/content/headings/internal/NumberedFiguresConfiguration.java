@@ -20,6 +20,7 @@
 package org.xwiki.contrib.numbered.content.headings.internal;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,7 +28,7 @@ import javax.inject.Singleton;
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.context.Execution;
-import org.xwiki.model.reference.DocumentReference;
+import org.xwiki.model.reference.EntityReference;
 
 import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.doc.XWikiDocument;
@@ -58,7 +59,7 @@ public class NumberedFiguresConfiguration
      *
      * @return @return {@code true} if the numbered headings are activated, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
-     * @see #isNumbered(DocumentReference)
+     * @see #isNumbered(EntityReference)
      */
     public boolean isNumberedFiguresEnabled() throws Exception
     {
@@ -66,10 +67,10 @@ public class NumberedFiguresConfiguration
         if (doc == null) {
             return false;
         }
-        if (isNumbered(doc)) {
+        if (isNumbered(doc).orElse(false)) {
             return true;
         }
-        return isNumbered(doc.getParentReference());
+        return isNumbered(doc.getDocumentReference().getParent());
     }
 
     /**
@@ -80,7 +81,7 @@ public class NumberedFiguresConfiguration
      * @return @return {@code true} if the current document has a parent, and numbered headings are activated on the
      *     parent, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
-     * @see #isNumbered(DocumentReference)
+     * @see #isNumbered(EntityReference)
      */
     public boolean isNumberedFiguresEnabledOnParent() throws Exception
     {
@@ -89,7 +90,7 @@ public class NumberedFiguresConfiguration
             return false;
         }
 
-        return isNumbered(doc.getParentReference());
+        return isNumbered(doc.getDocumentReference().getParent());
     }
 
     private XWikiDocument getDocFromContext()
@@ -109,34 +110,35 @@ public class NumberedFiguresConfiguration
      * @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
      * @throws Exception in case of error when access the document instance though the document bridge
      */
-    private boolean isNumbered(DocumentReference documentReference) throws Exception
+    private boolean isNumbered(EntityReference documentReference) throws Exception
     {
         if (documentReference != null) {
-            DocumentReference currentReference = documentReference;
+            EntityReference currentReference = documentReference;
             do {
                 XWikiDocument actualDoc =
                     (XWikiDocument) this.documentAccessBridge.getDocumentInstance(currentReference);
-                if (isNumbered(actualDoc)) {
-                    return true;
+                Optional<Boolean> isNumbered = isNumbered(actualDoc);
+                if (isNumbered.isPresent()) {
+                    return isNumbered.get();
                 }
-                currentReference = actualDoc.getParentReference();
+                currentReference = currentReference.getParent();
             } while (currentReference != null);
         }
         return false;
     }
 
-    private boolean isNumbered(XWikiDocument actualDoc)
+    private Optional<Boolean> isNumbered(XWikiDocument actualDoc)
     {
         BaseObject xObject = actualDoc.getXObject(NumberedFiguresClassDocumentInitializer.REFERENCE);
         // We stop as soon as we find an object.
-        boolean isNumbered = false;
+        Optional<Boolean> isNumbered = Optional.empty();
         if (xObject != null) {
             String activatePropertyValue =
                 xObject.getStringValue(NumberedFiguresClassDocumentInitializer.STATUS_PROPERTY);
             // If the value is inherits, we continue looking up the hierarchy, otherwise we use the configured 
             // activation setting.
             if (!Objects.equals(activatePropertyValue, "inherits")) {
-                isNumbered = Objects.equals(activatePropertyValue, "activated");
+                isNumbered = Optional.of(Objects.equals(activatePropertyValue, "activated"));
             }
         }
         return isNumbered;

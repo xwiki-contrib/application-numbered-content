@@ -27,6 +27,8 @@ import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
 import org.xwiki.model.reference.DocumentReference;
+import org.xwiki.model.reference.EntityReference;
+import org.xwiki.model.reference.SpaceReference;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
 import org.xwiki.test.junit5.mockito.MockComponent;
@@ -42,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -64,8 +67,8 @@ class NumberedHeadingsConfigurationTest
     public static final DocumentReference DOCUMENT_REFERENCE_PAGE =
         new DocumentReference("xwiki", asList("Space0", "Space1"), "Page");
 
-    public static final DocumentReference DOCUMENT_REFERENCE_SPACE_1 =
-        new DocumentReference("xwiki", "Space0", "Space1");
+    public static final EntityReference DOCUMENT_REFERENCE_SPACE_1 =
+        new SpaceReference("xwiki", asList("Space0", "Space1"));
 
     @InjectMockComponents
     private DefaultNumberedHeadingsConfiguration defaultNumberedHeadingsConfiguration;
@@ -91,7 +94,6 @@ class NumberedHeadingsConfigurationTest
     @BeforeEach
     void setUp() throws Exception
     {
-        when(this.xWikiDocumentPage.getParentReference()).thenReturn(DOCUMENT_REFERENCE_SPACE_1);
         when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_PAGE)).thenReturn(this.xWikiDocumentPage);
         when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_1))
             .thenReturn(this.xWikiDocumentSpace1);
@@ -154,8 +156,8 @@ class NumberedHeadingsConfigurationTest
     @Test
     void isNumberedHeadingsEnabledNoXObject() throws Exception
     {
-        when(this.xWikiDocumentPage.getXObject(REFERENCE)).thenReturn(null);
-        when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(null);
+        doReturn(null).when(this.xWikiDocumentPage).getXObject(REFERENCE);
+        doReturn(null).when(this.xWikiDocumentSpace1).getXObject(REFERENCE);
         assertFalse(this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabled());
     }
 
@@ -185,7 +187,6 @@ class NumberedHeadingsConfigurationTest
         BaseObject baseObject = mock(BaseObject.class);
         when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(baseObject);
         when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn(STATUS_ACTIVATED);
-        when(this.xWikiDocumentPage.getParentReference()).thenReturn(DOCUMENT_REFERENCE_SPACE_1);
         assertTrue(this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabledOnParent());
     }
 }
