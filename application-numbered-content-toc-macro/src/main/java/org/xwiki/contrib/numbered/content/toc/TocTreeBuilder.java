@@ -34,14 +34,12 @@ import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.ListBLock;
 import org.xwiki.rendering.block.ListItemBlock;
 import org.xwiki.rendering.block.NumberedListBlock;
-import org.xwiki.rendering.block.RawBlock;
 import org.xwiki.rendering.block.SpaceBlock;
 import org.xwiki.rendering.block.SpecialSymbolBlock;
 import org.xwiki.rendering.block.WordBlock;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
 import org.xwiki.rendering.internal.macro.toc.TreeParameters;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
-import org.xwiki.rendering.syntax.Syntax;
 import org.xwiki.stability.Unstable;
 
 import static java.util.Collections.emptyList;
@@ -56,6 +54,8 @@ import static java.util.Collections.singletonList;
 @Unstable
 public class TocTreeBuilder
 {
+    private static final String ID_PARAMETER_NAME = "id";
+
     private final TocBlockFilter tocBlockFilter;
 
     private final HeaderNumberingService headerNumberingService;
@@ -210,14 +210,20 @@ public class TocTreeBuilder
     {
         // Create the link to target the header anchor
         DocumentResourceReference reference = new DocumentResourceReference(documentReference);
-        reference.setAnchor(headerBlock.getId());
+        String id;
+        if (headerBlock.getParameter(ID_PARAMETER_NAME) != null) {
+            id = headerBlock.getParameter(ID_PARAMETER_NAME);
+        } else {
+            id = headerBlock.getId();
+        }
+        reference.setAnchor(id);
 
-        ArrayList<Block> blocks = new ArrayList<>();
+        List<Block> blocks = new ArrayList<>();
         if (headingsNumbered) {
             Map<HeaderBlock, String> headerBlockStringMap = this.headerNumberingService.getHeadersMap(rootBlock);
             String rawContent = headerBlockStringMap.get(headerBlock);
             if (rawContent != null) {
-                blocks.add(new RawBlock(rawContent, Syntax.XHTML_1_0));
+                blocks.add(new WordBlock(rawContent));
                 blocks.add(new SpaceBlock());
             }
         }

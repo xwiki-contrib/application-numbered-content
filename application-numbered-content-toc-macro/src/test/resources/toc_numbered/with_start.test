@@ -31,21 +31,21 @@ beginMacroMarkerStandalone [toc] [depth=2]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
-onRawText [0] [xhtml/1.0]
+onWord [0]
 onSpace
 onWord [H1]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
-onRawText [1] [xhtml/1.0]
+onWord [1]
 onSpace
 onWord [H2]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
-onRawText [2] [xhtml/1.0]
+onWord [2]
 onSpace
 onWord [H2bis]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
@@ -54,14 +54,14 @@ endList [BULLETED]
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
-onRawText [10] [xhtml/1.0]
+onWord [10]
 onSpace
 onWord [H1bis]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]
-onRawText [100] [xhtml/1.0]
+onWord [100]
 onSpace
 onWord [H2tes]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]

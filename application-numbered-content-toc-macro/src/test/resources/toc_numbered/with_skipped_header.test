@@ -37,7 +37,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
-onRawText [0] [xhtml/1.0]
+onWord [0]
 onSpace
 onWord [H2]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
@@ -58,7 +58,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHellWorld]]] [fa
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorlD]]] [false]
-onRawText [1] [xhtml/1.0]
+onWord [1]
 onSpace
 onWord [Hello]
 onSpace

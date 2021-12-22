@@ -27,7 +27,7 @@ beginMacroMarkerStandalone [toc] [depth=2]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld21]]] [false]
-onRawText [0] [xhtml/1.0]
+onWord [0]
 onSpace
 onWord [Hello]
 onSpace
@@ -36,7 +36,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld21]]] 
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld2121]]] [false]
-onRawText [1] [xhtml/1.0]
+onWord [1]
 onSpace
 onWord [Hello]
 onSpace
@@ -45,7 +45,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld2121]]
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld...]]] [false]
-onRawText [2] [xhtml/1.0]
+onWord [2]
 onSpace
 onWord [Hello]
 onSpace
@@ -54,7 +54,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld...]]]
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:]]] [false]
-onRawText [3] [xhtml/1.0]
+onWord [3]
 onSpace
 onWord [Hello]
 onSpace
@@ -63,7 +63,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:]]] [
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:-1]]] [false]
-onRawText [4] [xhtml/1.0]
+onWord [4]
 onSpace
 onWord [Hello]
 onSpace
