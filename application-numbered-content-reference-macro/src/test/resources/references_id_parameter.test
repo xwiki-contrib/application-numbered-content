@@ -1,0 +1,29 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro reference when referencing a header with an id defined as a parameter.
+.#-----------------------------------------------------
+{{reference section="idP"/}}
+
+(% id="idP" %)
+= h1 =
+
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<span class="wikilink"><a href="#idP">1</a></span><h1 id="idP"><span>h1</span></h1>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [reference] [section=idP]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [idP]]] [false]
+onWord [1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [idP]]] [false]
+endMacroMarkerStandalone [reference] [section=idP]
+beginSection
+beginHeader [1, Hh1] [[id]=[idP]]
+onWord [h1]
+endHeader [1, Hh1] [[id]=[idP]]
+endSection
+endDocument

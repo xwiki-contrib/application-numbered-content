@@ -34,6 +34,7 @@ import org.xwiki.contrib.numbered.content.reference.ReferenceMacroParameters;
 import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
+import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.IdBlock;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.MacroBlock;
@@ -123,7 +124,13 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
 
             String headerBlockNumber =
                 headerNumberingService.getHeadersMap(rootBlock).entrySet().stream()
-                    .filter(it -> it.getKey().getId().equals(id)).findFirst().map(Map.Entry::getValue)
+                    .filter(it -> {
+                        HeaderBlock headerBlock = it.getKey();
+                        return Objects.equals(headerBlock.getId(), id)
+                            || Objects.equals(headerBlock.getParameter("id"), id)
+                            || headerBlock.<IdBlock>getBlocks(new ClassBlockMatcher(IdBlock.class),
+                            Block.Axes.DESCENDANT).stream().anyMatch(idb -> Objects.equals(idb.getName(), id));
+                    }).findFirst().map(Map.Entry::getValue)
                     .orElse(null);
             if (headerBlockNumber != null) {
                 number = headerBlockNumber;

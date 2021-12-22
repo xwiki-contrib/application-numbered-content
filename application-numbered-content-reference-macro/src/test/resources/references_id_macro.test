@@ -1,0 +1,46 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro reference when referencing a macro id located inside a header
+.#-----------------------------------------------------
+{{reference section="idA"/}} {{reference section="idB"/}}
+
+
+= {{id name="idA"/}} h1 {{id name="idB"/}} =
+
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<p><span class="wikilink"><a href="#idA">1</a></span> <span class="wikilink"><a href="#idB">1</a></span></p><div class="wikimodel-emptyline"></div><h1 id="Hh1" class="wikigeneratedid"><span><span id="idA"></span>&nbsp;h1 <span id="idB"></span></span></h1>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginParagraph
+beginMacroMarkerInline [reference] [section=idA]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [idA]]] [false]
+onWord [1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [idA]]] [false]
+endMacroMarkerInline [reference] [section=idA]
+onSpace
+beginMacroMarkerInline [reference] [section=idB]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [idB]]] [false]
+onWord [1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [idB]]] [false]
+endMacroMarkerInline [reference] [section=idB]
+endParagraph
+onEmptyLines [1]
+beginSection
+beginHeader [1, Hh1]
+beginMacroMarkerInline [id] [name=idA]
+onId [idA]
+endMacroMarkerInline [id] [name=idA]
+onSpace
+onWord [h1]
+onSpace
+beginMacroMarkerInline [id] [name=idB]
+onId [idB]
+endMacroMarkerInline [id] [name=idB]
+endHeader [1, Hh1]
+endSection
+endDocument
