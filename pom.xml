@@ -89,7 +89,22 @@
           <analysisConfiguration>
             <revapi.differences>
               <criticality>highlight</criticality>
-              <differences></differences>
+              <differences>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.field.constantValueChanged</code>
+                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER</old>
+                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER</new>
+                  <justification>Early change to use a more generic parameter name.</justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.field.constantValueChanged</code>
+                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</old>
+                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</new>
+                  <justification>Early change to use a more generic parameter name.</justification>
+                </item>
+              </differences>
             </revapi.differences>
           </analysisConfiguration>
         </configuration>

@@ -50,7 +50,7 @@ public interface HeaderNumberingService
     /**
      * The constant for the skip parameter.
      */
-    String SKIP_PARAMETER = "data-numbered-headings-skip";
+    String SKIP_PARAMETER = "data-xwiki-rendering-protected";
     
     /**
      * Return a list of headers found in a root block.
