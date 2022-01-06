@@ -157,7 +157,7 @@
 }
 
 #xwikicontent figure figcaption::before,
-#xwikicontent div[data-cke-display-name="macro:figure"] div[data-cke-display-name="macro:figureCaption"] p::before {
+#xwikicontent div[data-cke-display-name="macro:figure"] div[data-cke-display-name="macro:figureCaption"] p:first-child::before {
   content: "$services.localization.render('numbered.figures.numbered.figureCaption.label') " counter(cfigure) ':\00a0';
 }
 #end</code>
