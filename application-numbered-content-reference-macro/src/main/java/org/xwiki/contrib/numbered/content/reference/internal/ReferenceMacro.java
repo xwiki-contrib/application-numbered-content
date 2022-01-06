@@ -78,7 +78,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
      */
     public ReferenceMacro()
     {
-        super("Id", DESCRIPTION, ReferenceMacroParameters.class);
+        super("Reference", DESCRIPTION, ReferenceMacroParameters.class);
         setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
         setPriority(3000);
     }
