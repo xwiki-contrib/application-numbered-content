@@ -1,6 +1,8 @@
-# Paragraph Numbering
+# Numbered Content
 
-Allows to automatically add number on paragraphs and sub-paragraphs. 
+Provides automatic numbering for different type of contents. Currently: numbered headings, and numbered figures. 
+In addition, integrates those numbers in the Table of Content, and provides a reference macro to generate numbered links
+to numbered contents.
 
 * Project Lead: [Manuel Leduc](https://www.xwiki.org/xwiki/bin/view/XWiki/mleduc) 
 * [Design page](https://design.xwiki.org/xwiki/bin/view/Proposal/ContentNumbering)
