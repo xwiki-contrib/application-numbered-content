@@ -112,13 +112,8 @@
     </plugins>
   </build>
   <modules>
-    <module>application-numbered-content-api</module>
-    <module>application-numbered-content-figures-api</module>
-    <module>application-numbered-content-figures-ui</module>
-    <module>application-numbered-content-reference-macro</module>
-    <module>application-numbered-content-toc-macro</module>
-    <module>application-numbered-content-headings-api</module>
-    <module>application-numbered-content-headings-default</module>
-    <module>application-numbered-content-headings-ui</module>
+    <module>application-numbered-content-common</module>
+    <module>application-numbered-content-figures</module>
+    <module>application-numbered-content-headings</module>
   </modules>
 </project>
