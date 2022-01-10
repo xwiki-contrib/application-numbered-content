@@ -65,7 +65,68 @@
   <properties>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
     <xwiki.issueManagement.jira.id>NCAPP</xwiki.issueManagement.jira.id>
+    <latex.version>1.16-SNAPSHOT</latex.version>
   </properties>
+  <dependencyManagement>
+    <!-- Dependency management to handle dependencies relying on older parent-platform parent pom (e.g., latex). -->
+    <dependencies>
+      <dependency>
+        <groupId>org.xwiki.rendering</groupId>
+        <artifactId>xwiki-rendering-syntax-wikimodel</artifactId>
+        <version>${rendering.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-rendering-macro-velocity</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.rendering</groupId>
+        <artifactId>xwiki-rendering-macro-figure</artifactId>
+        <version>${rendering.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-filter-event-model</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-configuration-default</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+            <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-uiextension-api</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-component-api</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-properties</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-oldcore</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-filter-script</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-classloader-xwiki</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <build>
     <plugins>
       <plugin>
@@ -114,8 +175,10 @@
     <module>application-numbered-content-figures-api</module>
     <module>application-numbered-content-figures-ui</module>
     <module>application-numbered-content-reference-macro</module>
+    <module>application-numbered-content-reference-latex</module>
     <module>application-numbered-content-toc-macro</module>
     <module>application-numbered-content-headings-api</module>
     <module>application-numbered-content-headings-ui</module>
+    <module>application-numbered-content-headings-latex</module>
   </modules>
 </project>
