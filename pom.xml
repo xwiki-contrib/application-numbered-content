@@ -32,7 +32,7 @@
   <packaging>pom</packaging>
   <groupId>org.xwiki.contrib.numbered.content</groupId>
   <artifactId>application-numbered-content</artifactId>
-  <name>Numbered Content - Parent Model</name>
+  <name>Numbered Content - Parent POM</name>
   <description>Allows to automatically add number on the content (e.g., headers, paragraphs, figures)</description>
   <version>1.2-SNAPSHOT</version>
   <developers>

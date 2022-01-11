@@ -30,11 +30,8 @@
   </parent>
   <packaging>pom</packaging>
   <artifactId>application-numbered-content-figures</artifactId>
-  <name>Numbered Content - Figures</name>
-  <description>TODO</description>
-  <properties>
-    <!-- TODO -->
-  </properties>
+  <name>Numbered Content - Figures - Parent POM</name>
+  <description>Numbered Content - Figures - Parent POM</description>
   <modules>
     <module>application-numbered-content-figures-api</module>
     <module>application-numbered-content-figures-ui</module>

@@ -30,11 +30,8 @@
   </parent>
   <packaging>pom</packaging>
   <artifactId>application-numbered-content-common</artifactId>
-  <name>Numbered Content - Common</name>
-  <description>TODO</description>
-  <properties>
-    <!-- TODO -->
-  </properties>
+  <name>Numbered Content - Common - Parent POM</name>
+  <description>Numbered Content - Common - Parent POM</description>
   <modules>
     <module>application-numbered-content-common-api</module>
     <module>application-numbered-content-common-reference</module>

@@ -30,11 +30,8 @@
   </parent>
   <packaging>pom</packaging>
   <artifactId>application-numbered-content-headings</artifactId>
-  <name>Numbered Content - Headings</name>
-  <description>TODO</description>
-  <properties>
-    <!-- TODO -->
-  </properties>
+  <name>Numbered Content - Headings- Parent POM</name>
+  <description>Numbered Content - Headings - Parent POM</description>
   <modules>
     <module>application-numbered-content-headings-api</module>
     <module>application-numbered-content-headings-ui</module>
