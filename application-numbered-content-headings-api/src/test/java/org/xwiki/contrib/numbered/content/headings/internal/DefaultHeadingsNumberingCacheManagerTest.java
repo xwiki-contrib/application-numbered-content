@@ -48,19 +48,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.xwiki.contrib.numbered.content.headings.internal.DefaultHeadersNumberingCacheManager.CachedValue;
+import static org.xwiki.contrib.numbered.content.headings.internal.DefaultHeadingsNumberingCacheManager.CachedValue;
 
 /**
- * Test of {@link DefaultHeadersNumberingCacheManager}.
+ * Test of {@link DefaultHeadingsNumberingCacheManager}.
  *
  * @version $Id$
  * @since 1.0
  */
 @ComponentTest
-class DefaultHeadersNumberingCacheManagerTest
+class DefaultHeadingsNumberingCacheManagerTest
 {
     @InjectMockComponents
-    private DefaultHeadersNumberingCacheManager defaultNumberingCacheManager;
+    private DefaultHeadingsNumberingCacheManager defaultNumberingCacheManager;
 
     @MockComponent
     private CacheManager cacheManager;
@@ -95,7 +95,7 @@ class DefaultHeadersNumberingCacheManagerTest
         t.put(h1, "1");
         t.put(h2, "2");
         when(this.cache.get(blockHashCode())).thenReturn(new CachedValue(t, asList(h1, h2)));
-        Optional<List<HeaderBlock>> headers = this.defaultNumberingCacheManager.getHeaders(this.block);
+        Optional<List<HeaderBlock>> headers = this.defaultNumberingCacheManager.getHeadings(this.block);
         assertTrue(headers.isPresent());
         assertThat(headers.get(), containsInAnyOrder(h1, h2));
     }

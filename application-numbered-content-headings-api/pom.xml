@@ -35,6 +35,7 @@
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Numbered Headings API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
+    <xwiki.jacoco.instructionRatio>0.82</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
@@ -52,10 +53,18 @@
       <artifactId>xwiki-platform-oldcore</artifactId>
       <version>${platform.version}</version>
     </dependency>
+    <!-- Test dependencies. -->
     <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-api</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-tool-test-component</artifactId>
+      <version>${commons.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Required to test with oldcore as a dependency. -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

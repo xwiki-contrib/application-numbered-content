@@ -15,7 +15,7 @@ to numbered contents.
 * Translations:
   * [Figures - API](https://l10n.xwiki.org/projects/xwiki-contrib/application-numbered-content-figures-api/)
   * [Figures - UI](https://l10n.xwiki.org/projects/xwiki-contrib/application-numbered-content-figures-ui/)
-  * [Headings - Default](https://l10n.xwiki.org/projects/xwiki-contrib/application-numbered-content-headings-default/)
+  * [Headings - API](https://l10n.xwiki.org/projects/xwiki-contrib/application-numbered-content-headings-api/)
   * [Headings - UI](https://l10n.xwiki.org/projects/xwiki-contrib/application-numbered-content-headings-ui/)
   * [Reference - Macro](https://l10n.xwiki.org/projects/xwiki-contrib/application-numbered-content-reference-macro/)
 * Sonar Dashboard: N/A 

@@ -17,39 +17,54 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content;
+package org.xwiki.contrib.numbered.content.headings;
 
 import java.util.List;
 import java.util.Map;
 
 import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.FigureBlock;
+import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.stability.Unstable;
 
 /**
- * Provide the operations to compute the numbering of figures.
+ * Provide the operations to compute the numbering of contents.
  *
  * @version $Id$
  * @since 1.0
  */
 @Role
 @Unstable
-public interface FiguresNumberingService
+public interface HeadingsNumberingService
 {
     /**
-     * Return a list of figures found in a root block.
-     *
-     * @param rootBlock the root block to analyze
-     * @return the list of figures found in the root block
+     * Class identifying sub-sections of a document that are ruled by their own numbering.
      */
-    List<FigureBlock> getFiguresList(Block rootBlock);
+    String NUMBERED_CONTENT_ROOT_CLASS = "numbered-content-root";
 
     /**
-     * Return a map of the figures found in a root block associated with their computed numbering.
+     * The constant for the start parameter.
+     */
+    String START_PARAMETER = "data-numbered-headings-start";
+
+    /**
+     * The constant for the skip parameter.
+     */
+    String SKIP_PARAMETER = "data-xwiki-rendering-protected";
+    
+    /**
+     * Return a list of headers found in a root block.
+     *
+     * @param rootBlock the root block to analyze
+     * @return the list of headers found in the root block
+     */
+    List<HeaderBlock> getHeadingsList(Block rootBlock);
+
+    /**
+     * Return a map of the headers found in a root block associated with their computed numbering.
      *
      * @param rootBlock the root block to analyze
      * @return the computed map
      */
-    Map<FigureBlock, String> getFiguresMap(Block rootBlock);
+    Map<HeaderBlock, String> getHeadingsMap(Block rootBlock);
 }

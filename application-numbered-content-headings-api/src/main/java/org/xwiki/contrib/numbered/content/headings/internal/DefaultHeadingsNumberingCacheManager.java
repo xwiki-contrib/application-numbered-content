@@ -42,7 +42,7 @@ import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 
 /**
- * The default implementation of {@link HeadersNumberingCacheManager}, based on a {@link CacheManager} with an {@link
+ * The default implementation of {@link HeadingsNumberingCacheManager}, based on a {@link CacheManager} with an {@link
  * LRUEvictionConfiguration} eviction configuration.
  *
  * @version $Id$
@@ -50,7 +50,7 @@ import org.xwiki.rendering.block.HeaderBlock;
  */
 @Component
 @Singleton
-public class DefaultHeadersNumberingCacheManager implements HeadersNumberingCacheManager, Initializable, Disposable
+public class DefaultHeadingsNumberingCacheManager implements HeadingsNumberingCacheManager, Initializable, Disposable
 {
     @Inject
     private CacheManager cacheManager;
@@ -130,16 +130,16 @@ public class DefaultHeadersNumberingCacheManager implements HeadersNumberingCach
     }
 
     @Override
-    public Optional<List<HeaderBlock>> getHeaders(Block block)
+    public Optional<List<HeaderBlock>> getHeadings(Block block)
     {
         CachedValue cachedValue = this.cache.get(computeKey(block));
         return Optional.ofNullable(cachedValue).map(it -> it.orderedBlocks);
     }
 
     @Override
-    public void put(Block block, Map<HeaderBlock, String> values, List<HeaderBlock> headers)
+    public void put(Block block, Map<HeaderBlock, String> values, List<HeaderBlock> headings)
     {
-        this.cache.set(computeKey(block), new CachedValue(values, headers));
+        this.cache.set(computeKey(block), new CachedValue(values, headings));
     }
 
     @Override

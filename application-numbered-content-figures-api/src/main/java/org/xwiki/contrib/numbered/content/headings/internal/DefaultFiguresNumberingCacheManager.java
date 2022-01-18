@@ -137,9 +137,9 @@ public class DefaultFiguresNumberingCacheManager implements FiguresNumberingCach
     }
 
     @Override
-    public void put(Block block, Map<FigureBlock, String> values, List<FigureBlock> headers)
+    public void put(Block block, Map<FigureBlock, String> values, List<FigureBlock> headings)
     {
-        this.cache.set(computeKey(block), new CachedValue(values, headers));
+        this.cache.set(computeKey(block), new CachedValue(values, headings));
     }
 
     @Override

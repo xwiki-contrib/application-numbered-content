@@ -40,7 +40,7 @@
   <dependencies>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-headings-default</artifactId>
+      <artifactId>application-numbered-content-headings-api</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>

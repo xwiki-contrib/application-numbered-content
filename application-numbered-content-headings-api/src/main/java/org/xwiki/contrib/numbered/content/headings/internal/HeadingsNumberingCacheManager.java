@@ -35,7 +35,7 @@ import org.xwiki.rendering.block.HeaderBlock;
  * @since 1.0
  */
 @Role
-public interface HeadersNumberingCacheManager
+public interface HeadingsNumberingCacheManager
 {
     /**
      * Return the list of headers that are cached for a given block.
@@ -43,16 +43,16 @@ public interface HeadersNumberingCacheManager
      * @param block the block containing the headers
      * @return the list of cached headers
      */
-    Optional<List<HeaderBlock>> getHeaders(Block block);
+    Optional<List<HeaderBlock>> getHeadings(Block block);
 
     /**
      * Associate the computed value to the given block.
      *
      * @param block the block containing the headers to number
      * @param values the computed values for the headers of the block
-     * @param headers the list of headers in their order of appearance
+     * @param headings the list of headers in their order of appearance
      */
-    void put(Block block, Map<HeaderBlock, String> values, List<HeaderBlock> headers);
+    void put(Block block, Map<HeaderBlock, String> values, List<HeaderBlock> headings);
 
     /**
      * Return the cached map of headers and their computed numbers.

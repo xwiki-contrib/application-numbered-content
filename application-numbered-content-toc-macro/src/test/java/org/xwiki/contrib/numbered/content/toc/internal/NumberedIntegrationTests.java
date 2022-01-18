@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.xwiki.contrib.numbered.content.HeaderNumberingService;
+import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -35,8 +35,8 @@ import org.xwiki.test.mockito.MockitoComponentManager;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER;
-import static org.xwiki.contrib.numbered.content.HeaderNumberingService.START_PARAMETER;
+import static org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService.SKIP_PARAMETER;
+import static org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService.START_PARAMETER;
 
 /**
  * Run all tests found in {@code *.test} files located in the classpath. These {@code *.test} files must follow the
@@ -57,9 +57,9 @@ public class NumberedIntegrationTests implements RenderingTests
         NumberedHeadingsConfiguration numberedHeadingService =
             componentManager.registerMockComponent(NumberedHeadingsConfiguration.class);
         when(numberedHeadingService.isNumberedHeadingsEnabled()).thenReturn(true);
-        HeaderNumberingService headerNumberingService =
-            componentManager.registerMockComponent(HeaderNumberingService.class, "headings");
-        when(headerNumberingService.getHeadersMap(any())).thenAnswer(invocation -> {
+        HeadingsNumberingService headingsNumberingService =
+            componentManager.registerMockComponent(HeadingsNumberingService.class, "headings");
+        when(headingsNumberingService.getHeadingsMap(any())).thenAnswer(invocation -> {
             List<HeaderBlock> blocks = invocation.<Block>getArgument(0)
                 .getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT);
             Map<HeaderBlock, String> ret = new HashMap<>();
@@ -78,7 +78,7 @@ public class NumberedIntegrationTests implements RenderingTests
             }
             return ret;
         });
-        when(headerNumberingService.getHeadersList(any())).thenAnswer(invocation -> invocation.<Block>getArgument(0)
+        when(headingsNumberingService.getHeadingsList(any())).thenAnswer(invocation -> invocation.<Block>getArgument(0)
             .getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT));
     }
 }

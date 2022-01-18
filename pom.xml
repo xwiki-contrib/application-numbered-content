@@ -33,7 +33,7 @@
   <groupId>org.xwiki.contrib.numbered.content</groupId>
   <artifactId>application-numbered-content</artifactId>
   <name>Numbered Content - Parent Model</name>
-  <description>Allows to automatically add number on the content (e.g., headers, paragraphs, figures)</description>
+  <description>Allows to automatically add number on the content (e.g., headings, paragraphs, figures)</description>
   <version>1.2-SNAPSHOT</version>
   <developers>
     <developer>
@@ -88,21 +88,20 @@
         <configuration>
           <analysisConfiguration>
             <revapi.differences>
-              <criticality>highlight</criticality>
+              <criticality>allowed</criticality>
+              <justification>Not a breaking change, unstable API vocabulary uniformization.</justification>
               <differences>
                 <item>
                   <ignore>true</ignore>
-                  <code>java.field.constantValueChanged</code>
-                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER</old>
-                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER</new>
-                  <justification>Early change to use a more generic parameter name.</justification>
+                  <code>java.class.removed</code>
+                  <old>class org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</old>
                 </item>
                 <item>
                   <ignore>true</ignore>
-                  <code>java.field.constantValueChanged</code>
-                  <old>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</old>
-                  <new>field org.xwiki.contrib.numbered.content.HeaderNumberingService.SKIP_PARAMETER @ org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</new>
-                  <justification>Early change to use a more generic parameter name.</justification>
+                  <code>java.method.parameterTypeChanged</code>
+                  <old>parameter void org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::&lt;init&gt;(org.xwiki.rendering.internal.macro.toc.TocBlockFilter, ===org.xwiki.contrib.numbered.content.HeaderNumberingService===)</old>
+                  <new>parameter void org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::&lt;init&gt;(org.xwiki.rendering.internal.macro.toc.TocBlockFilter, ===org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService===)</new>
+                  <parameterIndex>1</parameterIndex>
                 </item>
               </differences>
             </revapi.differences>
@@ -112,13 +111,11 @@
     </plugins>
   </build>
   <modules>
-    <module>application-numbered-content-api</module>
     <module>application-numbered-content-figures-api</module>
     <module>application-numbered-content-figures-ui</module>
     <module>application-numbered-content-reference-macro</module>
     <module>application-numbered-content-toc-macro</module>
     <module>application-numbered-content-headings-api</module>
-    <module>application-numbered-content-headings-default</module>
     <module>application-numbered-content-headings-ui</module>
   </modules>
 </project>

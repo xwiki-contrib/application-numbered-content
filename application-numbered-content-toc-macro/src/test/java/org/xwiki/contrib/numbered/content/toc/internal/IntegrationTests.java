@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.xwiki.contrib.numbered.content.HeaderNumberingService;
+import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -55,9 +55,9 @@ public class IntegrationTests implements RenderingTests
         NumberedHeadingsConfiguration numberedHeadingService =
             componentManager.registerMockComponent(NumberedHeadingsConfiguration.class);
         when(numberedHeadingService.isNumberedHeadingsEnabled()).thenReturn(false);
-        HeaderNumberingService headerNumberingService =
-            componentManager.registerMockComponent(HeaderNumberingService.class, "headings");
-        when(headerNumberingService.getHeadersMap(any())).thenAnswer(invocation -> {
+        HeadingsNumberingService headingsNumberingService =
+            componentManager.registerMockComponent(HeadingsNumberingService.class, "headings");
+        when(headingsNumberingService.getHeadingsMap(any())).thenAnswer(invocation -> {
             List<HeaderBlock> blocks = invocation.<Block>getArgument(0)
                 .getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT);
             Map<HeaderBlock, String> ret = new HashMap<>();
@@ -68,7 +68,7 @@ public class IntegrationTests implements RenderingTests
             }
             return ret;
         });
-        when(headerNumberingService.getHeadersList(any())).thenAnswer(invocation -> invocation.<Block>getArgument(0)
+        when(headingsNumberingService.getHeadingsList(any())).thenAnswer(invocation -> invocation.<Block>getArgument(0)
             .getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT));
     }
 }

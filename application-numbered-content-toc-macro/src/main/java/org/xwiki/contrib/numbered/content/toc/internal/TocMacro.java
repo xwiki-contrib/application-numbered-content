@@ -29,7 +29,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
-import org.xwiki.contrib.numbered.content.HeaderNumberingService;
+import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
 import org.xwiki.rendering.block.Block;
@@ -81,7 +81,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
 
     @Inject
     @Named("headings")
-    private HeaderNumberingService headerNumberingService;
+    private HeadingsNumberingService headingsNumberingService;
 
     @Inject
     private Logger logger;
@@ -112,7 +112,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
         super.initialize();
         this.tocTreeBuilder =
             new TocTreeBuilder(new TocBlockFilter(this.plainTextParser, this.linkLabelGenerator),
-                this.headerNumberingService);
+                this.headingsNumberingService);
     }
 
     @Override

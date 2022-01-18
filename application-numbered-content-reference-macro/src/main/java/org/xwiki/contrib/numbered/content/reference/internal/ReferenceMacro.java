@@ -28,8 +28,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.FiguresNumberingService;
-import org.xwiki.contrib.numbered.content.HeaderNumberingService;
+import org.xwiki.contrib.numbered.content.headings.FiguresNumberingService;
+import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.contrib.numbered.content.reference.ReferenceMacroParameters;
 import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.block.Block;
@@ -65,7 +65,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         "Create a link to a section id, displaying the section number as the link label.";
 
     @Inject
-    private List<HeaderNumberingService> headerNumberingServices;
+    private List<HeadingsNumberingService> headingsNumberingServices;
 
     @Inject
     private List<FiguresNumberingService> figuresNumberingServices;
@@ -100,7 +100,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         Block rootBlock = ((Block) context.getXDOM()).getRoot();
 
         // Chain the search, first in the headers, then in the figures.
-        String number = headerNumber(id, rootBlock);
+        String number = headingNumber(id, rootBlock);
         if (number == null) {
             number = figuresNumber(id, rootBlock);
         }
@@ -117,23 +117,23 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         return singletonList(referenceContent);
     }
 
-    private String headerNumber(String id, Block rootBlock)
+    private String headingNumber(String id, Block rootBlock)
     {
         String number = null;
-        for (HeaderNumberingService headerNumberingService : this.headerNumberingServices) {
+        for (HeadingsNumberingService headingsNumberingService : this.headingsNumberingServices) {
 
-            String headerBlockNumber =
-                headerNumberingService.getHeadersMap(rootBlock).entrySet().stream()
+            String headingBlockNumber =
+                headingsNumberingService.getHeadingsMap(rootBlock).entrySet().stream()
                     .filter(it -> {
-                        HeaderBlock headerBlock = it.getKey();
-                        return Objects.equals(headerBlock.getId(), id)
-                            || Objects.equals(headerBlock.getParameter("id"), id)
-                            || headerBlock.<IdBlock>getBlocks(new ClassBlockMatcher(IdBlock.class),
+                        HeaderBlock headingBlock = it.getKey();
+                        return Objects.equals(headingBlock.getId(), id)
+                            || Objects.equals(headingBlock.getParameter("id"), id)
+                            || headingBlock.<IdBlock>getBlocks(new ClassBlockMatcher(IdBlock.class),
                             Block.Axes.DESCENDANT).stream().anyMatch(idb -> Objects.equals(idb.getName(), id));
                     }).findFirst().map(Map.Entry::getValue)
                     .orElse(null);
-            if (headerBlockNumber != null) {
-                number = headerBlockNumber;
+            if (headingBlockNumber != null) {
+                number = headingBlockNumber;
                 break;
             }
         }

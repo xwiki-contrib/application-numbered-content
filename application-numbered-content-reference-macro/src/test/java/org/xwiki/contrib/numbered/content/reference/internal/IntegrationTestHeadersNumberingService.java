@@ -27,7 +27,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.HeaderNumberingService;
+import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
@@ -41,16 +41,16 @@ import org.xwiki.rendering.block.match.ClassBlockMatcher;
 @Component
 @Singleton
 @Named("integrationtestheaders")
-public class IntegrationTestHeadersNumberingService implements HeaderNumberingService
+public class IntegrationTestHeadersNumberingService implements HeadingsNumberingService
 {
     @Override
-    public List<HeaderBlock> getHeadersList(Block rootBlock)
+    public List<HeaderBlock> getHeadingsList(Block rootBlock)
     {
         return rootBlock.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT);
     }
 
     @Override
-    public Map<HeaderBlock, String> getHeadersMap(Block rootBlock)
+    public Map<HeaderBlock, String> getHeadingsMap(Block rootBlock)
     {
         Map<HeaderBlock, String> ret = new HashMap<>();
         // The headers are numbered linearly, regardless of their levels.

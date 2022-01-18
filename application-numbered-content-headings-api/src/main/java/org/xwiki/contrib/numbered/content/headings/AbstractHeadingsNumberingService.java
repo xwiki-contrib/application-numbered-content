@@ -31,53 +31,50 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.xwiki.contrib.numbered.content.HeaderNumberingService;
-import org.xwiki.contrib.numbered.content.headings.internal.HeadersNumberingCacheManager;
+import org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingCacheManager;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.stability.Unstable;
 
 /**
- * Provides a default behaviour for the {@link HeaderNumberingService} components where the numbered contents are saved
- * in a {@link HeadersNumberingCacheManager}.
+ * Provides a default behaviour for the {@link HeadingsNumberingService} components where the numbered contents are
+ * saved in a {@link HeadingsNumberingCacheManager}.
  *
  * @version $Id$
  * @since 1.0
  */
 @Unstable
-public abstract class AbstractHeadersNumberingService implements HeaderNumberingService
+public abstract class AbstractHeadingsNumberingService implements HeadingsNumberingService
 {
-
-
     @Inject
-    private HeadersNumberingCacheManager cacheManager;
+    private HeadingsNumberingCacheManager cacheManager;
 
     @Override
-    public List<HeaderBlock> getHeadersList(Block rootBlock)
+    public List<HeaderBlock> getHeadingsList(Block rootBlock)
     {
-        Optional<List<HeaderBlock>> headersOpt = this.cacheManager.getHeaders(rootBlock);
-        List<HeaderBlock> headers;
-        if (headersOpt.isPresent()) {
-            headers = headersOpt.get();
+        Optional<List<HeaderBlock>> headingsOpt = this.cacheManager.getHeadings(rootBlock);
+        List<HeaderBlock> headings;
+        if (headingsOpt.isPresent()) {
+            headings = headingsOpt.get();
         } else {
-            headers = getHeaderBlocks(rootBlock);
-            buildCache(rootBlock, headers);
+            headings = getHeadingsBlocks(rootBlock);
+            buildCache(rootBlock, headings);
         }
-        return headers;
+        return headings;
     }
 
     @Override
-    public Map<HeaderBlock, String> getHeadersMap(Block rootBlock)
+    public Map<HeaderBlock, String> getHeadingsMap(Block rootBlock)
     {
-        Optional<Map<HeaderBlock, String>> headersOpt = this.cacheManager.get(rootBlock);
-        Map<HeaderBlock, String> headers;
-        if (headersOpt.isPresent()) {
-            headers = headersOpt.get();
+        Optional<Map<HeaderBlock, String>> headingsOpts = this.cacheManager.get(rootBlock);
+        Map<HeaderBlock, String> headings;
+        if (headingsOpts.isPresent()) {
+            headings = headingsOpts.get();
         } else {
-            buildCache(rootBlock, getHeaderBlocks(rootBlock));
-            headers = this.cacheManager.get(rootBlock).get();
+            buildCache(rootBlock, getHeadingsBlocks(rootBlock));
+            headings = this.cacheManager.get(rootBlock).get();
         }
-        return headers;
+        return headings;
     }
 
     /**
@@ -86,40 +83,40 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
      * @param rootBlock the root block to number
      * @return the list of header blocks to number
      */
-    public abstract List<HeaderBlock> getHeaderBlocks(Block rootBlock);
+    public abstract List<HeaderBlock> getHeadingsBlocks(Block rootBlock);
 
-    private void buildCache(Block rootBlock, List<HeaderBlock> headers)
+    private void buildCache(Block rootBlock, List<HeaderBlock> headings)
     {
         Map<HeaderBlock, String> rootBlockCache = new HashMap<>();
-        this.cacheManager.put(rootBlock, rootBlockCache, headers);
+        this.cacheManager.put(rootBlock, rootBlockCache, headings);
 
         Deque<Integer> stack = new ArrayDeque<>();
         stack.push(0);
-        for (HeaderBlock header : headers) {
-            if (header.getParameter(SKIP_PARAMETER) == null) {
-                cacheHeader(rootBlockCache, stack, header);
+        for (HeaderBlock heading : headings) {
+            if (heading.getParameter(SKIP_PARAMETER) == null) {
+                cacheHeading(rootBlockCache, stack, heading);
             }
         }
     }
 
-    private void cacheHeader(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock header)
+    private void cacheHeading(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock heading)
     {
-        int level = header.getLevel().getAsInt();
+        int level = heading.getLevel().getAsInt();
         Integer start = null;
-        if (header.getParameter(START_PARAMETER) != null) {
-            start = Integer.parseInt(header.getParameter(START_PARAMETER));
+        if (heading.getParameter(START_PARAMETER) != null) {
+            start = Integer.parseInt(heading.getParameter(START_PARAMETER));
         }
         if (level == stack.size()) {
-            cacheHeaderSameLevel(rootBlockCache, stack, header, start);
+            cacheHeadingSameLevel(rootBlockCache, stack, heading, start);
         } else if (level > stack.size()) {
-            cacheHeaderLevelIncreases(rootBlockCache, stack, header, level, start);
+            cacheHeadingLevelIncreases(rootBlockCache, stack, heading, level, start);
         } else {
-            cacheHeaderLevelDecreases(rootBlockCache, stack, header, level, start);
+            cacheHeadingLevelDecreases(rootBlockCache, stack, heading, level, start);
         }
     }
 
-    private void cacheHeaderLevelDecreases(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
-        HeaderBlock header, int level, Integer start)
+    private void cacheHeadingLevelDecreases(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
+        HeaderBlock heading, int level, Integer start)
     {
         while (stack.size() > level) {
             stack.pop();
@@ -130,11 +127,11 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
         } else {
             stack.push(pop + 1);
         }
-        rootBlockCache.put(header, serialize(stack));
+        rootBlockCache.put(heading, serialize(stack));
     }
 
-    private void cacheHeaderLevelIncreases(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
-        HeaderBlock header, int level, Integer start)
+    private void cacheHeadingLevelIncreases(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
+        HeaderBlock heading, int level, Integer start)
     {
         for (int i = stack.size(); i < level; i++) {
             if (i != level - 1) {
@@ -147,11 +144,11 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
                 }
             }
         }
-        rootBlockCache.put(header, serialize(stack));
+        rootBlockCache.put(heading, serialize(stack));
     }
 
-    private void cacheHeaderSameLevel(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack, HeaderBlock header,
-        Integer start)
+    private void cacheHeadingSameLevel(Map<HeaderBlock, String> rootBlockCache, Deque<Integer> stack,
+        HeaderBlock heading, Integer start)
     {
         Integer pop = stack.pop();
         if (start != null) {
@@ -159,7 +156,7 @@ public abstract class AbstractHeadersNumberingService implements HeaderNumbering
         } else {
             stack.push(pop + 1);
         }
-        rootBlockCache.put(header, serialize(stack));
+        rootBlockCache.put(heading, serialize(stack));
     }
 
     private String serialize(Deque<Integer> stack)

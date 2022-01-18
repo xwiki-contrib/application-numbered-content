@@ -45,7 +45,12 @@
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-api</artifactId>
+      <artifactId>application-numbered-content-headings-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-figures-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- Runtime dependencies. -->

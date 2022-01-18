@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.FiguresNumberingService;
+import org.xwiki.contrib.numbered.content.headings.FiguresNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
@@ -50,14 +50,14 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
     public List<FigureBlock> getFiguresList(Block rootBlock)
     {
         Optional<List<FigureBlock>> figuresOpt = this.cacheManager.getFigures(rootBlock);
-        List<FigureBlock> headers;
+        List<FigureBlock> figures;
         if (figuresOpt.isPresent()) {
-            headers = figuresOpt.get();
+            figures = figuresOpt.get();
         } else {
-            headers = getFigureBlocks(rootBlock);
-            buildCache(rootBlock, headers);
+            figures = getFigureBlocks(rootBlock);
+            buildCache(rootBlock, figures);
         }
-        return headers;
+        return figures;
     }
 
     @Override

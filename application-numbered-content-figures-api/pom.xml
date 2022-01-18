@@ -48,10 +48,5 @@
       <artifactId>xwiki-platform-oldcore</artifactId>
       <version>${platform.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
 </project>
