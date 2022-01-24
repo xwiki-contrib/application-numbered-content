@@ -989,7 +989,7 @@ counter-reset: ch6 var(--numbered-headings-start);
   'docVersion': $origdoc.getVersion()
 })))
 {{html clean='false'}}
-&lt;link rel='stylesheet' type='text/css' href="$ssxHref"/&gt;
+&lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
 {{/html}}
 {{/velocity}}</content>
     </property>
