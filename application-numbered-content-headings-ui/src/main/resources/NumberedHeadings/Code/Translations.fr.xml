@@ -40,6 +40,9 @@
 numbered.headings.codeSpace.description=C'est l'endroit où se trouve le code de l'application numérotation des titres (Numbered Headings).
 numbered.headings.activationUI.label=Activer la numérotation des titres
 numbered.headings.activationUI.parameters.title=Numérotation des titres
+numbered.headings.activationUI.contentUpdate.inProgress=Mise à jour du contenu ...
+numbered.headings.activationUI.contentUpdate.done=Contenu mis à jour
+numbered.headings.activationUI.contentUpdate.failed=Échec de mise à jour du contenu
 numbered.headings.ckeditor.headerConfigurationAction.title=Paramétrage des titres
 numbered.headings.ckeditor.headerConfigurationAction.start.title=Recommencer à
 numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Le numéro de départ du titre doit être un nombre entier.
