@@ -137,7 +137,7 @@ public class NumberedFiguresConfiguration
                 xObject.getStringValue(NumberedFiguresClassDocumentInitializer.STATUS_PROPERTY);
             // If the value is inherits, we continue looking up the hierarchy, otherwise we use the configured 
             // activation setting.
-            if (!Objects.equals(activatePropertyValue, "inherits")) {
+            if (!Objects.equals(activatePropertyValue, "")) {
                 isNumbered = Optional.of(Objects.equals(activatePropertyValue, "activated"));
             }
         }

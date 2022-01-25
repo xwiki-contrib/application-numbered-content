@@ -26,8 +26,10 @@ import org.mockito.Mock;
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
+import org.xwiki.model.EntityType;
 import org.xwiki.model.reference.DocumentReference;
 import org.xwiki.model.reference.EntityReference;
+import org.xwiki.model.reference.EntityReferenceProvider;
 import org.xwiki.model.reference.SpaceReference;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
@@ -39,6 +41,7 @@ import com.xpn.xwiki.objects.BaseObject;
 
 import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -64,11 +67,14 @@ import static org.xwiki.contrib.numbered.content.headings.internal.NumberedHeadi
 @ComponentTest
 class NumberedHeadingsConfigurationTest
 {
-    public static final DocumentReference DOCUMENT_REFERENCE_PAGE =
+    private static final DocumentReference DOCUMENT_REFERENCE_PAGE =
         new DocumentReference("xwiki", asList("Space0", "Space1"), "Page");
 
-    public static final EntityReference DOCUMENT_REFERENCE_SPACE_1 =
+    private static final EntityReference DOCUMENT_REFERENCE_SPACE_1 =
         new SpaceReference("xwiki", asList("Space0", "Space1"));
+
+    private static final EntityReference DOCUMENT_REFERENCE_SPACE_0 =
+        new SpaceReference("xwiki", singletonList("Space0"));
 
     @InjectMockComponents
     private DefaultNumberedHeadingsConfiguration defaultNumberedHeadingsConfiguration;
@@ -79,11 +85,17 @@ class NumberedHeadingsConfigurationTest
     @MockComponent
     private Execution execution;
 
+    @MockComponent
+    private EntityReferenceProvider entityReferenceProvider;
+
     @Mock
     private XWikiDocument xWikiDocumentPage;
 
     @Mock
     private XWikiDocument xWikiDocumentSpace1;
+
+    @Mock
+    private XWikiDocument xWikiDocumentSpace0;
 
     @Mock
     private ExecutionContext context;
@@ -97,10 +109,14 @@ class NumberedHeadingsConfigurationTest
         when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_PAGE)).thenReturn(this.xWikiDocumentPage);
         when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_1))
             .thenReturn(this.xWikiDocumentSpace1);
+        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_0))
+            .thenReturn(this.xWikiDocumentSpace0);
         when(this.execution.getContext()).thenReturn(this.context);
         when(this.context.getProperty(EXECUTIONCONTEXT_KEY)).thenReturn(this.xWikiContext);
         when(this.xWikiContext.getDoc()).thenReturn(this.xWikiDocumentPage);
         when(this.xWikiDocumentPage.getDocumentReference()).thenReturn(DOCUMENT_REFERENCE_PAGE);
+        when(this.entityReferenceProvider.getDefaultReference(EntityType.DOCUMENT)).thenReturn(
+            new EntityReference("WebHome", EntityType.DOCUMENT));
     }
 
     @Test
@@ -179,6 +195,24 @@ class NumberedHeadingsConfigurationTest
     void isNumberedHeadingsEnabledOnParentNoParent() throws Exception
     {
         assertFalse(this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabledOnParent());
+    }
+
+    @Test
+    void isNumberedHeadingsEnabledOnParentForNonTerminalPage() throws Exception
+    {
+        // Overrides the default hierarchy.
+        DocumentReference nonTerminalPage =
+            new DocumentReference("xwiki", asList("Space0", "Space1"), "WebHome");
+        when(this.documentAccessBridge.getDocumentInstance(nonTerminalPage)).thenReturn(this.xWikiDocumentPage);
+        when(this.documentAccessBridge.getDocumentInstance(DOCUMENT_REFERENCE_SPACE_1))
+            .thenReturn(this.xWikiDocumentSpace1);
+        when(this.xWikiDocumentPage.getDocumentReference()).thenReturn(nonTerminalPage);
+
+        BaseObject baseObject = mock(BaseObject.class);
+        when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(baseObject);
+        when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn(STATUS_ACTIVATED);
+        assertFalse(this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabledOnParent());
+        verify(this.documentAccessBridge).getDocumentInstance(DOCUMENT_REFERENCE_SPACE_0);
     }
 
     @Test

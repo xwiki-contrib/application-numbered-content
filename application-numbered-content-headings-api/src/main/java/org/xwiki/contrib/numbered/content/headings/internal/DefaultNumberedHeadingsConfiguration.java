@@ -29,7 +29,10 @@ import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.context.Execution;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
+import org.xwiki.model.EntityType;
+import org.xwiki.model.reference.DocumentReference;
 import org.xwiki.model.reference.EntityReference;
+import org.xwiki.model.reference.EntityReferenceProvider;
 
 import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.doc.XWikiDocument;
@@ -54,6 +57,9 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
     @Inject
     private Execution execution;
 
+    @Inject
+    private EntityReferenceProvider entityReferenceProvider;
+
     @Override
     public boolean isNumberedHeadingsEnabled() throws Exception
     {
@@ -61,8 +67,9 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
         if (doc == null) {
             return false;
         }
-        if (isNumbered(doc).orElse(false)) {
-            return true;
+        Optional<Boolean> numbered = isNumbered(doc);
+        if (numbered.isPresent()) {
+            return numbered.get();
         }
         return isNumbered(doc.getDocumentReference().getParent());
     }
@@ -75,7 +82,12 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
             return false;
         }
 
-        return isNumbered(doc.getDocumentReference().getParent());
+        DocumentReference documentReference = doc.getDocumentReference();
+        EntityReference parent = documentReference.getParent();
+        if (isNotTerminal(documentReference)) {
+            parent = parent.getParent();
+        }
+        return isNumbered(parent);
     }
 
     private XWikiDocument getDocFromContext()
@@ -124,10 +136,17 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
                 xObject.getStringValue(NumberedHeadingsClassDocumentInitializer.STATUS_PROPERTY);
             // If the value is inherits, we continue looking up the hierarchy, otherwise we use the configured 
             // activation setting.
-            if (!Objects.equals(activatePropertyValue, "inherits")) {
+            if (!Objects.equals(activatePropertyValue, "")) {
                 isNumbered = Optional.of(Objects.equals(activatePropertyValue, "activated"));
             }
         }
         return isNumbered;
+    }
+
+    private boolean isNotTerminal(DocumentReference documentReference)
+    {
+        EntityType type = documentReference.getType();
+        String spaceHomePage = this.entityReferenceProvider.getDefaultReference(EntityType.DOCUMENT).getName();
+        return Objects.equals(type, EntityType.DOCUMENT) && Objects.equals(documentReference.getName(), spaceHomePage);
     }
 }

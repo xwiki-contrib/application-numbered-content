@@ -837,6 +837,8 @@ counter-reset: ch6 var(--numbered-headings-start);
     <property>
       <content>{{velocity}}
 {{html clean="false"}}
+#set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
+#set($isNumberedHeadingsEnabledOnParent = $services.numberedheadings.isNumberedHeadingsEnabledOnParent())
 &lt;script id="numbered-headings-config" type="application/json"&gt;$jsontool.serialize({
   'isActivated': $isNumberedHeadingsEnabled,
   'isActivatedOnParent': $services.numberedheadings.isNumberedHeadingsEnabledOnParent()
