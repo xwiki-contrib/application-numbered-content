@@ -39,20 +39,20 @@
       <id>mleduc</id>
       <name>Manuel Leduc</name>
       <organization>XWiki SAS</organization>
-      <organizationUrl>http://www.xwiki.com</organizationUrl>
+      <organizationUrl>https://www.xwiki.com</organizationUrl>
     </developer>
     <developer>
       <id>michitux</id>
       <name>Michael Hamann</name>
       <organization>XWiki SAS</organization>
-      <organizationUrl>http://www.xwiki.com</organizationUrl>
+      <organizationUrl>https://www.xwiki.com</organizationUrl>
     </developer>
   </developers>
   <distributionManagement>
     <repository>
       <id>xwiki-staging</id>
       <name>XWiki Staging Repository</name>
-      <url>http://nexus.xwiki.org/nexus/service/local/staging/deploy/maven2/</url>
+      <url>https://nexus.xwiki.org/nexus/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
   <scm>
