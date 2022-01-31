@@ -527,7 +527,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
 &lt;dd&gt;
 #createObjectAndPropertyIfMissing('NumberedHeadings.Code.NumberedHeadingsClass.status')
 #displayObjectProperty('NumberedHeadings.Code.NumberedHeadingsClass.status' 'edit')
-#if ($doc.getObject('NumberedHeadings.Code.NumberedHeadingsClass', 0).getValue('status'))
+#if ($!doc.getObject('NumberedHeadings.Code.NumberedHeadingsClass', 0).getValue('status') != '')
 ## Adding the object if it is already there is a no-op but it is important if we return from preview.
 &lt;input type="hidden" name="addedObjects" value="NumberedHeadings.Code.NumberedHeadingsClass_0" /&gt;
 #else
