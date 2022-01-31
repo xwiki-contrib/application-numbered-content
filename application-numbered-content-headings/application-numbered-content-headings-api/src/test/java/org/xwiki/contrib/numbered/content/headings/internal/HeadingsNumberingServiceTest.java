@@ -21,10 +21,8 @@ package org.xwiki.contrib.numbered.content.headings.internal;/*
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.GroupBlock;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -32,17 +30,12 @@ import org.xwiki.rendering.block.XDOM;
 import org.xwiki.rendering.listener.HeaderLevel;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
-import org.xwiki.test.junit5.mockito.MockComponent;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService.SKIP_PARAMETER;
 import static org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService.START_PARAMETER;
 import static org.xwiki.rendering.listener.HeaderLevel.LEVEL1;
@@ -59,9 +52,6 @@ class HeadingsNumberingServiceTest
 {
     @InjectMockComponents
     private HeadingsNumberingService headersNumberingService;
-
-    @MockComponent
-    protected HeadingsNumberingCacheManager cacheManager;
 
     @Test
     void getHeaderBlocks()
@@ -87,21 +77,8 @@ class HeadingsNumberingServiceTest
         assertEquals(singletonList(h1), headerBlocks);
     }
 
-    /**
-     * getHeaders getMap
-     */
     @Test
-    void getHeadersCached()
-    {
-        List<HeaderBlock> cachedValue = emptyList();
-        XDOM rootBlock = new XDOM(emptyList());
-        when(this.cacheManager.getHeadings(rootBlock)).thenReturn(Optional.of(cachedValue));
-        List<HeaderBlock> headers = this.headersNumberingService.getHeadingsList(rootBlock);
-        assertSame(cachedValue, headers);
-    }
-
-    @Test
-    void getHeadersNotCached()
+    void getHeaders()
     {
 
         HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL2);
@@ -111,82 +88,61 @@ class HeadingsNumberingServiceTest
         Map<HeaderBlock, String> expectedMap = new HashMap<>();
         expectedMap.put(h2, "0.1");
         expectedMap.put(h1, "1");
-
-        when(this.cacheManager.getHeadings(rootBlock)).thenReturn(Optional.empty());
+        assertEquals(expectedMap, this.headersNumberingService.getHeadingsMap(rootBlock));
 
         List<HeaderBlock> obtainedHeaders = this.headersNumberingService.getHeadingsList(rootBlock);
-
-        ArgumentCaptor<Map<HeaderBlock, String>> mapCaptor = ArgumentCaptor.forClass(Map.class);
-        ArgumentCaptor<List<HeaderBlock>> headersCaptor = ArgumentCaptor.forClass(List.class);
-        verify(this.cacheManager).put(any(), mapCaptor.capture(), headersCaptor.capture());
-
-        assertEquals(expectedMap, mapCaptor.getValue());
-        List<HeaderBlock> value = headersCaptor.getValue();
-        assertEquals(asList(h2, h1), value);
         assertEquals(asList(h2, h1), obtainedHeaders);
     }
 
     @Test
-    void getHeadersNotCachedWithStartParameter()
+    void getHeadersWithStartParameter()
     {
         HeaderBlock h10 = new HeaderBlock(emptyList(), LEVEL1, singletonMap(START_PARAMETER, "10"));
         HeaderBlock h11 = new HeaderBlock(emptyList(), LEVEL1);
         XDOM rootBlock = new XDOM(asList(h10, h11));
-        when(this.cacheManager.getHeadings(rootBlock)).thenReturn(Optional.empty());
 
         List<HeaderBlock> obtainedHeaders = this.headersNumberingService.getHeadingsList(rootBlock);
-
-        ArgumentCaptor<Map<HeaderBlock, String>> mapCaptor = ArgumentCaptor.forClass(Map.class);
-        verify(this.cacheManager).put(any(), mapCaptor.capture(), any());
+        assertEquals(asList(h10, h11), obtainedHeaders);
 
         Map<HeaderBlock, String> expectedMap = new HashMap<>();
         expectedMap.put(h10, "10");
         expectedMap.put(h11, "11");
-        assertEquals(expectedMap, mapCaptor.getValue());
-        assertEquals(asList(h10, h11), obtainedHeaders);
+        assertEquals(expectedMap, this.headersNumberingService.getHeadingsMap(rootBlock));
     }
 
     @Test
-    void getHeadersNotCachedWithSkipParameter()
+    void getHeadersWithSkipParameter()
     {
         HeaderBlock hskip = new HeaderBlock(emptyList(), LEVEL1, singletonMap(SKIP_PARAMETER, "true"));
         HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
 
         XDOM rootBlock = new XDOM(asList(hskip, h1));
-        when(this.cacheManager.getHeadings(rootBlock)).thenReturn(Optional.empty());
 
         List<HeaderBlock> obtainedHeaders = this.headersNumberingService.getHeadingsList(rootBlock);
-
-        ArgumentCaptor<Map<HeaderBlock, String>> mapCaptor = ArgumentCaptor.forClass(Map.class);
-        verify(this.cacheManager).put(any(), mapCaptor.capture(), any());
-
-        assertEquals(singletonMap(h1, "1"), mapCaptor.getValue());
         assertEquals(asList(hskip, h1), obtainedHeaders);
+
+        assertEquals(singletonMap(h1, "1"), this.headersNumberingService.getHeadingsMap(rootBlock));
     }
 
     @Test
-    void getHeadersNotCachedWithHeaderInBlock()
+    void getHeadersWithHeaderInBlock()
     {
         HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
         h1.setParent(new GroupBlock());
         HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL1);
         XDOM rootBlock = new XDOM(asList(h1, h2));
-        when(this.cacheManager.getHeadings(rootBlock)).thenReturn(Optional.empty());
 
         List<HeaderBlock> obtainedHeaders = this.headersNumberingService.getHeadingsList(rootBlock);
-
-        ArgumentCaptor<Map<HeaderBlock, String>> mapCaptor = ArgumentCaptor.forClass(Map.class);
-        verify(this.cacheManager).put(any(), mapCaptor.capture(), any());
+        assertEquals(asList(h1, h2), obtainedHeaders);
 
         Map<HeaderBlock, String> expectedMap = new HashMap<>();
         expectedMap.put(h1, "1");
         expectedMap.put(h2, "2");
-        assertEquals(expectedMap, mapCaptor.getValue());
-        assertEquals(asList(h1, h2), obtainedHeaders);
+        assertEquals(expectedMap, this.headersNumberingService.getHeadingsMap(rootBlock));
     }
 
     @Test
-    void getMapNotCached()
+    void getMap()
     {
         HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
         HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL2);
@@ -195,20 +151,8 @@ class HeadingsNumberingServiceTest
         Map<HeaderBlock, String> expected = new HashMap<>();
         expected.put(h1, "1");
         expected.put(h2, "1.1");
+        assertEquals(expected, this.headersNumberingService.getHeadingsMap(rootBlock));
 
-        when(this.cacheManager.getHeadings(rootBlock)).thenReturn(Optional.empty());
-        when(this.cacheManager.get(rootBlock)).thenReturn(Optional.empty(), Optional.of(expected));
-
-        Map<HeaderBlock, String> obtainedMap = this.headersNumberingService.getHeadingsMap(rootBlock);
-
-        ArgumentCaptor<Map<HeaderBlock, String>> mapCaptor = ArgumentCaptor.forClass(Map.class);
-        ArgumentCaptor<List<HeaderBlock>> headersCaptor = ArgumentCaptor.forClass(List.class);
-        verify(this.cacheManager).put(any(), mapCaptor.capture(), headersCaptor.capture());
-
-        Map<HeaderBlock, String> actualMap = mapCaptor.getValue();
-        assertEquals(expected, actualMap);
-        List<HeaderBlock> value = headersCaptor.getValue();
-        assertEquals(asList(h1, h2), value);
-        assertSame(expected, obtainedMap);
+        assertEquals(asList(h1, h2), this.headersNumberingService.getHeadingsList(rootBlock));
     }
 }
