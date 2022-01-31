@@ -22,9 +22,7 @@ package org.xwiki.contrib.numbered.content.headings.internal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
@@ -43,57 +41,23 @@ import org.xwiki.rendering.block.match.ClassBlockMatcher;
 @Singleton
 public class DefaultFiguresNumberingService implements FiguresNumberingService
 {
-    @Inject
-    protected FiguresNumberingCacheManager cacheManager;
-
     @Override
     public List<FigureBlock> getFiguresList(Block rootBlock)
     {
-        Optional<List<FigureBlock>> figuresOpt = this.cacheManager.getFigures(rootBlock);
-        List<FigureBlock> figures;
-        if (figuresOpt.isPresent()) {
-            figures = figuresOpt.get();
-        } else {
-            figures = getFigureBlocks(rootBlock);
-            buildCache(rootBlock, figures);
-        }
-        return figures;
+        return rootBlock.getBlocks(new ClassBlockMatcher(FigureBlock.class), Block.Axes.DESCENDANT);
     }
 
     @Override
     public Map<FigureBlock, String> getFiguresMap(Block rootBlock)
     {
-        Optional<Map<FigureBlock, String>> figuresOpt = this.cacheManager.get(rootBlock);
-        Map<FigureBlock, String> figures;
-        if (figuresOpt.isPresent()) {
-            figures = figuresOpt.get();
-        } else {
-            buildCache(rootBlock, getFigureBlocks(rootBlock));
-            figures = this.cacheManager.get(rootBlock).get();
-        }
-        return figures;
-    }
-
-    /**
-     * Return the figure blocks that needs to be numbered.
-     *
-     * @param rootBlock the root block to number
-     * @return the list of figure blocks to number
-     */
-    private List<FigureBlock> getFigureBlocks(Block rootBlock)
-    {
-        return rootBlock.getBlocks(new ClassBlockMatcher(FigureBlock.class), Block.Axes.DESCENDANT);
-    }
-
-    private void buildCache(Block rootBlock, List<FigureBlock> figures)
-    {
-        Map<FigureBlock, String> rootBlockCache = new HashMap<>();
-        this.cacheManager.put(rootBlock, rootBlockCache, figures);
+        Map<FigureBlock, String> result = new HashMap<>();
 
         int cptr = 1;
-        for (FigureBlock figure : figures) {
-            rootBlockCache.put(figure, String.valueOf(cptr));
+        for (FigureBlock figure : getFiguresList(rootBlock)) {
+            result.put(figure, String.valueOf(cptr));
             cptr++;
         }
+
+        return result;
     }
 }
