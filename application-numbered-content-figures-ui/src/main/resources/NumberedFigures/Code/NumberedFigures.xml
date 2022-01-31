@@ -146,17 +146,31 @@
 #set ($isNumberedFiguresEnabled = $request.getParameter("isNumberedFiguresEnabled"))
 #if ($isNumberedFiguresEnabled == 'true')
 
-#xwikicontent figure:first-child,
-#xwikicontent content div[data-cke-display-name="macro:figure"]:first-child {
-  counter-reset: cfigure !important;
+#xwikicontent,
+body[contenteditable="true"] {
+  counter-reset: cfigure;
 }
 
-#xwikicontent figure,
+/* Match figures directly below the content and figure elements that aren't nested in a figure macro
+ * (expected to be new in 14.1RC1), as then the increment would happen twice. */
+body[contenteditable="true"] &gt; figure,
+#xwikicontent &gt; figure,
+body[contenteditable="true"] :not([data-macro^="startmacro:figure"]) &gt; figure,
+#xwikicontent :not([data-macro^="startmacro:figure"]) &gt; figure,
+body[contenteditable="true"] div[data-cke-display-name="macro:figure"],
 #xwikicontent div[data-cke-display-name="macro:figure"] {
   counter-increment: cfigure;
 }
 
+/* Let the first child of the caption be on the same line as the numbering prefix. */
+body[contenteditable="true"] figure figcaption &gt; *:first-child,
+#xwikicontent figure figcaption &gt; *:first-child {
+  display: inline-block;
+}
+
+body[contenteditable="true"] figure figcaption::before,
 #xwikicontent figure figcaption::before,
+body[contenteditable="true"]  div[data-cke-display-name="macro:figure"] div[data-cke-display-name="macro:figureCaption"] p:first-child::before,
 #xwikicontent div[data-cke-display-name="macro:figure"] div[data-cke-display-name="macro:figureCaption"] p:first-child::before {
   content: "$services.localization.render('numbered.figures.numbered.figureCaption.label') " counter(cfigure) ':\00a0';
 }
@@ -308,12 +322,12 @@
   'docVersion': $origdoc.getVersion()
 })))
 {{html clean='false'}}
-&lt;link rel='stylesheet' type='text/css' href="$ssxHref"/&gt;
+&lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
 {{/html}}
 {{/velocity}}</content>
     </property>
     <property>
-      <extensionPointId>org.xwiki.platform.template.header.after</extensionPointId>
+      <extensionPointId>org.xwiki.platform.html.head</extensionPointId>
     </property>
     <property>
       <name>org.xwiki.contrib.numbered.figures.html.head.skin</name>
