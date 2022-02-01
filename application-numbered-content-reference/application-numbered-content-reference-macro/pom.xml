@@ -24,7 +24,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
-    <artifactId>application-numbered-content</artifactId>
+    <artifactId>application-numbered-content-reference</artifactId>
     <version>1.2-SNAPSHOT</version>
   </parent>
   <artifactId>application-numbered-content-reference-macro</artifactId>
