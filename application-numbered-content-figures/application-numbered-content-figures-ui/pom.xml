@@ -24,49 +24,30 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
-    <artifactId>application-numbered-content</artifactId>
+    <artifactId>application-numbered-content-figures</artifactId>
     <version>1.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application-numbered-content-headings-ui</artifactId>
-  <name>Numbered Content - Headings - UI</name>
-  <description>Provides the User Interface and CKEditor plugins for Numbered Headings.</description>
+  <artifactId>application-numbered-content-figures-ui</artifactId>
+  <name>Numbered Content - Figures - UI</name>
+  <description>Provides the User Interface for Numbered Figures.</description>
   <packaging>xar</packaging>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Headings Application</xwiki.extension.name>
+    <xwiki.extension.name>Numbered Figures Application</xwiki.extension.name>
     <xwiki.extension.category>application</xwiki.extension.category>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-headings-api</artifactId>
+      <artifactId>application-numbered-content-figures-api</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.xwiki.contrib</groupId>
-      <artifactId>application-ckeditor-ui</artifactId>
-      <version>${ckeditor.version}</version>
-      <scope>runtime</scope>
-      <type>xar</type>
-      <exclusions>
-        <!-- Exclude to avoid conflicts with older versions of XWiki platform and rendering
-         deps drawn by the contrib dependency -->
-        <exclusion>
-          <groupId>org.xwiki.platform</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.xwiki.rendering</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-localization-webjar</artifactId>
-      <version>${platform.version}</version>
+      <groupId>org.xwiki.rendering</groupId>
+      <artifactId>xwiki-rendering-macro-figure</artifactId>
+      <version>${rendering.version}</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>

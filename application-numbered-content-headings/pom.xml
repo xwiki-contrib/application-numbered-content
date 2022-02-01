@@ -21,35 +21,21 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
     <artifactId>application-numbered-content</artifactId>
     <version>1.2-SNAPSHOT</version>
   </parent>
-
-  <artifactId>application-numbered-content-headings-latex</artifactId>
-  <name>Numbered Content - Headings - Latex</name>
-  <description>Provides the User Interface Extension Points to integrate Numbered Headings with the Latex 
-    Extension</description>
-  <packaging>xar</packaging>
-  <properties>
-    <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Headings - Latex</xwiki.extension.name>
-    <xwiki.extension.category>other</xwiki.extension.category>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-headings-ui</artifactId>
-      <version>${project.version}</version>
-      <type>xar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.latex</groupId>
-      <artifactId>latex-export</artifactId>
-      <version>${latex.version}</version>
-    </dependency>
-  </dependencies>
+  <packaging>pom</packaging>
+  <artifactId>application-numbered-content-headings</artifactId>
+  <name>Numbered Content - Headings - Parent POM</name>
+  <description>Numbered Content - Headings - Parent POM</description>
+  <modules>
+    <module>application-numbered-content-headings-api</module>
+    <module>application-numbered-content-headings-latex</module>
+    <module>application-numbered-content-headings-ui</module>
+    <module>application-numbered-content-headings-toc</module>
+  </modules>
 </project>

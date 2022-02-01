@@ -24,31 +24,47 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
-    <artifactId>application-numbered-content</artifactId>
+    <artifactId>application-numbered-content-headings</artifactId>
     <version>1.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application-numbered-content-figures-ui</artifactId>
-  <name>Numbered Content - Figures - UI</name>
-  <description>Provides the User Interface for Numbered Figures.</description>
-  <packaging>xar</packaging>
+  <artifactId>application-numbered-content-headings-api</artifactId>
+  <name>Numbered Content - Headings - API</name>
+  <description>Automatically add numbering on the headings of a page.</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Figures Application</xwiki.extension.name>
-    <xwiki.extension.category>application</xwiki.extension.category>
+    <xwiki.extension.name>Numbered Headings API</xwiki.extension.name>
+    <xwiki.extension.category>api</xwiki.extension.category>
+    <xwiki.jacoco.instructionRatio>0.88</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-figures-api</artifactId>
-      <version>${project.version}</version>
-      <scope>runtime</scope>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-component-api</artifactId>
+      <version>${commons.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-macro-figure</artifactId>
-      <version>${rendering.version}</version>
-      <scope>runtime</scope>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-model-api</artifactId>
+      <version>${platform.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-oldcore</artifactId>
+      <version>${platform.version}</version>
+    </dependency>
+    <!-- Test dependencies. -->
+    <dependency>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-tool-test-component</artifactId>
+      <version>${commons.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Required to test with oldcore as a dependency. -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

@@ -10,7 +10,7 @@ to numbered contents.
 * [Issue Tracker](http://jira.xwiki.org/browse/NCAPP)
 * Communication: [Forum](https://forum.xwiki.org/), [Chat](https://dev.xwiki.org/xwiki/bin/view/Community/Chat)
 * [Development Practices](http://dev.xwiki.org/) 
-* Minimal XWiki version supported: 13.8+
+* Minimal XWiki version supported: 14.0+
 * License: LGPL 2.1
 * Translations:
   * [Figures - API](https://l10n.xwiki.org/projects/xwiki-contrib/application-numbered-content-figures-api/)
