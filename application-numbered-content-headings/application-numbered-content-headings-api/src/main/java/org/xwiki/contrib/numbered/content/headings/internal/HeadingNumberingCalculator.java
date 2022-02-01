@@ -26,6 +26,9 @@ import java.util.stream.Collectors;
 /**
  * Helper class to calculate the number of a heading based on previously added headings.
  *
+ * This should be used as a temporary helper as the class is neither designed to be re-usable nor thread-safe. For
+ * this reason, this is also not a component.
+ *
  * @version $Id$
  * @since 1.2
  */
