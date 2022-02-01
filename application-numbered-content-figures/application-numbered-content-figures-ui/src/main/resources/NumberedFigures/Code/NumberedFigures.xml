@@ -162,17 +162,13 @@ body[contenteditable="true"] div[data-cke-display-name="macro:figure"],
   counter-increment: cfigure;
 }
 
-/* Let the first child of the caption be on the same line as the numbering prefix. */
-body[contenteditable="true"] figure figcaption &gt; *:first-child,
-#xwikicontent figure figcaption &gt; *:first-child {
-  display: inline-block;
-}
-
 body[contenteditable="true"] figure figcaption::before,
 #xwikicontent figure figcaption::before,
 body[contenteditable="true"]  div[data-cke-display-name="macro:figure"] div[data-cke-display-name="macro:figureCaption"] p:first-child::before,
 #xwikicontent div[data-cke-display-name="macro:figure"] div[data-cke-display-name="macro:figureCaption"] p:first-child::before {
   content: "$services.localization.render('numbered.figures.numbered.figureCaption.label') " counter(cfigure) ':\00a0';
+  /* Let the caption be on the same line as the number. */
+  float: left;
 }
 #end</code>
     </property>
