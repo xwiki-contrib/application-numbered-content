@@ -34,7 +34,8 @@
     Extension</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Content - Reference - Latex</xwiki.extension.name>
+    <xwiki.extension.name>LaTeX for the Reference Macro</xwiki.extension.name>
+    <xwiki.extension.description>Output References in LaTeX exports.</xwiki.extension.description>
     <xwiki.extension.category>other</xwiki.extension.category>
   </properties>
   <dependencies>

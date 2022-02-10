@@ -35,6 +35,7 @@
   <properties>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Numbered Headings Application</xwiki.extension.name>
+    <xwiki.extension.description>Provides the User Interface and CKEditor plugins for Numbered Headings.</xwiki.extension.description>
     <xwiki.extension.category>application</xwiki.extension.category>
   </properties>
   <dependencies>
