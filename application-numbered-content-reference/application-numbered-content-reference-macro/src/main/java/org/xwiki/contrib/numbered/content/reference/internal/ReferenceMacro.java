@@ -19,6 +19,8 @@
  */
 package org.xwiki.contrib.numbered.content.reference.internal;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +38,7 @@ import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.IdBlock;
+import org.xwiki.rendering.block.ImageBlock;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.MacroBlock;
 import org.xwiki.rendering.block.WordBlock;
@@ -64,6 +67,13 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     private static final String DESCRIPTION =
         "Create a link to a section id, displaying the section number as the link label.";
 
+    /**
+     * The key of the id parameter.
+     *
+     * @since 1.3
+     */
+    private static final String ID_PARAMETER_KEY = "id";
+
     @Inject
     private List<HeadingsNumberingService> headingsNumberingServices;
 
@@ -74,6 +84,13 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     private ContextualLocalizationManager l10n;
 
     /**
+     * The {@code getId}-method of the image block, using reflection to avoid depending on XWiki 14.2.
+     *
+     * @since 1.3
+     */
+    private final Method imageBlockGetIdMethod;
+
+    /**
      * Create and initialize the descriptor of the macro.
      */
     public ReferenceMacro()
@@ -81,6 +98,8 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         super("Reference", DESCRIPTION, ReferenceMacroParameters.class);
         setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
         setPriority(3000);
+        this.imageBlockGetIdMethod = Arrays.stream(ImageBlock.class.getDeclaredMethods())
+            .filter(m -> "getId".equals(m.getName())).findFirst().orElse(null);
     }
 
     @Override
@@ -127,7 +146,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
                     .filter(it -> {
                         HeaderBlock headingBlock = it.getKey();
                         return Objects.equals(headingBlock.getId(), id)
-                            || Objects.equals(headingBlock.getParameter("id"), id)
+                            || Objects.equals(headingBlock.getParameter(ID_PARAMETER_KEY), id)
                             || headingBlock.<IdBlock>getBlocks(new ClassBlockMatcher(IdBlock.class),
                             Block.Axes.DESCENDANT).stream().anyMatch(idb -> Objects.equals(idb.getName(), id));
                     }).findFirst().map(Map.Entry::getValue)
@@ -159,7 +178,31 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
 
     private boolean hasId(FigureBlock figureBlock, String id)
     {
-        return figureBlock.<IdBlock>getBlocks(new ClassBlockMatcher(IdBlock.class), Block.Axes.DESCENDANT).stream()
-            .anyMatch(it -> Objects.equals(it.getName(), id));
+        return figureBlock.getFirstBlock(block -> {
+            String idParameter = block.getParameter(ID_PARAMETER_KEY);
+            if (idParameter != null) {
+                // Match the id parameter of any block.
+                return Objects.equals(idParameter, id);
+            }
+
+            if (block instanceof IdBlock) {
+                // Match the id of the id block.
+                IdBlock idBlock = (IdBlock) block;
+                return Objects.equals(idBlock.getName(), id);
+            }
+
+            if (block instanceof ImageBlock && this.imageBlockGetIdMethod != null) {
+                // Match the id of the image block.
+                ImageBlock imageBlock = (ImageBlock) block;
+
+                try {
+                    return Objects.equals(this.imageBlockGetIdMethod.invoke(imageBlock), id);
+                } catch (Exception ignored) {
+                    // Ignore invocation errors.
+                }
+            }
+
+            return false;
+        }, Block.Axes.DESCENDANT_OR_SELF) != null;
     }
 }
