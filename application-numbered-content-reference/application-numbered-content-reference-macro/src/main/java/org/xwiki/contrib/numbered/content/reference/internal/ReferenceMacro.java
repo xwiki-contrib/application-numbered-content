@@ -19,8 +19,6 @@
  */
 package org.xwiki.contrib.numbered.content.reference.internal;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -84,13 +82,6 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     private ContextualLocalizationManager l10n;
 
     /**
-     * The {@code getId}-method of the image block, using reflection to avoid depending on XWiki 14.2.
-     *
-     * @since 1.3
-     */
-    private final Method imageBlockGetIdMethod;
-
-    /**
      * Create and initialize the descriptor of the macro.
      */
     public ReferenceMacro()
@@ -98,8 +89,6 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         super("Reference", DESCRIPTION, ReferenceMacroParameters.class);
         setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
         setPriority(3000);
-        this.imageBlockGetIdMethod = Arrays.stream(ImageBlock.class.getDeclaredMethods())
-            .filter(m -> "getId".equals(m.getName())).findFirst().orElse(null);
     }
 
     @Override
@@ -191,15 +180,10 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
                 return Objects.equals(idBlock.getName(), id);
             }
 
-            if (block instanceof ImageBlock && this.imageBlockGetIdMethod != null) {
+            if (block instanceof ImageBlock) {
                 // Match the id of the image block.
                 ImageBlock imageBlock = (ImageBlock) block;
-
-                try {
-                    return Objects.equals(this.imageBlockGetIdMethod.invoke(imageBlock), id);
-                } catch (Exception ignored) {
-                    // Ignore invocation errors.
-                }
+                return Objects.equals(imageBlock.getId(), id);
             }
 
             return false;

@@ -19,29 +19,19 @@
  */
 package org.xwiki.contrib.numbered.content.reference.internal;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
+import java.util.stream.Collectors;
 
-import org.mockito.stubbing.Answer;
 import org.xwiki.contrib.numbered.content.headings.internal.DefaultFiguresNumberingService;
 import org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingService;
-import org.xwiki.localization.LocalizationContext;
-import org.xwiki.localization.LocalizationManager;
-import org.xwiki.localization.Translation;
-import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.CompositeBlock;
-import org.xwiki.rendering.block.SpaceBlock;
-import org.xwiki.rendering.block.SpecialSymbolBlock;
-import org.xwiki.rendering.block.WordBlock;
+import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
 import org.xwiki.test.annotation.AllComponents;
 import org.xwiki.test.mockito.MockitoComponentManager;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -57,34 +47,22 @@ public class IntegrationTests implements RenderingTests
     @Initialized
     public void initialize(MockitoComponentManager componentManager) throws Exception
     {
-        Locale defaultLocale = Locale.getDefault();
-        LocalizationContext localizationContext = componentManager.registerMockComponent(LocalizationContext.class);
-        when(localizationContext.getCurrentLocale()).thenReturn(defaultLocale);
-        LocalizationManager localizationManager = componentManager.registerMockComponent(LocalizationManager.class);
+        ContextualLocalizationManager contextualLocalizationManager =
+            componentManager.registerMockComponent(ContextualLocalizationManager.class);
 
-        // Mock the translation by retuning the passed key. Optionally with the list of arguments between brackets separated by commas.
-        // For instance "my.translation.key [A, B]".
-        when(localizationManager.getTranslation(any(), eq(defaultLocale))).thenAnswer(invocation -> {
-            Translation translation = mock(Translation.class);
-            String translationKey = invocation.getArgument(0);
-            when(translation.render(any())).thenAnswer((Answer<Block>) invocationRender -> {
-                List<Block> blocks = new ArrayList<>();
-                blocks.add(new WordBlock(translationKey));
-                Object[] parameters = invocationRender.getArguments();
-                if (parameters.length > 0) {
-                    blocks.add(new SpaceBlock());
-                    blocks.add(new SpecialSymbolBlock('['));
-                    for (int i = 0; i < parameters.length; i++) {
-                        blocks.add(new WordBlock(String.valueOf(parameters[i])));
-                        if (i < parameters.length - 1) {
-                            blocks.add(new SpecialSymbolBlock(','));
-                        }
-                    }
-                    blocks.add(new SpecialSymbolBlock(']'));
-                }
-                return new CompositeBlock(blocks);
-            });
-            return translation;
+        // Mock the translation by retuning the passed key. Optionally with the list of arguments between brackets
+        // separated by commas. For instance "my.translation.key [A, B]".
+        when(contextualLocalizationManager.getTranslationPlain(any(), any())).thenAnswer(invocation -> {
+            Object[] arguments = invocation.getArguments();
+            String key = arguments[0].toString();
+            List<String> values = Arrays.stream(arguments).skip(1).map(Object::toString).collect(Collectors.toList());
+
+            String parameters = "";
+            if (!values.isEmpty()) {
+                parameters = " [" + String.join(", ", values) + "]";
+            }
+
+            return key + parameters;
         });
     }
 }
