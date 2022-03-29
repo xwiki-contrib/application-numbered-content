@@ -26,7 +26,7 @@ See table {{reference figure="t1"/}}.
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<p>See figure <span class="wikilink"><a href="#f1">1</a></span>.</p><p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/></p><p><span id="f1"></span>An image</p><p>See table <span class="wikilink"><a href="#t1">2</a></span>.</p><table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table><p><span id="t1"></span>A table</p>
+<p>See figure <span class="wikilink"><a href="#f1">1</a></span>.</p><p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" id="Ihttp:2F2Fwww.clker.com2Fcliparts2F32Fm2Fv2FY2FE2FV2Fsmall-red-apple-md.png" class="wikigeneratedid" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/></p><div class="figcaption"><p><span id="f1"></span>An image</p></div><p>See table <span class="wikilink"><a href="#t1">2</a></span>.</p><table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table><div class="figcaption"><p><span id="t1"></span>A table</p></div>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -48,25 +48,27 @@ beginMacroMarkerStandalone [figure] [] [[[image:http://www.clker.com/cliparts/3/
 {{figureCaption}}
 {{id name="f1"/}}An image
 {{/figureCaption}}]
-beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginFigure
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginParagraph
-onImage [Typed = [false] Type = [url] Reference = [http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png]] [false] [[width]=[100]]
+onImage [Typed = [false] Type = [url] Reference = [http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png]] [false] [Ihttp:2F2Fwww.clker.com2Fcliparts2F32Fm2Fv2FY2FE2FV2Fsmall-red-apple-md.png] [[width]=[100]]
 endParagraph
 beginMacroMarkerStandalone [figureCaption] [] [{{id name="f1"/}}An image]
-beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginFigureCaption
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginParagraph
 beginMacroMarkerInline [id] [name=f1]
 onId [f1]
 endMacroMarkerInline [id] [name=f1]
 onWord [An]
 onSpace
 onWord [image]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 endFigureCaption
-endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 endMacroMarkerStandalone [figureCaption] [] [{{id name="f1"/}}An image]
-endFigure
 endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure
 endMacroMarkerStandalone [figure] [] [[[image:http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png||width="100"]]
 
 {{figureCaption}}
@@ -90,8 +92,8 @@ beginMacroMarkerStandalone [figure] [] [|a|b
 {{figureCaption}}
 {{id name="t1"/}}A table
 {{/figureCaption}}]
-beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginFigure
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginTable
 beginTableRow
 beginTableCell
@@ -111,19 +113,21 @@ endTableCell
 endTableRow
 endTable
 beginMacroMarkerStandalone [figureCaption] [] [{{id name="t1"/}}A table]
-beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginFigureCaption
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginParagraph
 beginMacroMarkerInline [id] [name=t1]
 onId [t1]
 endMacroMarkerInline [id] [name=t1]
 onWord [A]
 onSpace
 onWord [table]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 endFigureCaption
-endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 endMacroMarkerStandalone [figureCaption] [] [{{id name="t1"/}}A table]
-endFigure
 endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure
 endMacroMarkerStandalone [figure] [] [|a|b
 |c|d
 
