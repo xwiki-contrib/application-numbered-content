@@ -168,25 +168,23 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     private boolean hasId(FigureBlock figureBlock, String id)
     {
         return figureBlock.getFirstBlock(block -> {
+            boolean result = false;
+
             String idParameter = block.getParameter(ID_PARAMETER_KEY);
             if (idParameter != null) {
                 // Match the id parameter of any block.
-                return Objects.equals(idParameter, id);
-            }
-
-            if (block instanceof IdBlock) {
+                result = Objects.equals(idParameter, id);
+            } else if (block instanceof IdBlock) {
                 // Match the id of the id block.
                 IdBlock idBlock = (IdBlock) block;
-                return Objects.equals(idBlock.getName(), id);
-            }
-
-            if (block instanceof ImageBlock) {
+                result = Objects.equals(idBlock.getName(), id);
+            } else if (block instanceof ImageBlock) {
                 // Match the id of the image block.
                 ImageBlock imageBlock = (ImageBlock) block;
-                return Objects.equals(imageBlock.getId(), id);
+                result = Objects.equals(imageBlock.getId(), id);
             }
 
-            return false;
+            return result;
         }, Block.Axes.DESCENDANT_OR_SELF) != null;
     }
 }
