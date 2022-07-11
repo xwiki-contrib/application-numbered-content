@@ -1,35 +1,3 @@
-.runTransformations:macro
-.#-----------------------------------------------------
-.input|xwiki/2.1
-.# Test the macro on a simple case with the default parameters.
-.#-----------------------------------------------------
-See figure {{reference figure="f1"/}}.
-
-{{figure}}
-[[image:http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png||width="100"]]
-
-{{figureCaption}}
-{{id name="f1"/}}An image
-{{/figureCaption}}
-{{/figure}}
-
-See table {{reference figure="t1"/}}.
-
-{{figure}}
-|a|b
-|c|d
-
-{{figureCaption}}
-{{id name="t1"/}}A table
-{{/figureCaption}}
-{{/figure}}
-.#-----------------------------------------------------
-.expect|xhtml/1.0
-.#-----------------------------------------------------
-<p>See figure <span class="wikilink"><a href="#f1">1</a></span>.</p><p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" id="Ihttp:2F2Fwww.clker.com2Fcliparts2F32Fm2Fv2FY2FE2FV2Fsmall-red-apple-md.png" class="wikigeneratedid" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/></p><div class="figcaption"><p><span id="f1"></span>An image</p></div><p>See table <span class="wikilink"><a href="#t1">2</a></span>.</p><table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table><div class="figcaption"><p><span id="t1"></span>A table</p></div>
-.#-----------------------------------------------------
-.expect|event/1.0
-.#-----------------------------------------------------
 beginDocument
 beginParagraph
 onWord [See]
@@ -48,7 +16,9 @@ beginMacroMarkerStandalone [figure] [] [[[image:http://www.clker.com/cliparts/3/
 {{figureCaption}}
 {{id name="f1"/}}An image
 {{/figureCaption}}]
-beginFigure
+beginMacroMarkerStandalone [figureTypeRecognizer] []
+endMacroMarkerStandalone [figureTypeRecognizer] []
+beginFigure [[data-xwiki-rendering-figure-type]=[figure]]
 beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginParagraph
 onImage [Typed = [false] Type = [url] Reference = [http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png]] [false] [Ihttp:2F2Fwww.clker.com2Fcliparts2F32Fm2Fv2FY2FE2FV2Fsmall-red-apple-md.png] [[width]=[100]]
@@ -68,7 +38,7 @@ endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.B
 endFigureCaption
 endMacroMarkerStandalone [figureCaption] [] [{{id name="f1"/}}An image]
 endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
-endFigure
+endFigure [[data-xwiki-rendering-figure-type]=[figure]]
 endMacroMarkerStandalone [figure] [] [[[image:http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png||width="100"]]
 
 {{figureCaption}}
@@ -92,7 +62,9 @@ beginMacroMarkerStandalone [figure] [] [|a|b
 {{figureCaption}}
 {{id name="t1"/}}A table
 {{/figureCaption}}]
-beginFigure
+beginMacroMarkerStandalone [figureTypeRecognizer] []
+endMacroMarkerStandalone [figureTypeRecognizer] []
+beginFigure [[data-xwiki-rendering-figure-type]=[table]]
 beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginTable
 beginTableRow
@@ -127,7 +99,7 @@ endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.B
 endFigureCaption
 endMacroMarkerStandalone [figureCaption] [] [{{id name="t1"/}}A table]
 endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
-endFigure
+endFigure [[data-xwiki-rendering-figure-type]=[table]]
 endMacroMarkerStandalone [figure] [] [|a|b
 |c|d
 
