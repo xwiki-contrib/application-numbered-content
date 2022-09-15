@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
  * @version $Id$
  * @since 1.0
  */
-@AllComponents(excludes = { HeadingsNumberingService.class, DefaultFiguresNumberingService.class })
+@AllComponents
 public class IntegrationTests implements RenderingTests
 {
     @Initialized

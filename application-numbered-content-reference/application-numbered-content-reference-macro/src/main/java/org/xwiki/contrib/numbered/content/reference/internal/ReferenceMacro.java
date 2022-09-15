@@ -88,7 +88,9 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     {
         super("Reference", DESCRIPTION, ReferenceMacroParameters.class);
         setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
-        setPriority(3000);
+        // One more than the figure type recognizer macro to make sure that all the figure types are identified
+        // before computing the references.
+        setPriority(3001);
     }
 
     @Override

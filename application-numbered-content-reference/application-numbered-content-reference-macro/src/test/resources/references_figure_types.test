@@ -1,0 +1,225 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro where referencing figures of different types.
+.#-----------------------------------------------------
+{{figure}}
+
+{{figureCaption}}{{id name="F1"/}}Title of Figure 1{{/figureCaption}}
+
+ 
+
+Figure 1
+
+{{/figure}}
+
+ 
+
+Reference to table {{reference figure="T1"/}}
+
+ 
+
+{{figure}}
+
+|Cell
+
+{{figureCaption}}{{id name="T1"/}}Title of Table 1 {{/figureCaption}}
+
+{{/figure}}
+
+ 
+
+Reference to figure {{reference figure="F2"/}}
+
+ 
+
+{{figure}}
+
+{{figureCaption}}{{id name="F2"/}}Title of Figure 2{{/figureCaption}}
+
+ 
+
+Figure 2
+
+{{/figure}}
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<div class="figcaption"><p><span id="F1"></span>Title of Figure 1</p></div><p>&nbsp;</p><p>Figure 1</p><p>&nbsp;</p><p>Reference to table <span class="wikilink"><a href="#T1">1</a></span></p><p>&nbsp;</p><table><tr><td>Cell</td></tr></table><div class="figcaption"><p><span id="T1"></span>Title of Table 1&nbsp;</p></div><p>&nbsp;</p><p>Reference to figure <span class="wikilink"><a href="#F2">2</a></span></p><p>&nbsp;</p><div class="figcaption"><p><span id="F2"></span>Title of Figure 2</p></div><p>&nbsp;</p><p>Figure 2</p>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [figure] [] [
+{{figureCaption}}{{id name="F1"/}}Title of Figure 1{{/figureCaption}}
+
+ 
+
+Figure 1
+]
+beginMacroMarkerStandalone [figureTypeRecognizer] []
+endMacroMarkerStandalone [figureTypeRecognizer] []
+beginFigure [[data-xwiki-rendering-figure-type]=[figure]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginMacroMarkerStandalone [figureCaption] [] [{{id name="F1"/}}Title of Figure 1]
+beginFigureCaption
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginParagraph
+beginMacroMarkerInline [id] [name=F1]
+onId [F1]
+endMacroMarkerInline [id] [name=F1]
+onWord [Title]
+onSpace
+onWord [of]
+onSpace
+onWord [Figure]
+onSpace
+onWord [1]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigureCaption
+endMacroMarkerStandalone [figureCaption] [] [{{id name="F1"/}}Title of Figure 1]
+beginParagraph
+onSpace
+endParagraph
+beginParagraph
+onWord [Figure]
+onSpace
+onWord [1]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure [[data-xwiki-rendering-figure-type]=[figure]]
+endMacroMarkerStandalone [figure] [] [
+{{figureCaption}}{{id name="F1"/}}Title of Figure 1{{/figureCaption}}
+
+ 
+
+Figure 1
+]
+beginParagraph
+onSpace
+endParagraph
+beginParagraph
+onWord [Reference]
+onSpace
+onWord [to]
+onSpace
+onWord [table]
+onSpace
+beginMacroMarkerInline [reference] [figure=T1]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [T1]]] [false]
+onWord [1]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [T1]]] [false]
+endMacroMarkerInline [reference] [figure=T1]
+endParagraph
+beginParagraph
+onSpace
+endParagraph
+beginMacroMarkerStandalone [figure] [] [
+|Cell
+
+{{figureCaption}}{{id name="T1"/}}Title of Table 1 {{/figureCaption}}
+]
+beginMacroMarkerStandalone [figureTypeRecognizer] []
+endMacroMarkerStandalone [figureTypeRecognizer] []
+beginFigure [[data-xwiki-rendering-figure-type]=[table]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginTable
+beginTableRow
+beginTableCell
+onWord [Cell]
+endTableCell
+endTableRow
+endTable
+beginMacroMarkerStandalone [figureCaption] [] [{{id name="T1"/}}Title of Table 1 ]
+beginFigureCaption
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginParagraph
+beginMacroMarkerInline [id] [name=T1]
+onId [T1]
+endMacroMarkerInline [id] [name=T1]
+onWord [Title]
+onSpace
+onWord [of]
+onSpace
+onWord [Table]
+onSpace
+onWord [1]
+onSpace
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigureCaption
+endMacroMarkerStandalone [figureCaption] [] [{{id name="T1"/}}Title of Table 1 ]
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure [[data-xwiki-rendering-figure-type]=[table]]
+endMacroMarkerStandalone [figure] [] [
+|Cell
+
+{{figureCaption}}{{id name="T1"/}}Title of Table 1 {{/figureCaption}}
+]
+beginParagraph
+onSpace
+endParagraph
+beginParagraph
+onWord [Reference]
+onSpace
+onWord [to]
+onSpace
+onWord [figure]
+onSpace
+beginMacroMarkerInline [reference] [figure=F2]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [F2]]] [false]
+onWord [2]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [F2]]] [false]
+endMacroMarkerInline [reference] [figure=F2]
+endParagraph
+beginParagraph
+onSpace
+endParagraph
+beginMacroMarkerStandalone [figure] [] [
+{{figureCaption}}{{id name="F2"/}}Title of Figure 2{{/figureCaption}}
+
+ 
+
+Figure 2
+]
+beginMacroMarkerStandalone [figureTypeRecognizer] []
+endMacroMarkerStandalone [figureTypeRecognizer] []
+beginFigure [[data-xwiki-rendering-figure-type]=[figure]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginMacroMarkerStandalone [figureCaption] [] [{{id name="F2"/}}Title of Figure 2]
+beginFigureCaption
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginParagraph
+beginMacroMarkerInline [id] [name=F2]
+onId [F2]
+endMacroMarkerInline [id] [name=F2]
+onWord [Title]
+onSpace
+onWord [of]
+onSpace
+onWord [Figure]
+onSpace
+onWord [2]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigureCaption
+endMacroMarkerStandalone [figureCaption] [] [{{id name="F2"/}}Title of Figure 2]
+beginParagraph
+onSpace
+endParagraph
+beginParagraph
+onWord [Figure]
+onSpace
+onWord [2]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure [[data-xwiki-rendering-figure-type]=[figure]]
+endMacroMarkerStandalone [figure] [] [
+{{figureCaption}}{{id name="F2"/}}Title of Figure 2{{/figureCaption}}
+
+ 
+
+Figure 2
+]
+endDocument

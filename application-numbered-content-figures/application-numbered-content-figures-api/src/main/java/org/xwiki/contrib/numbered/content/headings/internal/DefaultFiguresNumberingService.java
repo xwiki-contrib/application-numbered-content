@@ -31,6 +31,8 @@ import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
+import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
+
 /**
  * Compute the numbers for the figures and save the result in a cache.
  *
@@ -51,11 +53,13 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
     public Map<FigureBlock, String> getFiguresMap(Block rootBlock)
     {
         Map<FigureBlock, String> result = new HashMap<>();
+        Map<String, Integer> counters = new HashMap<>();
 
-        int cptr = 1;
         for (FigureBlock figure : getFiguresList(rootBlock)) {
-            result.put(figure, String.valueOf(cptr));
-            cptr++;
+            String type = figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE);
+            Integer counter = counters.getOrDefault(type, 1);
+            result.put(figure, String.valueOf(counter));
+            counters.put(type, counter + 1);
         }
 
         return result;

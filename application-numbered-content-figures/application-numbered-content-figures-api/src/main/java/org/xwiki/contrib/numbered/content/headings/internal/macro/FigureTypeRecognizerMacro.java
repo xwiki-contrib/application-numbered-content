@@ -46,7 +46,11 @@ import org.xwiki.rendering.transformation.MacroTransformationContext;
 @Singleton
 public class FigureTypeRecognizerMacro extends AbstractNoParameterMacro
 {
-    private static final String DATA_XWIKI_RENDERING_FIGURE_TYPE = "data-xwiki-rendering-figure-type";
+    /**
+     * Parameter name for the figure types.
+     * @since 1.6
+     */
+    public static final String DATA_XWIKI_RENDERING_FIGURE_TYPE = "data-xwiki-rendering-figure-type";
 
     @Inject
     private FigureTypeRecognizer figureTypeRecognizer;

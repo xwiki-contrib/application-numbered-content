@@ -35,7 +35,7 @@
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Numbered Figures API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
-    <xwiki.jacoco.instructionRatio>0.00</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.19</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
@@ -52,6 +52,12 @@
     <dependency>
       <groupId>org.xwiki.rendering</groupId>
       <artifactId>xwiki-rendering-macro-figure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-tool-test-component</artifactId>
+      <version>${commons.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
