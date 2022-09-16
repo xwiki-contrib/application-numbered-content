@@ -1,0 +1,26 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the figure macro with an explicit type.
+.#-----------------------------------------------------
+{{figure type="figure"}}
+|Cell
+{{/figure}}
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [figure] [type=figure] [|Cell]
+beginFigure [[data-xwiki-rendering-figure-type]=[figure]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginTable
+beginTableRow
+beginTableCell
+onWord [Cell]
+endTableCell
+endTableRow
+endTable
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure [[data-xwiki-rendering-figure-type]=[figure]]
+endMacroMarkerStandalone [figure] [type=figure] [|Cell]
+endDocument
