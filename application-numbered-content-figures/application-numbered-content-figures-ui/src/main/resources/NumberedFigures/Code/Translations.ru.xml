@@ -39,5 +39,6 @@
   <content>numbered.figures.codeSpace.title=Код
 numbered.figures.codeSpace.description=Это место, где находится код приложения Numbered Figures.
 numbered.figures.numbered.figureCaption.label=Рисунок
+numbered.figures.numbered.tableCaption.label=Таблица
 </content>
   </xwikidoc>
