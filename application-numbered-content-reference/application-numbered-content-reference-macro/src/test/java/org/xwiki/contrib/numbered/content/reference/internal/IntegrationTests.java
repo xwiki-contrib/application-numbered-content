@@ -23,8 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.xwiki.contrib.numbered.content.headings.internal.DefaultFiguresNumberingService;
-import org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingService;
 import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
