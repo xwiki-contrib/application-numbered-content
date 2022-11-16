@@ -155,12 +155,12 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         String number = null;
         for (FiguresNumberingService figureNumberingService : this.figuresNumberingServices) {
 
-            String figureBlockNumbre =
+            String figureBlockNumber =
                 figureNumberingService.getFiguresMap(rootBlock).entrySet().stream()
                     .filter(it -> hasId(it.getKey(), id)).findFirst().map(Map.Entry::getValue)
                     .orElse(null);
-            if (figureBlockNumbre != null) {
-                number = figureBlockNumbre;
+            if (figureBlockNumber != null) {
+                number = figureBlockNumber;
                 break;
             }
         }
