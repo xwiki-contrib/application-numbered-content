@@ -36,6 +36,8 @@
     <xwiki.extension.name>Numbered Figures API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
     <xwiki.jacoco.instructionRatio>0.19</xwiki.jacoco.instructionRatio>
+    <!-- Needs to be installed on root to be able to use ExecutionContextInitializer. -->
+    <xwiki.extension.namespaces>{root}</xwiki.extension.namespaces>
   </properties>
   <dependencies>
     <dependency>

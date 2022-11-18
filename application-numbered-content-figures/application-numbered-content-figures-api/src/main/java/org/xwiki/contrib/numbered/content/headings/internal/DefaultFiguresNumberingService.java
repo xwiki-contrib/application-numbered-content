@@ -23,13 +23,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
+import org.xwiki.context.Execution;
+import org.xwiki.context.ExecutionContext;
 import org.xwiki.contrib.numbered.content.headings.FiguresNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
+import org.xwiki.rendering.transformation.RenderingContext;
 
 import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
 
@@ -43,6 +47,12 @@ import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureT
 @Singleton
 public class DefaultFiguresNumberingService implements FiguresNumberingService
 {
+    @Inject
+    private Execution execution;
+
+    @Inject
+    private RenderingContext renderingContext;
+
     @Override
     public List<FigureBlock> getFiguresList(Block rootBlock)
     {
@@ -52,9 +62,16 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
     @Override
     public Map<FigureBlock, String> getFiguresMap(Block rootBlock)
     {
-        Map<FigureBlock, String> result = new HashMap<>();
-        Map<String, Integer> counters = new HashMap<>();
+        ExecutionContext context = this.execution.getContext();
+        Map<String, Map<String, Integer>> mapTransformationId =
+            (Map<String, Map<String, Integer>>) context.getProperty(
+                FigureNumberingExecutionContextInitializer.PROPERTY_KEY);
 
+        String transformationId = this.renderingContext.getTransformationId();
+        mapTransformationId.putIfAbsent(transformationId, new HashMap<>());
+        Map<String, Integer> counters = mapTransformationId.get(transformationId);
+
+        Map<FigureBlock, String> result = new HashMap<>();
         for (FigureBlock figure : getFiguresList(rootBlock)) {
             String type = figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE);
             Integer counter = counters.getOrDefault(type, 1);

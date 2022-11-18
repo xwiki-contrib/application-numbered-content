@@ -15,7 +15,7 @@ See Figure {{reference figure="f1"/}}, {{reference figure="Iimage2.png"/}}, and 
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<p>See Figure <span class="wikilink"><a href="#f1">1</a></span>, <span class="wikilink"><a href="#Iimage2.png">2</a></span>, and <span class="wikilink"><a href="#f3">3</a></span>.</p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" id="f1" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/><div class="figcaption"><p>An image</p></div><img src="image2.png" width="100" id="Iimage2.png" class="wikigeneratedid" alt="image2.png"/><div class="figcaption"><p>The second image</p></div><img src="image2.png" width="100" id="Iimage2.png-1" class="wikigeneratedid" alt="image2.png"/><div class="figcaption"><p>The second image</p></div>
+<p>See Figure <span class="wikilink"><a href="#f1">1</a></span>, <span class="wikilink"><a href="#Iimage2.png">5</a></span>, and <span class="wikilink"><a href="#f3">9</a></span>.</p><img src="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png" width="100" id="f1" alt="http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-md.png"/><div class="figcaption"><p>An image</p></div><img src="image2.png" width="100" id="Iimage2.png" class="wikigeneratedid" alt="image2.png"/><div class="figcaption"><p>The second image</p></div><img src="image2.png" width="100" id="Iimage2.png-1" class="wikigeneratedid" alt="image2.png"/><div class="figcaption"><p>The second image</p></div>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -34,7 +34,7 @@ onSpecialSymbol [,]
 onSpace
 beginMacroMarkerInline [reference] [figure=Iimage2.png]
 beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [Iimage2.png]]] [false]
-onWord [2]
+onWord [5]
 endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [Iimage2.png]]] [false]
 endMacroMarkerInline [reference] [figure=Iimage2.png]
 onSpecialSymbol [,]
@@ -43,7 +43,7 @@ onWord [and]
 onSpace
 beginMacroMarkerInline [reference] [figure=f3]
 beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [f3]]] [false]
-onWord [3]
+onWord [9]
 endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [f3]]] [false]
 endMacroMarkerInline [reference] [figure=f3]
 onSpecialSymbol [.]

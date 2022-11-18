@@ -24,38 +24,28 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
-    <artifactId>application-numbered-content-figures</artifactId>
+    <artifactId>application-numbered-content-reference</artifactId>
     <version>1.6-SNAPSHOT</version>
   </parent>
-
-  <artifactId>application-numbered-content-figures-ui</artifactId>
-  <name>Numbered Content - Figures - UI</name>
-  <description>Provides the User Interface for Numbered Figures.</description>
-  <packaging>xar</packaging>
+  <artifactId>application-numbered-content-reference-test</artifactId>
+  <name>Numbered Content - Reference - Tests - Parent POM</name>
+  <description>Numbered Content - Reference - Tests - Parent POM</description>
+  <packaging>pom</packaging>
   <properties>
-    <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Figures Application</xwiki.extension.name>
-    <xwiki.extension.description>Provides the User Interface for Numbered Figures.</xwiki.extension.description>
-    <xwiki.extension.category>application</xwiki.extension.category>
+    <!-- Don't run backward-compatibility checks in test modules since we don't consider them as public APIs -->
+    <xwiki.revapi.skip>true</xwiki.revapi.skip>
+    <!-- Don't run Checkstyle in test modules -->
+    <xwiki.checkstyle.skip>true</xwiki.checkstyle.skip>
   </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-figures-api</artifactId>
-      <version>${project.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-macro-figure</artifactId>
-      <version>${rendering.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-localization-macro</artifactId>
-      <version>${platform.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-  </dependencies>
+  <modules>
+    <module>application-numbered-content-reference-test-pageobjects</module>
+  </modules>
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <modules>
+        <module>application-numbered-content-reference-test-docker</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
