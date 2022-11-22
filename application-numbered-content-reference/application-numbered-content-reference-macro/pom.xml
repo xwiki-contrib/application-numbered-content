@@ -37,6 +37,8 @@
     <xwiki.extension.description>Allows to make references to numbered contents (i.e., headings and figures).</xwiki.extension.description>
     <!-- Extension Manager category -->
     <xwiki.extension.category>macro</xwiki.extension.category>
+    <!-- Another extension also providing a "reference" macro and that should not be installed simultaneously. -->
+    <xwiki.extension.features>org.xwiki.contrib:macro-numbered-references</xwiki.extension.features>
   </properties>
   <dependencies>
     <dependency>
