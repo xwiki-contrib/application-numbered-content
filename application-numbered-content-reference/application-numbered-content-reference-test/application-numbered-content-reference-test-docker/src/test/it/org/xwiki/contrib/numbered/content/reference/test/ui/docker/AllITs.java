@@ -27,7 +27,7 @@ import org.xwiki.test.docker.junit5.UITest;
  * All tests for the reference macro.
  *
  * @version $Id$
- * @since 1.6
+ * @since 1.6.1
  */
 @UITest
 public class AllITs

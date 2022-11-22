@@ -22,7 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.xwiki.context.Execution;
+import org.xwiki.context.ExecutionContext;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.GroupBlock;
 import org.xwiki.rendering.block.HeaderBlock;
@@ -30,12 +34,14 @@ import org.xwiki.rendering.block.XDOM;
 import org.xwiki.rendering.listener.HeaderLevel;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
+import org.xwiki.test.junit5.mockito.MockComponent;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService.SKIP_PARAMETER;
 import static org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService.START_PARAMETER;
 import static org.xwiki.rendering.listener.HeaderLevel.LEVEL1;
@@ -52,6 +58,20 @@ class HeadingsNumberingServiceTest
 {
     @InjectMockComponents
     private HeadingsNumberingService headersNumberingService;
+
+    @MockComponent
+    private Execution execution;
+
+    @Mock
+    private ExecutionContext context;
+
+    @BeforeEach
+    void setUp()
+    {
+        when(this.execution.getContext()).thenReturn(this.context);
+        when(this.context.getProperty(HeadingsNumberingExecutionContextInitializer.PROPERTY_KEY))
+            .thenReturn(new HeadingNumberingCalculator());
+    }
 
     @Test
     void getHeaderBlocks()
@@ -80,9 +100,8 @@ class HeadingsNumberingServiceTest
     @Test
     void getHeaders()
     {
-
-        HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL2);
-        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
+        HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL2, "H01");
+        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1, "H1");
         XDOM rootBlock = new XDOM(asList(h2, h1));
 
         Map<HeaderBlock, String> expectedMap = new HashMap<>();
@@ -97,8 +116,8 @@ class HeadingsNumberingServiceTest
     @Test
     void getHeadersWithStartParameter()
     {
-        HeaderBlock h10 = new HeaderBlock(emptyList(), LEVEL1, singletonMap(START_PARAMETER, "10"));
-        HeaderBlock h11 = new HeaderBlock(emptyList(), LEVEL1);
+        HeaderBlock h10 = new HeaderBlock(emptyList(), LEVEL1, singletonMap(START_PARAMETER, "10"), "H10");
+        HeaderBlock h11 = new HeaderBlock(emptyList(), LEVEL1, "H11");
         XDOM rootBlock = new XDOM(asList(h10, h11));
 
         List<HeaderBlock> obtainedHeaders = this.headersNumberingService.getHeadingsList(rootBlock);
@@ -114,7 +133,7 @@ class HeadingsNumberingServiceTest
     void getHeadersWithSkipParameter()
     {
         HeaderBlock hskip = new HeaderBlock(emptyList(), LEVEL1, singletonMap(SKIP_PARAMETER, "true"));
-        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
+        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1, "H1");
 
         XDOM rootBlock = new XDOM(asList(hskip, h1));
 
@@ -127,9 +146,9 @@ class HeadingsNumberingServiceTest
     @Test
     void getHeadersWithHeaderInBlock()
     {
-        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
+        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1, "H1");
         h1.setParent(new GroupBlock());
-        HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL1);
+        HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL1, "H2");
         XDOM rootBlock = new XDOM(asList(h1, h2));
 
         List<HeaderBlock> obtainedHeaders = this.headersNumberingService.getHeadingsList(rootBlock);
@@ -144,8 +163,8 @@ class HeadingsNumberingServiceTest
     @Test
     void getMap()
     {
-        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1);
-        HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL2);
+        HeaderBlock h1 = new HeaderBlock(emptyList(), LEVEL1, "H1");
+        HeaderBlock h2 = new HeaderBlock(emptyList(), LEVEL2, "H11");
         XDOM rootBlock = new XDOM(asList(h1, h2));
 
         Map<HeaderBlock, String> expected = new HashMap<>();

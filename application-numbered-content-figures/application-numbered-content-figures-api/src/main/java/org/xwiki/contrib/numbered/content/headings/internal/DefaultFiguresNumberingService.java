@@ -32,8 +32,9 @@ import org.xwiki.context.ExecutionContext;
 import org.xwiki.contrib.numbered.content.headings.FiguresNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
+import org.xwiki.rendering.block.IdBlock;
+import org.xwiki.rendering.block.ImageBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
-import org.xwiki.rendering.transformation.RenderingContext;
 
 import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
 
@@ -47,11 +48,12 @@ import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureT
 @Singleton
 public class DefaultFiguresNumberingService implements FiguresNumberingService
 {
-    @Inject
-    private Execution execution;
+    private static final String COUNTERS_KEY = "counters";
+
+    private static final String FIGURES_KEY = "figures";
 
     @Inject
-    private RenderingContext renderingContext;
+    private Execution execution;
 
     @Override
     public List<FigureBlock> getFiguresList(Block rootBlock)
@@ -63,22 +65,49 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
     public Map<FigureBlock, String> getFiguresMap(Block rootBlock)
     {
         ExecutionContext context = this.execution.getContext();
-        Map<String, Map<String, Integer>> mapTransformationId =
-            (Map<String, Map<String, Integer>>) context.getProperty(
-                FigureNumberingExecutionContextInitializer.PROPERTY_KEY);
-
-        String transformationId = this.renderingContext.getTransformationId();
-        mapTransformationId.putIfAbsent(transformationId, new HashMap<>());
-        Map<String, Integer> counters = mapTransformationId.get(transformationId);
+        Map<String, Object> figureNumbering =
+            (Map<String, Object>) context.getProperty(FigureNumberingExecutionContextInitializer.PROPERTY_KEY);
+        Map<String, Long> counters = initAndGet(figureNumbering, COUNTERS_KEY);
+        Map<String, Long> figuresMap = initAndGet(figureNumbering, FIGURES_KEY);
 
         Map<FigureBlock, String> result = new HashMap<>();
         for (FigureBlock figure : getFiguresList(rootBlock)) {
-            String type = figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE);
-            Integer counter = counters.getOrDefault(type, 1);
-            result.put(figure, String.valueOf(counter));
-            counters.put(type, counter + 1);
+            String id = getId(figure);
+            if (id != null && !figuresMap.containsKey(id)) {
+                String type = figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE);
+                Long counter = counters.getOrDefault(type, 1L);
+                result.put(figure, String.valueOf(counter));
+                figuresMap.put(id, counter);
+                counters.put(type, counter + 1);
+            } else {
+                result.put(figure, String.valueOf(figuresMap.get(id)));
+            }
         }
 
         return result;
+    }
+
+    private String getId(FigureBlock figureBlock)
+    {
+        String idParameter = "id";
+        if (figureBlock.getParameter(idParameter) != null) {
+            return figureBlock.getParameter(idParameter);
+        }
+        Block idBlock = figureBlock.getFirstBlock(IdBlock.class::isInstance, Block.Axes.DESCENDANT);
+        if (idBlock != null) {
+            return ((IdBlock) idBlock).getName();
+        }
+        Block firstBlock = figureBlock.getFirstBlock(ImageBlock.class::isInstance, Block.Axes.DESCENDANT);
+        if (firstBlock != null) {
+            return ((ImageBlock) firstBlock).getId();
+        }
+
+        return null;
+    }
+
+    private static <K, V> Map<K, V> initAndGet(Map<String, Object> figureNumbering, String countersKey)
+    {
+        figureNumbering.putIfAbsent(countersKey, new HashMap<>());
+        return (Map<K, V>) figureNumbering.get(countersKey);
     }
 }

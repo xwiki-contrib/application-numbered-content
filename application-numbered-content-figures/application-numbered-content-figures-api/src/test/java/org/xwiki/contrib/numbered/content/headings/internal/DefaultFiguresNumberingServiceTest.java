@@ -30,7 +30,6 @@ import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
 import org.xwiki.rendering.block.FigureBlock;
 import org.xwiki.rendering.block.GroupBlock;
-import org.xwiki.rendering.transformation.RenderingContext;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
 import org.xwiki.test.junit5.mockito.MockComponent;
@@ -49,14 +48,13 @@ import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureT
 @ComponentTest
 class DefaultFiguresNumberingServiceTest
 {
+    private static final String COUNTERS = "counters";
+
     @InjectMockComponents
     private DefaultFiguresNumberingService figuresNumberingService;
 
     @MockComponent
     private Execution execution;
-
-    @MockComponent
-    private RenderingContext renderingContext;
 
     @Mock
     private ExecutionContext context;
@@ -66,7 +64,6 @@ class DefaultFiguresNumberingServiceTest
     {
         when(this.execution.getContext()).thenReturn(this.context);
         when(this.context.getProperty(PROPERTY_KEY)).thenReturn(new HashMap<>());
-        when(this.renderingContext.getTransformationId()).thenReturn("transfoId");
     }
 
     @Test
@@ -81,8 +78,8 @@ class DefaultFiguresNumberingServiceTest
     @Test
     void getFiguresMap()
     {
-        Map<Object, Object> mapTransformationIds = new HashMap<>();
-        when(this.context.getProperty(PROPERTY_KEY)).thenReturn(mapTransformationIds);
+        Map<Object, Object> counters = new HashMap<>();
+        when(this.context.getProperty(PROPERTY_KEY)).thenReturn(counters);
         FigureBlock figure0 = new FigureBlock(List.of(), Map.of(
             "id", "f0",
             DATA_XWIKI_RENDERING_FIGURE_TYPE, "figure"
@@ -105,18 +102,21 @@ class DefaultFiguresNumberingServiceTest
             figureImage0, "1",
             figure1, "2"
         ), figuresMap);
-        assertEquals(Map.of("transfoId", Map.of("figure", 3, "table", 2)), mapTransformationIds);
+        assertEquals(Map.of(
+                COUNTERS, Map.of("figure", 3L, "table", 2L),
+                "figures", Map.of("f0", 1L, "f1", 1L, "f2", 2L)),
+            counters);
     }
 
     @Test
     void getFiguresMapWithExistingCounter()
     {
-        Map<Object, Object> mapTransformationId = new HashMap<>();
         Map<Object, Object> counters = new HashMap<>();
-        counters.put("figure", 10);
-        counters.put("table", 15);
-        mapTransformationId.put("transfoId", counters);
-        when(this.context.getProperty(PROPERTY_KEY)).thenReturn(mapTransformationId);
+        counters.put("figure", 10L);
+        counters.put("table", 15L);
+        Map<String, Map<Object, Object>> figureNumbering = new HashMap<>();
+        figureNumbering.put(COUNTERS, counters);
+        when(this.context.getProperty(PROPERTY_KEY)).thenReturn(figureNumbering);
         FigureBlock figure0 = new FigureBlock(List.of(), Map.of(
             "id", "f0",
             DATA_XWIKI_RENDERING_FIGURE_TYPE, "figure"
@@ -139,6 +139,6 @@ class DefaultFiguresNumberingServiceTest
             figureImage0, "15",
             figure1, "11"
         ), figuresMap);
-        assertEquals(Map.of("transfoId", Map.of("figure", 12, "table", 16)), mapTransformationId);
+        assertEquals(Map.of("figure", 12L, "table", 16L), counters);
     }
 }

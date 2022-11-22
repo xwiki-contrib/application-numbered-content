@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests of the reference macro.
  *
  * @version $Id$
- * @since 1.6
+ * @since 1.6.1
  */
 @UITest
 class ReferenceMacroIT
@@ -52,7 +52,7 @@ class ReferenceMacroIT
     }
 
     @Test
-    void referenceOnContextMacro(TestUtils setup, TestReference testReference)
+    void referenceFigureOnContextMacro(TestUtils setup, TestReference testReference)
     {
         setup.deletePage(testReference);
         setup.createPage(testReference, "= {{id name=\"test\"/}} H1A =\n"
@@ -86,7 +86,7 @@ class ReferenceMacroIT
     }
 
     @Test
-    void referenceOnXObjectProperty(TestUtils setup, TestReference testReference)
+    void referenceFigureOnXObjectProperty(TestUtils setup, TestReference testReference)
     {
         DocumentReference xClassDocumentReference =
             new DocumentReference("XClass", testReference.getLastSpaceReference());
@@ -101,40 +101,98 @@ class ReferenceMacroIT
         classEditPage.addProperty("propertyB", "TextArea");
         classEditPage.clickSaveAndView();
         // Create an XObject.
-        ViewPage xObjectPage = setup.createPage(xObjectDocumentReference, "{{velocity}} \n"
-            + "$doc.display('propertyA')\n"
-            + "$doc.display('propertyB')\n"
-            + "{{/velocity}}");
+        ViewPage xObjectPage = setup.createPage(xObjectDocumentReference, String.format("%s\n" +
+            "\n" +
+            "{{velocity}} \n" +
+            "$doc.display('propertyA')\n" +
+            "$doc.display('propertyB')\n"
+            + "{{/velocity}}\n"
+            + "\n"
+            + "%s", generateFigureSnippet(3), generateFigureSnippet(4)));
         ObjectEditPage objectEditPage = xObjectPage.editObjects();
         ObjectEditPane objectEditPane =
             objectEditPage.addObject(setup.serializeReference(xClassDocumentReference.getLocalDocumentReference()));
-        objectEditPane.setPropertyValue("propertyA", "Below in table {{reference figure=\"T1\"/}}\n"
-            + "\n"
-            + "{{figure}}\n"
-            + "{{figureCaption}}\n"
-            + "{{id name=\"T1\"/}}Caption of Table 1\n"
-            + "{{/figureCaption}}\n"
-            + "\n"
-            + "|Cell of table 1\n"
-            + "{{/figure}}");
-        objectEditPane.setPropertyValue("propertyB", "Below in table {{reference figure=\"T2\"/}}\n"
-            + "\n"
-            + "{{figure}}\n"
-            + "{{figureCaption}}\n"
-            + "{{id name=\"T2\"/}}Caption of Table 2\n"
-            + "{{/figureCaption}}\n"
-            + "\n"
-            + "|Cell of table 2\n"
-            + "{{/figure}}");
+        objectEditPane.setPropertyValue("propertyA", generateFigureSnippet(1));
+        objectEditPane.setPropertyValue("propertyB", generateFigureSnippet(2));
         objectEditPage.clickSaveAndView();
 
         // Check the rendering of the reference links.
         List<WebElement> links = setup.getDriver().findElements(By.cssSelector("#xwikicontent .wikilink a"));
-        assertEquals(2, links.size());
+        assertEquals(4, links.size());
         String url = setup.getURL(xObjectDocumentReference);
-        assertEquals(url + "#T1", links.get(0).getAttribute("href"));
-        assertEquals(url + "#T2", links.get(1).getAttribute("href"));
-        assertEquals("1", links.get(0).getText());
-        assertEquals("2", links.get(1).getText());
+        assertEquals(url + "#T3", links.get(0).getAttribute("href"));
+        assertEquals(url + "#T1", links.get(1).getAttribute("href"));
+        assertEquals(url + "#T2", links.get(2).getAttribute("href"));
+        assertEquals(url + "#T4", links.get(3).getAttribute("href"));
+        assertEquals("3", links.get(0).getText());
+        assertEquals("1", links.get(1).getText());
+        assertEquals("2", links.get(2).getText());
+        assertEquals("4", links.get(3).getText());
+    }
+
+    @Test
+    void referenceHeadingOnXObjectProperty(TestUtils setup, TestReference testReference)
+    {
+        DocumentReference xClassDocumentReference =
+            new DocumentReference("XClass", testReference.getLastSpaceReference());
+        DocumentReference xObjectDocumentReference =
+            new DocumentReference("XObject", testReference.getLastSpaceReference());
+        setup.deletePage(xClassDocumentReference);
+        setup.deletePage(xObjectDocumentReference);
+        // Create an XClass.
+        ViewPage xClassPage = setup.createPage(xClassDocumentReference, "");
+        ClassEditPage classEditPage = xClassPage.editClass();
+        classEditPage.addProperty("propertyA", "TextArea");
+        classEditPage.addProperty("propertyB", "TextArea");
+        classEditPage.clickSaveAndView();
+        // Create an XObject.
+        ViewPage xObjectPage = setup.createPage(xObjectDocumentReference, String.format("%s\n" +
+            "\n" +
+            "{{velocity}} \n" +
+            "$doc.display('propertyA')\n" +
+            "$doc.display('propertyB')\n"
+            + "{{/velocity}}\n"
+            + "\n"
+            + "%s", generateHeaderSnippet(3), generateHeaderSnippet(4)));
+        ObjectEditPage objectEditPage = xObjectPage.editObjects();
+        ObjectEditPane objectEditPane =
+            objectEditPage.addObject(setup.serializeReference(xClassDocumentReference.getLocalDocumentReference()));
+        objectEditPane.setPropertyValue("propertyA", generateHeaderSnippet(1));
+        objectEditPane.setPropertyValue("propertyB", generateHeaderSnippet(2));
+        objectEditPage.clickSaveAndView();
+
+        // Check the rendering of the reference links.
+        List<WebElement> links = setup.getDriver().findElements(By.cssSelector("#xwikicontent .wikilink a"));
+        assertEquals(4, links.size());
+        String url = setup.getURL(xObjectDocumentReference);
+        assertEquals(url + "#H3", links.get(0).getAttribute("href"));
+        assertEquals(url + "#H1", links.get(1).getAttribute("href"));
+        assertEquals(url + "#H2", links.get(2).getAttribute("href"));
+        assertEquals(url + "#H4", links.get(3).getAttribute("href"));
+        assertEquals("3", links.get(0).getText());
+        assertEquals("1", links.get(1).getText());
+        assertEquals("2", links.get(2).getText());
+        assertEquals("4", links.get(3).getText());
+    }
+
+    private static String generateFigureSnippet(int i)
+    {
+        return String.format("Below in table {{reference figure=\"T%1$d\"/}}\n" +
+            "\n" +
+            "{{figure}}\n" +
+            "{{figureCaption}}\n" +
+            "{{id name=\"T%1$d\"/}}Caption of Table %1$d\n"
+            + "{{/figureCaption}}\n"
+            + "\n"
+            + "|Cell of table %1$d\n"
+            + "{{/figure}}", i);
+    }
+
+    private static String generateHeaderSnippet(int i)
+    {
+        return String.format("Below in header {{reference figure=\"H%1$d\"/}}\n" +
+            "\n" +
+            "(%% id='H%1$d' %%)\n" +
+            "= Header %1$d =", i);
     }
 }

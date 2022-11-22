@@ -19,8 +19,6 @@
  */
 package org.xwiki.contrib.numbered.content.headings.internal;
 
-import java.util.HashMap;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -35,14 +33,14 @@ import org.xwiki.context.ExecutionContextInitializer;
  * @since 1.6.1
  */
 @Component
-@Named(FigureNumberingExecutionContextInitializer.PROPERTY_KEY)
+@Named(HeadingsNumberingExecutionContextInitializer.PROPERTY_KEY)
 @Singleton
-public class FigureNumberingExecutionContextInitializer implements ExecutionContextInitializer
+public class HeadingsNumberingExecutionContextInitializer implements ExecutionContextInitializer
 {
     /**
      * Figure numbering context property key.
      */
-    public static final String PROPERTY_KEY = "figureNumbering";
+    public static final String PROPERTY_KEY = "headingsNumbering";
 
     @Override
     public void initialize(ExecutionContext context)
@@ -50,7 +48,7 @@ public class FigureNumberingExecutionContextInitializer implements ExecutionCont
         if (!context.hasProperty(PROPERTY_KEY)) {
             context.newProperty(PROPERTY_KEY)
                 .inherited()
-                .initial(new HashMap<>())
+                .initial(new HeadingNumberingCalculator())
                 .declare();
         }
     }

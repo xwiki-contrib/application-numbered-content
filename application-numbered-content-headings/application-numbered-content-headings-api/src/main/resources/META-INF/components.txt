@@ -2,3 +2,4 @@ org.xwiki.contrib.numbered.content.headings.internal.NumberedHeadingsClassDocume
 org.xwiki.contrib.numbered.content.headings.internal.DefaultNumberedHeadingsConfiguration
 org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingService
 org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService
+org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingExecutionContextInitializer

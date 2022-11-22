@@ -45,7 +45,7 @@ Figure 2
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<div class="figcaption"><p><span id="F1"></span>Title of Figure 1</p></div><p>&nbsp;</p><p>Figure 1</p><p>&nbsp;</p><p>Reference to table <span class="wikilink"><a href="#T1">1</a></span></p><p>&nbsp;</p><table><tr><td>Cell</td></tr></table><div class="figcaption"><p><span id="T1"></span>Title of Table 1&nbsp;</p></div><p>&nbsp;</p><p>Reference to figure <span class="wikilink"><a href="#F2">4</a></span></p><p>&nbsp;</p><div class="figcaption"><p><span id="F2"></span>Title of Figure 2</p></div><p>&nbsp;</p><p>Figure 2</p>
+<div class="figcaption"><p><span id="F1"></span>Title of Figure 1</p></div><p>&nbsp;</p><p>Figure 1</p><p>&nbsp;</p><p>Reference to table <span class="wikilink"><a href="#T1">1</a></span></p><p>&nbsp;</p><table><tr><td>Cell</td></tr></table><div class="figcaption"><p><span id="T1"></span>Title of Table 1&nbsp;</p></div><p>&nbsp;</p><p>Reference to figure <span class="wikilink"><a href="#F2">2</a></span></p><p>&nbsp;</p><div class="figcaption"><p><span id="F2"></span>Title of Figure 2</p></div><p>&nbsp;</p><p>Figure 2</p>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -169,7 +169,7 @@ onWord [figure]
 onSpace
 beginMacroMarkerInline [reference] [figure=F2]
 beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [F2]]] [false]
-onWord [4]
+onWord [2]
 endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [F2]]] [false]
 endMacroMarkerInline [reference] [figure=F2]
 endParagraph
