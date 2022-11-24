@@ -32,7 +32,7 @@ import static org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumbe
  * Test of {@link HeadingsNumberingExecutionContextInitializer}.
  *
  * @version $Id$
- * @since 1.6.1
+ * @since 1.7
  */
 @ComponentTest
 class HeadingsNumberingExecutionContextInitializerTest

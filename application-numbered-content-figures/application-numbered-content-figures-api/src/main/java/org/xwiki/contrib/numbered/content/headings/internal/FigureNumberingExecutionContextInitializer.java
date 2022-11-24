@@ -32,7 +32,7 @@ import org.xwiki.context.ExecutionContextInitializer;
  * Initializes a map to store the counters for figure numbering.
  *
  * @version $Id$
- * @since 1.6.1
+ * @since 1.7
  */
 @Component
 @Named(FigureNumberingExecutionContextInitializer.PROPERTY_KEY)

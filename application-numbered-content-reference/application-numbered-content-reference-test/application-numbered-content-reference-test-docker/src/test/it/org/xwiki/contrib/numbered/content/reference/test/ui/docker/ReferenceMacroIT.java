@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests of the reference macro.
  *
  * @version $Id$
- * @since 1.6.1
+ * @since 1.7
  */
 @UITest
 class ReferenceMacroIT

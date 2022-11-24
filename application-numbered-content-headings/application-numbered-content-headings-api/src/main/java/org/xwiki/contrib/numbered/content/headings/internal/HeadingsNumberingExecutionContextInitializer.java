@@ -31,7 +31,7 @@ import org.xwiki.context.ExecutionContextInitializer;
  * the whole rendering lifecycle.
  *
  * @version $Id$
- * @since 1.6.1
+ * @since 1.7
  */
 @Component
 @Named(HeadingsNumberingExecutionContextInitializer.PROPERTY_KEY)
