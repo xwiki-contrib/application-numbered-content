@@ -20,13 +20,13 @@
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<ul><li><span class="wikilink"><a href="#Hh1">0 H1</a></span><ul><li><span class="wikilink"><a href="#Hh2">1 H2</a></span></li><li><span class="wikilink"><a href="#Hhelloworld21">2 Hello World</a></span></li></ul></li><li><span class="wikilink"><a href="#HHellWorld">3 Hellworld</a></span><ul><li><span class="wikilink"><a href="#HHelloWorlD">4 Hello World</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hhelloworld21" class="wikigeneratedid"><span>hello world !</span></h2><h1 id="HHellWorld" class="wikigeneratedid"><span>HellWorld</span></h1><h2 id="HHelloWorlD" class="wikigeneratedid"><span>Hello WorlD</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
+<ul class="wikitoc"><li><span class="wikilink"><a href="#Hh1">0 H1</a></span><ul><li><span class="wikilink"><a href="#Hh2">1 H2</a></span></li><li><span class="wikilink"><a href="#Hhelloworld21">2 Hello World</a></span></li></ul></li><li><span class="wikilink"><a href="#HHellWorld">3 Hellworld</a></span><ul><li><span class="wikilink"><a href="#HHelloWorlD">4 Hello World</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hhelloworld21" class="wikigeneratedid"><span>hello world !</span></h2><h1 id="HHellWorld" class="wikigeneratedid"><span>HellWorld</span></h1><h2 id="HHelloWorlD" class="wikigeneratedid"><span>Hello WorlD</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
 beginDocument
 beginMacroMarkerStandalone [toc] [depth=2]
-beginList [BULLETED]
+beginList [BULLETED] [[class]=[wikitoc]]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
 onWord [0]
@@ -70,7 +70,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorlD]]] [f
 endListItem
 endList [BULLETED]
 endListItem
-endList [BULLETED]
+endList [BULLETED] [[class]=[wikitoc]]
 endMacroMarkerStandalone [toc] [depth=2]
 beginSection
 beginHeader [1, Hh1]
