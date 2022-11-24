@@ -19,16 +19,25 @@
  */
 package org.xwiki.contrib.numbered.content.headings.internal;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.rendering.block.IdBlock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.xwiki.rendering.listener.HeaderLevel.LEVEL1;
+import static org.xwiki.rendering.listener.HeaderLevel.LEVEL2;
+import static org.xwiki.rendering.listener.HeaderLevel.LEVEL3;
+import static org.xwiki.rendering.listener.HeaderLevel.LEVEL4;
 
 /**
  * Unit test for {@link HeadingNumberingCalculator}.
  *
- * @since 1.2
  * @version $Id$
+ * @since 1.2
  */
 class HeadingNumberingCalculatorTest
 {
@@ -43,43 +52,43 @@ class HeadingNumberingCalculatorTest
     @Test
     void consecutiveNumbers()
     {
-        this.calculator.addHeading(1, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL1, Map.of("id", "H1")), null);
         assertEquals("1", this.calculator.toString());
-        this.calculator.addHeading(1, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(new IdBlock("H2")), LEVEL1), null);
         assertEquals("2", this.calculator.toString());
-        this.calculator.addHeading(2, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL2, "H21"), null);
         assertEquals("2.1", this.calculator.toString());
-        this.calculator.addHeading(3, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL3, "H211"), null);
         assertEquals("2.1.1", this.calculator.toString());
-        this.calculator.addHeading(1, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL1, "H3"), null);
         assertEquals("3", this.calculator.toString());
     }
 
     @Test
     void startNumber()
     {
-        this.calculator.addHeading(1, 42);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL1, "H42"), 42);
         assertEquals("42", this.calculator.toString());
-        this.calculator.addHeading(1, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL1, "H43"), null);
         assertEquals("43", this.calculator.toString());
-        this.calculator.addHeading(2, 13);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL2, "H4313"), 13);
         assertEquals("43.13", this.calculator.toString());
-        this.calculator.addHeading(1, 10);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL1, "H10"), 10);
         assertEquals("10", this.calculator.toString());
-        this.calculator.addHeading(2, 100);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL2, "H10100"), 100);
         assertEquals("10.100", this.calculator.toString());
     }
 
     @Test
     void skipLevel()
     {
-        this.calculator.addHeading(2, 2);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL2, "H02"), 2);
         assertEquals("0.2", this.calculator.toString());
-        this.calculator.addHeading(4, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL4, "H0201"), null);
         assertEquals("0.2.0.1", this.calculator.toString());
-        this.calculator.addHeading(3, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL3, "H021"), null);
         assertEquals("0.2.1", this.calculator.toString());
-        this.calculator.addHeading(1, null);
+        this.calculator.addHeading(new HeaderBlock(List.of(), LEVEL1, "H1"), null);
         assertEquals("1", this.calculator.toString());
     }
 }

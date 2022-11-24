@@ -23,7 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import org.xwiki.context.Execution;
 import org.xwiki.contrib.numbered.content.headings.internal.HeadingNumberingCalculator;
+import org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingExecutionContextInitializer;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.stability.Unstable;
@@ -37,6 +41,9 @@ import org.xwiki.stability.Unstable;
 @Unstable
 public abstract class AbstractHeadingsNumberingService implements HeadingsNumberingService
 {
+    @Inject
+    private Execution execution;
+
     @Override
     public List<HeaderBlock> getHeadingsList(Block rootBlock)
     {
@@ -48,7 +55,9 @@ public abstract class AbstractHeadingsNumberingService implements HeadingsNumber
     {
         Map<HeaderBlock, String> result = new HashMap<>();
 
-        HeadingNumberingCalculator helper = new HeadingNumberingCalculator();
+        HeadingNumberingCalculator helper =
+            (HeadingNumberingCalculator) this.execution.getContext()
+                .getProperty(HeadingsNumberingExecutionContextInitializer.PROPERTY_KEY);
 
         for (HeaderBlock heading : getHeadingsList(rootBlock)) {
             if (heading.getParameter(SKIP_PARAMETER) == null) {
@@ -56,9 +65,8 @@ public abstract class AbstractHeadingsNumberingService implements HeadingsNumber
                 if (heading.getParameter(START_PARAMETER) != null) {
                     start = Integer.parseInt(heading.getParameter(START_PARAMETER));
                 }
-
-                helper.addHeading(heading.getLevel().getAsInt(), start);
-                result.put(heading, helper.toString());
+                
+                result.put(heading, helper.addHeading(heading, start));
             }
         }
 

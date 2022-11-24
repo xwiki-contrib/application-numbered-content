@@ -35,4 +35,12 @@
     <module>application-numbered-content-reference-latex</module>
     <module>application-numbered-content-reference-macro</module>
   </modules>
+  <profiles>
+    <profile>
+      <id>integration-tests</id>
+      <modules>
+        <module>application-numbered-content-reference-test</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

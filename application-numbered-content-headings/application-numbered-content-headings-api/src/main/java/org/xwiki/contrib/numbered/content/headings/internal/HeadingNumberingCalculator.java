@@ -21,13 +21,21 @@ package org.xwiki.contrib.numbered.content.headings.internal;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.xwiki.rendering.block.Block;
+import org.xwiki.rendering.block.HeaderBlock;
+import org.xwiki.rendering.block.IdBlock;
+import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
 /**
  * Helper class to calculate the number of a heading based on previously added headings.
- *
- * This should be used as a temporary helper as the class is neither designed to be re-usable nor thread-safe. For
- * this reason, this is also not a component.
+ * <p>
+ * This should be used as a temporary helper as the class is neither designed to be re-usable nor thread-safe. For this
+ * reason, this is also not a component.
  *
  * @version $Id$
  * @since 1.2
@@ -35,6 +43,8 @@ import java.util.stream.Collectors;
 public class HeadingNumberingCalculator
 {
     private final Deque<Integer> stack;
+
+    private final Map<String, String> ids = new HashMap<>();
 
     /**
      * Initialize the heading numbering calculator.
@@ -48,11 +58,23 @@ public class HeadingNumberingCalculator
     /**
      * Add a heading to the numbering.
      *
-     * @param level The level of the heading.
-     * @param start The start number for the heading of this level, null for continuous numbering.
+     * @param headerBlock the header block to add
+     * @param start the start number for the heading of this level, null for continuous numbering
+     * @return the computed numbering the of the added header, or {@code null} if the header does not have an id
      */
-    public void addHeading(int level, Integer start)
+    public String addHeading(HeaderBlock headerBlock, Integer start)
     {
+        int level = headerBlock.getLevel().getAsInt();
+        String id = getId(headerBlock);
+        if (id == null) {
+            return null;
+        }
+
+        // If the id is already inserted somewhere in the hierarchy, simply return it's pre-computed numbering.  
+        if (this.ids.containsKey(id)) {
+            return this.ids.get(id);
+        }
+
         // Pad with zeros to reach the current level.
         while (this.stack.size() < level) {
             this.stack.addLast(0);
@@ -66,11 +88,11 @@ public class HeadingNumberingCalculator
         // Increment or replace the last number.
         Integer lastNumber = this.stack.removeLast();
 
-        if (start != null) {
-            this.stack.addLast(start);
-        } else {
-            this.stack.addLast(lastNumber + 1);
-        }
+        this.stack.addLast(Objects.requireNonNullElseGet(start, () -> lastNumber + 1));
+
+        String computedNumber = printStack();
+        this.ids.put(id, computedNumber);
+        return computedNumber;
     }
 
     /**
@@ -78,6 +100,30 @@ public class HeadingNumberingCalculator
      */
     @Override
     public String toString()
+    {
+        return printStack();
+    }
+
+    private String getId(HeaderBlock headerBlock)
+    {
+        String id = headerBlock.getId();
+        if (id != null) {
+            return id;
+        }
+
+        String idParameter = headerBlock.getParameter("id");
+        if (idParameter != null) {
+            return idParameter;
+        }
+
+        IdBlock idBlock = headerBlock.getFirstBlock(new ClassBlockMatcher(IdBlock.class), Block.Axes.DESCENDANT);
+        if (idBlock != null) {
+            return idBlock.getName();
+        }
+        return null;
+    }
+
+    private String printStack()
     {
         return this.stack.stream().map(Object::toString).collect(Collectors.joining("."));
     }
