@@ -11,13 +11,13 @@
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<ul><li><span class="wikilink"><a href="#header1">0 H1</a></span></li></ul><h1 id="header1"><span>h1</span></h1>
+<ul class="wikitoc"><li><span class="wikilink"><a href="#header1">0 H1</a></span></li></ul><h1 id="header1"><span>h1</span></h1>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
 beginDocument
 beginMacroMarkerStandalone [toc] []
-beginList [BULLETED]
+beginList [BULLETED] [[class]=[wikitoc]]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [header1]]] [false]
 onWord [0]
@@ -25,7 +25,7 @@ onSpace
 onWord [H1]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [header1]]] [false]
 endListItem
-endList [BULLETED]
+endList [BULLETED] [[class]=[wikitoc]]
 endMacroMarkerStandalone [toc] []
 beginSection
 beginHeader [1, Hh1] [[id]=[header1]]
