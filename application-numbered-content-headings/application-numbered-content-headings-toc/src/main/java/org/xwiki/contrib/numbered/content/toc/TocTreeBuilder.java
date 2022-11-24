@@ -165,7 +165,7 @@ public class TocTreeBuilder
         if (currentBlock != null) {
             tocBlock = currentBlock.getRoot();
 
-            /** Add CSS class to ease styling. */
+            /* Add CSS class to ease styling. */
             tocBlock.setParameter("class", "wikitoc");
         }
 
