@@ -27,7 +27,8 @@ import org.xwiki.context.ExecutionContext;
 import org.xwiki.context.ExecutionContextInitializer;
 
 /**
- * Initializes a map to store the counters for figure numbering.
+ * Initializes a {@link HeadingNumberingCalculator} to store the stack of heading and their corresponding numbers for
+ * the whole rendering lifecycle.
  *
  * @version $Id$
  * @since 1.6.1

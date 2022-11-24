@@ -70,6 +70,7 @@ public class HeadingNumberingCalculator
             return null;
         }
 
+        // If the id is already inserted somewhere in the hierarchy, simply return it's pre-computed numbering.  
         if (this.ids.containsKey(id)) {
             return this.ids.get(id);
         }

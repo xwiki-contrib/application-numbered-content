@@ -93,13 +93,13 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
         if (figureBlock.getParameter(idParameter) != null) {
             return figureBlock.getParameter(idParameter);
         }
-        Block idBlock = figureBlock.getFirstBlock(IdBlock.class::isInstance, Block.Axes.DESCENDANT);
+        IdBlock idBlock = figureBlock.getFirstBlock(IdBlock.class::isInstance, Block.Axes.DESCENDANT);
         if (idBlock != null) {
-            return ((IdBlock) idBlock).getName();
+            return idBlock.getName();
         }
-        Block firstBlock = figureBlock.getFirstBlock(ImageBlock.class::isInstance, Block.Axes.DESCENDANT);
+        ImageBlock firstBlock = figureBlock.getFirstBlock(ImageBlock.class::isInstance, Block.Axes.DESCENDANT);
         if (firstBlock != null) {
-            return ((ImageBlock) firstBlock).getId();
+            return firstBlock.getId();
         }
 
         return null;
