@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.apache.commons.text.CaseUtils;
 import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.BulletedListBlock;
@@ -250,18 +248,7 @@ public class TocTreeBuilder
             }
         }
 
-        // Normalize the title by replacing each word with a normalized form where the first letter is upper case and 
-        // the rest lower case. 
-        return blocks.stream().map(block -> {
-            Block newBlock;
-            if (block instanceof WordBlock) {
-                WordBlock wordBlock = (WordBlock) block;
-                newBlock = new WordBlock(CaseUtils.toCamelCase(wordBlock.getWord(), true));
-            } else {
-                newBlock = block;
-            }
-            return newBlock;
-        }).collect(Collectors.toList());
+        return blocks;
     }
 
     /**

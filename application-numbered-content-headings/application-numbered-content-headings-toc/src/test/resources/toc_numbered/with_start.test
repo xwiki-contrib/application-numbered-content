@@ -22,7 +22,7 @@
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<ul class="wikitoc"><li><span class="wikilink"><a href="#Hh1">0 H1</a></span><ul><li><span class="wikilink"><a href="#Hh2">1 H2</a></span></li><li><span class="wikilink"><a href="#Hh2bis">2 H2bis</a></span></li></ul></li><li><span class="wikilink"><a href="#Hh1bis">10 H1bis</a></span><ul><li><span class="wikilink"><a href="#Hh2tes">100 H2tes</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hh2bis" class="wikigeneratedid"><span>h2bis</span></h2><h1 id="Hh1bis" class="wikigeneratedid" data-numbered-headings-start="10"><span>h1bis</span></h1><h2 id="Hh2tes" class="wikigeneratedid" data-numbered-headings-start="100"><span>h2tes</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
+<ul class="wikitoc"><li><span class="wikilink"><a href="#Hh1">0 h1</a></span><ul><li><span class="wikilink"><a href="#Hh2">1 h2</a></span></li><li><span class="wikilink"><a href="#Hh2bis">2 h2bis</a></span></li></ul></li><li><span class="wikilink"><a href="#Hh1bis">10 h1bis</a></span><ul><li><span class="wikilink"><a href="#Hh2tes">100 h2tes</a></span></li></ul></li></ul><h1 id="Hh1" class="wikigeneratedid"><span>h1</span></h1><h2 id="Hh2" class="wikigeneratedid"><span>h2</span></h2><h2 id="Hh2bis" class="wikigeneratedid"><span>h2bis</span></h2><h1 id="Hh1bis" class="wikigeneratedid" data-numbered-headings-start="10"><span>h1bis</span></h1><h2 id="Hh2tes" class="wikigeneratedid" data-numbered-headings-start="100"><span>h2tes</span></h2><h3 id="Hh3" class="wikigeneratedid"><span>h3</span></h3>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -33,21 +33,21 @@ beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
 onWord [0]
 onSpace
-onWord [H1]
+onWord [h1]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1]]] [false]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
 onWord [1]
 onSpace
-onWord [H2]
+onWord [h2]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2]]] [false]
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
 onWord [2]
 onSpace
-onWord [H2bis]
+onWord [h2bis]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2bis]]] [false]
 endListItem
 endList [BULLETED]
@@ -56,14 +56,14 @@ beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
 onWord [10]
 onSpace
-onWord [H1bis]
+onWord [h1bis]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh1bis]]] [false]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]
 onWord [100]
 onSpace
-onWord [H2tes]
+onWord [h2tes]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Hh2tes]]] [false]
 endListItem
 endList [BULLETED]
