@@ -38,7 +38,7 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content>numbered.headings.codeSpace.title=コード
-### Missing: numbered.headings.codeSpace.description=This is the place where the Numbered Headings application code is located.
+numbered.headings.codeSpace.description=これは番号付き見出しのアプリケーションのコードを扱うページです。
 numbered.headings.activationUI.label=見出しの番号付けを有効にする
 numbered.headings.activationUI.parameters.title=見出しの番号付け
 numbered.headings.activationUI.contentUpdate.inProgress=内容を更新しています…
@@ -47,8 +47,8 @@ numbered.headings.activationUI.contentUpdate.failed=内容を更新できませ�
 numbered.headings.ckeditor.headerConfigurationAction.title=見出しの設定
 ### Missing: numbered.headings.ckeditor.headerConfigurationAction.start.title=Start
 ### Missing: numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Header start number must be a whole number.
-### Missing: numbered.headings.ckeditor.skipNumberingHeader.activate.title=Skip numbering: Activate
-### Missing: numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=Skip numbering: Deactivate
+numbered.headings.ckeditor.skipNumberingHeader.activate.title=番号付けのスキップ：有効
+numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=番号付けのスキップ：無効
 numbered.heading.template.title=番号付けの見出しのテンプレート
 numbered.heading.template.description=番号付き見出しを有効にしてページを作成。
 </content>
