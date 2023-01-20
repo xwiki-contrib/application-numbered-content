@@ -35,6 +35,7 @@ import org.xwiki.test.ui.po.editor.ObjectEditPage;
 import org.xwiki.test.ui.po.editor.ObjectEditPane;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests of the reference macro.
@@ -173,6 +174,29 @@ class ReferenceMacroIT
         assertEquals("1", links.get(1).getText());
         assertEquals("2", links.get(2).getText());
         assertEquals("4", links.get(3).getText());
+    }
+
+    @Test
+    void usingCaptionInLinkSyntax(TestUtils setup, TestReference testReference) throws Exception
+    {
+        setup.deletePage(testReference);
+        // Note that while the content references image1/image2.png, no images are actually attached to the page.
+        // We are validating the number rendered by the reference macro and the actual images are not relevant for this 
+        // test.
+        ViewPage page = setup.createPage(testReference,
+            "See Figure {{reference figure=\"logo\"/}} and {{reference figure=\"Circles\"/}}.\n"
+                + "\n"
+                + "[[XWiki Logo>>image:attach:image1.png||id=\"logo\"]]\n"
+                + "\n"
+                + "{{figure}}\n"
+                + "[[image:image2.png||height=\"200\" width=\"200\"]]\n"
+                + "\n"
+                + "{{figureCaption}}\n"
+                + "{{id name=\"Circles\"/}}Generative Art - Circles\n"
+                + "{{/figureCaption}}\n"
+                + "{{/figure}}\n");
+        String content = page.getContent();
+        assertTrue(content.startsWith("See Figure 1 and 2."));
     }
 
     private static String generateFigureSnippet(int i)

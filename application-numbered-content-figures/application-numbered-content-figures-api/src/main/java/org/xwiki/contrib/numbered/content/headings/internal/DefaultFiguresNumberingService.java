@@ -22,6 +22,7 @@ package org.xwiki.contrib.numbered.content.headings.internal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,6 +38,7 @@ import org.xwiki.rendering.block.ImageBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
 import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
+import static org.xwiki.contrib.numbered.content.headings.macro.FigureType.FIGURE;
 
 /**
  * Compute the numbers for the figures and save the result in a cache.
@@ -74,7 +76,7 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
         for (FigureBlock figure : getFiguresList(rootBlock)) {
             String id = getId(figure);
             if (id != null && !figuresMap.containsKey(id)) {
-                String type = figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE);
+                String type = Objects.toString(figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE), FIGURE.getName());
                 Long counter = counters.getOrDefault(type, 1L);
                 result.put(figure, String.valueOf(counter));
                 figuresMap.put(id, counter);
