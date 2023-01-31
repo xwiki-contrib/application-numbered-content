@@ -846,7 +846,7 @@ counter-reset: ch6 var(--numbered-headings-start);
 {{/velocity}}</content>
     </property>
     <property>
-      <extensionPointId>org.xwiki.platform.template.header.after</extensionPointId>
+      <extensionPointId>org.xwiki.platform.html.head</extensionPointId>
     </property>
     <property>
       <name>org.xwiki.contrib.numbered.headings.header.after.config</name>
