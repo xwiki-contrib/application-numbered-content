@@ -27,50 +27,40 @@
     <artifactId>application-numbered-content-headings</artifactId>
     <version>1.8-SNAPSHOT</version>
   </parent>
-
-  <artifactId>application-numbered-content-headings-ui</artifactId>
-  <name>Numbered Content - Headings - UI</name>
-  <description>Provides the User Interface and CKEditor plugins for Numbered Headings.</description>
-  <packaging>xar</packaging>
-  <properties>
-    <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Headings Application</xwiki.extension.name>
-    <xwiki.extension.category>application</xwiki.extension.category>
-  </properties>
+  <artifactId>application-numbered-content-headings-pdf</artifactId>
+  <name>Numbered Content - Headings - PDF Export</name>
+  <description>Numbered Content - Headings - PDF Export</description>
+  <!-- TODO: add properties -->
+  <packaging>jar</packaging>
   <dependencies>
     <dependency>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-component-api</artifactId>
+      <version>${commons.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.rendering</groupId>
+      <artifactId>xwiki-rendering-transformation-macro</artifactId>
+      <version>${rendering.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-bridge</artifactId>
+      <version>${platform.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-headings-api</artifactId>
+      <artifactId>application-numbered-content-headings-toc</artifactId>
       <version>${project.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <!-- This dependency is only useful when using the number headings application in combination with the pdf export
-         application.  -->
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-headings-pdf</artifactId>
-      <version>${project.version}</version>
-      <optional>true</optional>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-ckeditor-ui</artifactId>
+      <artifactId>xwiki-platform-export-pdf-api</artifactId>
       <version>${platform.version}</version>
-      <scope>runtime</scope>
-      <type>xar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-localization-macro</artifactId>
-      <version>${platform.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-localization-webjar</artifactId>
-      <version>${platform.version}</version>
-      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>

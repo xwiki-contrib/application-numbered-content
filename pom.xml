@@ -128,19 +128,20 @@
           <analysisConfiguration>
             <revapi.differences>
               <criticality>allowed</criticality>
-              <justification>Not a breaking change, unstable API vocabulary uniformization.</justification>
+              <justification>Unstable API: adding more arguments to make the builder more generic.</justification>
               <differences>
                 <item>
                   <ignore>true</ignore>
-                  <code>java.class.removed</code>
-                  <old>class org.xwiki.contrib.numbered.content.headings.AbstractHeadersNumberingService</old>
+                  <code>java.method.numberOfParametersChanged</code>
+                  <old>method void org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::&lt;init&gt;(org.xwiki.rendering.internal.macro.toc.TocBlockFilter, org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService)</old>
+                  <new>method void org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::&lt;init&gt;(org.xwiki.rendering.internal.macro.toc.TocBlockFilter, org.xwiki.contrib.numbered.content.toc.TocEntriesResolver, java.util.List&lt;org.xwiki.contrib.numbered.content.toc.TocEntryDecorator&gt;)</new>
+                  <justification>ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE</justification>
                 </item>
                 <item>
                   <ignore>true</ignore>
-                  <code>java.method.parameterTypeChanged</code>
-                  <old>parameter void org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::&lt;init&gt;(org.xwiki.rendering.internal.macro.toc.TocBlockFilter, ===org.xwiki.contrib.numbered.content.HeaderNumberingService===)</old>
-                  <new>parameter void org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::&lt;init&gt;(org.xwiki.rendering.internal.macro.toc.TocBlockFilter, ===org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService===)</new>
-                  <parameterIndex>1</parameterIndex>
+                  <code>java.method.numberOfParametersChanged</code>
+                  <old>method java.util.List&lt;org.xwiki.rendering.block.Block&gt; org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::build(org.xwiki.rendering.internal.macro.toc.TreeParameters, boolean)</old>
+                  <new>method java.util.List&lt;org.xwiki.rendering.block.Block&gt; org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::build(org.xwiki.rendering.internal.macro.toc.TreeParameters)</new>
                 </item>
               </differences>
             </revapi.differences>

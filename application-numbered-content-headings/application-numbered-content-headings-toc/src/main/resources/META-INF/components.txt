@@ -1,1 +1,4 @@
 400:org.xwiki.contrib.numbered.content.toc.internal.TocMacro
+org.xwiki.contrib.numbered.content.toc.NumberingTocEntryDecorator
+org.xwiki.contrib.numbered.content.toc.DefaultTocTreeBuilderFactory
+org.xwiki.contrib.numbered.content.toc.DefaultTocEntriesResolver

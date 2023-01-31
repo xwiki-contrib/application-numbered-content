@@ -1,0 +1,2 @@
+400:org.xwiki.contrib.numbered.content.headings.pdf.internal.macro.PDFTocMacro
+org.xwiki.contrib.numbered.content.headings.pdf.internal.macro.PdfTocTreeBuilderFactory

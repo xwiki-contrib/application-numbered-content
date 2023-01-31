@@ -18,7 +18,7 @@
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<ul class="wikitoc"><li><span class="wikilink"><a href="#HHelloWorld21">0 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld2121">1 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld...">2 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld:">3 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld:-1">4 Hello World</a></span></li></ul><h1 id="HHelloWorld21" class="wikigeneratedid"><span>Hello World !</span></h1><h1 id="HHelloWorld2121" class="wikigeneratedid"><span>Hello World!!</span></h1><h1 id="HHelloWorld..." class="wikigeneratedid"><span>Hello World...</span></h1><h1 id="HHelloWorld:" class="wikigeneratedid"><span>Hello World:</span></h1><h1 id="HHelloWorld:-1" class="wikigeneratedid"><span>Hello World :</span></h1>
+<ul class="wikitoc"><li><span class="wikilink"><a href="#HHelloWorld21">1 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld2121">2 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld...">3 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld:">4 Hello World</a></span></li><li><span class="wikilink"><a href="#HHelloWorld:-1">5 Hello World</a></span></li></ul><h1 id="HHelloWorld21" class="wikigeneratedid"><span>Hello World !</span></h1><h1 id="HHelloWorld2121" class="wikigeneratedid"><span>Hello World!!</span></h1><h1 id="HHelloWorld..." class="wikigeneratedid"><span>Hello World...</span></h1><h1 id="HHelloWorld:" class="wikigeneratedid"><span>Hello World:</span></h1><h1 id="HHelloWorld:-1" class="wikigeneratedid"><span>Hello World :</span></h1>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -27,7 +27,7 @@ beginMacroMarkerStandalone [toc] [depth=2]
 beginList [BULLETED] [[class]=[wikitoc]]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld21]]] [false]
-onWord [0]
+onWord [1]
 onSpace
 onWord [Hello]
 onSpace
@@ -36,7 +36,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld21]]] 
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld2121]]] [false]
-onWord [1]
+onWord [2]
 onSpace
 onWord [Hello]
 onSpace
@@ -45,7 +45,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld2121]]
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld...]]] [false]
-onWord [2]
+onWord [3]
 onSpace
 onWord [Hello]
 onSpace
@@ -54,7 +54,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld...]]]
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:]]] [false]
-onWord [3]
+onWord [4]
 onSpace
 onWord [Hello]
 onSpace
@@ -63,7 +63,7 @@ endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:]]] [
 endListItem
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [HHelloWorld:-1]]] [false]
-onWord [4]
+onWord [5]
 onSpace
 onWord [Hello]
 onSpace
