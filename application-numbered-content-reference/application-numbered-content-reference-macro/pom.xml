@@ -29,7 +29,7 @@
   </parent>
   <artifactId>application-numbered-content-reference-macro</artifactId>
   <name>Numbered Content - Reference Macro</name>
-  <description>Provides Numbered Headings and Figures, and references to them.</description>
+  <description>Provides a macro to reference numbered contents.</description>
   <properties>
     <xwiki.jacoco.instructionRatio>0.97</xwiki.jacoco.instructionRatio>
     <!-- Name to display by the Extension Manager -->
@@ -60,22 +60,6 @@
       <groupId>org.xwiki.rendering</groupId>
       <artifactId>xwiki-rendering-macro-message</artifactId>
       <version>${rendering.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-figures-ui</artifactId>
-      <version>${project.version}</version>
-      <type>xar</type>
-      <optional>true</optional>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-headings-ui</artifactId>
-      <version>${project.version}</version>
-      <type>xar</type>
-      <optional>true</optional>
-      <scope>runtime</scope>
     </dependency>
     <!-- Test dependencies. -->
     <dependency>
@@ -120,10 +104,11 @@
       <version>${rendering.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- Required to test with oldcore as a dependency. -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-test-oldcore</artifactId>
+      <version>${platform.version}</version>
+      <type>pom</type>
       <scope>test</scope>
     </dependency>
   </dependencies>

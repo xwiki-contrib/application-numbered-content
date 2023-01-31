@@ -3,5 +3,4 @@ org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresClassDocumen
 org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresConfiguration
 org.xwiki.contrib.numbered.content.headings.script.NumberedFiguresScriptService
 500:org.xwiki.contrib.numbered.content.headings.internal.macro.FigureMacro
-5001:org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro
 org.xwiki.contrib.numbered.content.headings.internal.FigureNumberingExecutionContextInitializer

@@ -30,12 +30,12 @@
 
   <artifactId>application-numbered-content-reference-latex</artifactId>
   <name>Numbered Content - Reference - Latex</name>
-  <description>Provides the templates to integrate the references with the Latex
-    Extension</description>
+  <description>Provides the templates to integrate the references with the Latex Extension</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>LaTeX for the Reference Macro</xwiki.extension.name>
     <xwiki.extension.category>other</xwiki.extension.category>
+    <xwiki.enforcer.banneddependencytype-xar.skip>true</xwiki.enforcer.banneddependencytype-xar.skip>
   </properties>
   <dependencies>
     <dependency>

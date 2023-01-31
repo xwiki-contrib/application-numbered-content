@@ -24,30 +24,41 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
-    <artifactId>application-numbered-content-headings</artifactId>
+    <artifactId>application-numbered-content-reference</artifactId>
     <version>1.8-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application-numbered-content-headings-latex</artifactId>
-  <name>Numbered Content - Headings - Latex</name>
-  <description>Provides the User Interface Extension Points to integrate Numbered Headings with the Latex Extension</description>
-  <packaging>xar</packaging>
+  <artifactId>application-numbered-content-reference-ui</artifactId>
+  <name>Numbered Content - Reference - UI</name>
+  <description>Provides the reference macro for numbered content as well as the UI to add numbers on headings and figures.</description>
+  <packaging>pom</packaging>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>LaTeX for Numbered Headings</xwiki.extension.name>
-    <xwiki.extension.category>other</xwiki.extension.category>
+    <xwiki.extension.name>Numbered Reference Application</xwiki.extension.name>
+    <xwiki.extension.category>application</xwiki.extension.category>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-reference-macro</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-figures-ui</artifactId>
+      <version>${project.version}</version>
+      <type>xar</type>
+      <optional>true</optional>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
       <artifactId>application-numbered-content-headings-ui</artifactId>
       <version>${project.version}</version>
       <type>xar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.latex</groupId>
-      <artifactId>latex-export</artifactId>
-      <version>${latex.version}</version>
+      <optional>true</optional>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>

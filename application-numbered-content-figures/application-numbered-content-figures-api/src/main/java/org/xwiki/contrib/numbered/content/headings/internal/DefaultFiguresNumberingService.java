@@ -37,8 +37,8 @@ import org.xwiki.rendering.block.IdBlock;
 import org.xwiki.rendering.block.ImageBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
-import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
 import static org.xwiki.contrib.numbered.content.headings.macro.FigureType.FIGURE;
+import static org.xwiki.rendering.internal.macro.figure.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
 
 /**
  * Compute the numbers for the figures and save the result in a cache.

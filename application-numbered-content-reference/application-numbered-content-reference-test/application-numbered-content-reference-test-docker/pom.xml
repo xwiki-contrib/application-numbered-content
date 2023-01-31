@@ -46,6 +46,7 @@
       <groupId>org.xwiki.contrib.numbered.content</groupId>
       <artifactId>application-numbered-content-reference-macro</artifactId>
       <version>${project.version}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
   <build>

@@ -22,6 +22,7 @@ package org.xwiki.contrib.numbered.content.reference.internal;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -87,7 +88,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
     public ReferenceMacro()
     {
         super("Reference", DESCRIPTION, ReferenceMacroParameters.class);
-        setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
+        setDefaultCategories(Set.of(DEFAULT_CATEGORY_NAVIGATION));
         // One more than the figure type recognizer macro to make sure that all the figure types are identified
         // before computing the references.
         setPriority(3001);

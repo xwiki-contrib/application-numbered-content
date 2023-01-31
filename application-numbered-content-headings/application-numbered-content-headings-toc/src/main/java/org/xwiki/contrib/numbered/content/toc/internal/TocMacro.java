@@ -20,6 +20,7 @@
 package org.xwiki.contrib.numbered.content.toc.internal;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,8 +31,8 @@ import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.InitializationException;
 import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
-import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
+import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.XDOM;
 import org.xwiki.rendering.internal.macro.toc.TocBlockFilter;
@@ -103,7 +104,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
         // other macros can generate headers which need to be taken into account by the TOC
         // macro.
         setPriority(2000);
-        setDefaultCategory(DEFAULT_CATEGORY_NAVIGATION);
+        setDefaultCategories(Set.of(DEFAULT_CATEGORY_NAVIGATION));
     }
 
     @Override

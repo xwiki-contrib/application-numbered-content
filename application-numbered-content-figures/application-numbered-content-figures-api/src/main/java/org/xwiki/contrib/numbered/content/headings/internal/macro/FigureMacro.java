@@ -21,6 +21,7 @@ package org.xwiki.contrib.numbered.content.headings.internal.macro;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -41,7 +42,7 @@ import org.xwiki.rendering.macro.MacroExecutionException;
 import org.xwiki.rendering.macro.descriptor.DefaultContentDescriptor;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
 
-import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
+import static org.xwiki.rendering.internal.macro.figure.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
 
 /**
  * Tag content as an illustration and with an optional caption. Override the figure macro from xwiki standard to match
@@ -77,7 +78,7 @@ public class FigureMacro extends AbstractMacro<FigureMacroParameters>
         super("Figure", DESCRIPTION,
             new DefaultContentDescriptor(CONTENT_DESCRIPTION, false, Block.LIST_BLOCK_TYPE),
             FigureMacroParameters.class);
-        setDefaultCategory(DEFAULT_CATEGORY_DEVELOPMENT);
+        setDefaultCategories(Set.of(DEFAULT_CATEGORY_DEVELOPMENT));
     }
 
     @Override

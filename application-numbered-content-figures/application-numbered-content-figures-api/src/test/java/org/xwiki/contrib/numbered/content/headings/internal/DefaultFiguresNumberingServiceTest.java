@@ -37,7 +37,7 @@ import org.xwiki.test.junit5.mockito.MockComponent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.xwiki.contrib.numbered.content.headings.internal.FigureNumberingExecutionContextInitializer.PROPERTY_KEY;
-import static org.xwiki.contrib.numbered.content.headings.internal.macro.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
+import static org.xwiki.rendering.internal.macro.figure.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
 
 /**
  * Test of {@link DefaultFiguresNumberingService}.
