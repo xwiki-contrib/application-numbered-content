@@ -33,7 +33,6 @@
   <properties>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Table of Content Macro for Numbered Headings</xwiki.extension.name>
-    <xwiki.extension.description>Table of Content macro for the Numbered Headings Application.</xwiki.extension.description>
     <!-- Extension Manager category -->
     <xwiki.extension.category>macro</xwiki.extension.category>
     <xwiki.jacoco.instructionRatio>0.82</xwiki.jacoco.instructionRatio>

@@ -36,7 +36,6 @@
   <properties>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>LaTeX for Numbered Headings</xwiki.extension.name>
-    <xwiki.extension.description>Output Numbered Headings in LaTeX exports.</xwiki.extension.description>
     <xwiki.extension.category>other</xwiki.extension.category>
   </properties>
   <dependencies>

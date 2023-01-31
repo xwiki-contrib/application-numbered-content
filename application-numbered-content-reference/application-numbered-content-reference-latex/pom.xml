@@ -35,7 +35,6 @@
   <properties>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>LaTeX for the Reference Macro</xwiki.extension.name>
-    <xwiki.extension.description>Output References in LaTeX exports.</xwiki.extension.description>
     <xwiki.extension.category>other</xwiki.extension.category>
   </properties>
   <dependencies>

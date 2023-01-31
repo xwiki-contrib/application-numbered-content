@@ -34,7 +34,6 @@
     <xwiki.jacoco.instructionRatio>0.97</xwiki.jacoco.instructionRatio>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Reference Macro for the Numbered Content Applications</xwiki.extension.name>
-    <xwiki.extension.description>Allows to make references to numbered contents (i.e., headings and figures).</xwiki.extension.description>
     <!-- Extension Manager category -->
     <xwiki.extension.category>macro</xwiki.extension.category>
     <!-- Another extension also providing a "reference" macro and that should not be installed simultaneously. -->
