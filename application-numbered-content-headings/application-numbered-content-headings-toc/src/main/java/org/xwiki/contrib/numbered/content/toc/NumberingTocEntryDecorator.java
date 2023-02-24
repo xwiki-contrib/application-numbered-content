@@ -26,6 +26,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
+import org.xwiki.rendering.block.HeaderBlock;
 
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
 
@@ -52,7 +53,7 @@ public class NumberingTocEntryDecorator extends AbstractNumberingTocEntryDecorat
     private Logger logger;
 
     @Override
-    protected boolean isNumbered()
+    protected boolean isNumbered(HeaderBlock headerBlock)
     {
         boolean isNumbered;
         try {

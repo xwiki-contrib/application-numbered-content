@@ -54,7 +54,7 @@ public abstract class AbstractNumberingTocEntryDecorator implements TocEntryDeco
     public List<Block> decorate(HeaderBlock headerBlock, List<Block> blocks, Block rootBlock,
         TocEntriesResolver tocEntriesResolver)
     {
-        boolean isNumbered = isNumbered();
+        boolean isNumbered = isNumbered(headerBlock);
         if (isNumbered) {
             Map<HeaderBlock, String> headingBlockStringMap = getHeadingsMap(rootBlock, tocEntriesResolver);
             String rawContent = headingBlockStringMap.get(headerBlock);
@@ -88,7 +88,7 @@ public abstract class AbstractNumberingTocEntryDecorator implements TocEntryDeco
         return result;
     }
 
-    protected abstract boolean isNumbered();
+    protected abstract boolean isNumbered(HeaderBlock headerBlock);
 
     private List<Block> cleanupEntryLabel(List<Block> blocks)
     {

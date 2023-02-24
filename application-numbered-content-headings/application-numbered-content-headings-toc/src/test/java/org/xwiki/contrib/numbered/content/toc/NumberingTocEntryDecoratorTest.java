@@ -19,9 +19,6 @@
  */
 package org.xwiki.contrib.numbered.content.toc;
 
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
@@ -58,21 +55,21 @@ class NumberingTocEntryDecoratorTest
     void isNumbered() throws Exception
     {
         when(this.numberedHeadingsConfiguration.isNumberedHeadingsEnabled()).thenReturn(true);
-        assertTrue(this.decorator.isNumbered());
+        assertTrue(this.decorator.isNumbered(null));
     }
 
     @Test
     void isNumberedFalse() throws Exception
     {
         when(this.numberedHeadingsConfiguration.isNumberedHeadingsEnabled()).thenReturn(false);
-        assertFalse(this.decorator.isNumbered());
+        assertFalse(this.decorator.isNumbered(null));
     }
 
     @Test
     void isNumberedError() throws Exception
     {
         when(this.numberedHeadingsConfiguration.isNumberedHeadingsEnabled()).thenThrow(Exception.class);
-        assertFalse(this.decorator.isNumbered());
+        assertFalse(this.decorator.isNumbered(null));
         assertEquals("Cannot check if numbered headings are enabled. Cause: [Exception: ]", this.logCapture.getMessage(0));
         assertEquals(Level.WARN, this.logCapture.getLogEvent(0).getLevel());
     }
