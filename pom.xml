@@ -33,7 +33,7 @@
   <artifactId>application-numbered-content</artifactId>
   <name>Numbered Content - Parent Model</name>
   <description>Allows to automatically add number on the content (e.g., headings, paragraphs, figures)</description>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
   <developers>
     <developer>
       <id>mleduc</id>
@@ -52,7 +52,7 @@
     <connection>scm:git:git://github.com/xwiki-contrib/application-numbered-content.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-numbered-content.git</developerConnection>
     <url>https://github.com/xwiki-contrib/application-numbered-content/tree/master</url>
-    <tag>HEAD</tag>
+    <tag>application-numbered-content-1.8</tag>
   </scm>
   <properties>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
