@@ -28,8 +28,8 @@
     <version>1.8-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application-numbered-content-reference-ui</artifactId>
-  <name>Numbered Content - Reference - UI</name>
+  <artifactId>application-numbered-content-reference-bom</artifactId>
+  <name>Numbered Content - Reference - BOM</name>
   <description>Provides the reference macro for numbered content as well as the UI to add numbers on headings and figures.</description>
   <packaging>pom</packaging>
   <properties>

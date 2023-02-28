@@ -34,7 +34,7 @@
   <modules>
     <module>application-numbered-content-reference-latex</module>
     <module>application-numbered-content-reference-macro</module>
-    <module>application-numbered-content-reference-ui</module>
+    <module>application-numbered-content-reference-bom</module>
   </modules>
   <profiles>
     <profile>
