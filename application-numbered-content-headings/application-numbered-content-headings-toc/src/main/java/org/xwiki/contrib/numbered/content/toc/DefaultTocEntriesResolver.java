@@ -33,6 +33,7 @@ import org.xwiki.rendering.block.HeaderBlock;
 /**
  * Default table of content entry resolver. Returns a list of header blockers based of the headings found in the block
  * and their attributes (e.g., headers can be re-numbered or skipped).
+ * TODO: remove this class once the minimal parent-platform of this module includes XRENDERING-704.
  *
  * @version $Id$
  * @since 1.8

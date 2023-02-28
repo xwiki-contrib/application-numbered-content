@@ -26,6 +26,7 @@ import org.xwiki.component.manager.ComponentLookupException;
 
 /**
  * Default table of content factory builder.
+ * TODO: remove this class once the minimal parent-platform of this module includes XRENDERING-704. 
  *
  * @version $Id$
  * @since 1.8

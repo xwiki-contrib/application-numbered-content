@@ -29,6 +29,7 @@ import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
 
 /**
  * Initialize a {@link TocTreeBuilder} for pdf export.
+ * TODO: remove this class once the minimal parent-platform of this module includes XRENDERING-704.
  *
  * @version $Id$
  * @since 1.8

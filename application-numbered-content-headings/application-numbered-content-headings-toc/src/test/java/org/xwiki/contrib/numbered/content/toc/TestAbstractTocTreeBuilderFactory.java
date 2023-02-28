@@ -24,6 +24,8 @@ import javax.inject.Singleton;
 import org.xwiki.component.annotation.Component;
 
 /**
+ * Component used to provide a default {@link AbstractTocTreeBuilderFactory} in the tests.
+ *
  * @version $Id$
  * @since 1.8
  */

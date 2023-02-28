@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
  * Test of {@link AbstractTocTreeBuilderFactory}.
  *
  * @version $Id$
- * @since x.y.z
+ * @since 1.8
  */
 @ComponentTest
 class AbstractTocTreeBuilderFactoryTest
