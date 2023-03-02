@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.xwiki.component.manager.ComponentManager;
 import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
 import org.xwiki.rendering.block.Block;
@@ -54,6 +55,9 @@ public class NumberedIntegrationTests implements RenderingTests
     @Initialized
     public void initialize(MockitoComponentManager componentManager) throws Exception
     {
+        componentManager.registerComponent(ComponentManager.class, "context",
+            componentManager.getInstance(ComponentManager.class));
+
         NumberedHeadingsConfiguration numberedHeadingService =
             componentManager.registerMockComponent(NumberedHeadingsConfiguration.class);
         when(numberedHeadingService.isNumberedHeadingsEnabled()).thenReturn(true);

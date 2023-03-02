@@ -19,6 +19,8 @@
  */
 package org.xwiki.contrib.numbered.content.toc;
 
+import javax.inject.Named;
+
 import org.junit.jupiter.api.Test;
 import org.xwiki.component.manager.ComponentManager;
 import org.xwiki.test.junit5.mockito.ComponentTest;
@@ -42,6 +44,7 @@ class AbstractTocTreeBuilderFactoryTest
     private TestAbstractTocTreeBuilderFactory factory;
 
     @MockComponent
+    @Named("context")
     private ComponentManager componentManager;
 
     @Test
