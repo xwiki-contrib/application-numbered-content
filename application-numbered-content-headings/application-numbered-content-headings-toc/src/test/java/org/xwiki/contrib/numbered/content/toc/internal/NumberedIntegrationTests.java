@@ -31,6 +31,7 @@ import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
+import org.xwiki.skinx.SkinExtension;
 import org.xwiki.test.annotation.AllComponents;
 import org.xwiki.test.mockito.MockitoComponentManager;
 
@@ -57,6 +58,8 @@ public class NumberedIntegrationTests implements RenderingTests
     {
         componentManager.registerComponent(ComponentManager.class, "context",
             componentManager.getInstance(ComponentManager.class));
+
+        componentManager.registerMockComponent(SkinExtension.class, "ssrx");
 
         NumberedHeadingsConfiguration numberedHeadingService =
             componentManager.registerMockComponent(NumberedHeadingsConfiguration.class);

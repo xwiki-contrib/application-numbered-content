@@ -11,7 +11,7 @@
 .#-----------------------------------------------------
 .expect|xhtml/1.0
 .#-----------------------------------------------------
-<ul class="wikitoc"><li><span class="wikilink"><a href="#Ha">a</a></span><ul><li class="nodirectchild"><ul><li><span class="wikilink"><a href="#Ha-1">a</a></span></li></ul></li></ul></li></ul><h1 id="Ha" class="wikigeneratedid"><span>a</span></h1><h3 id="Ha-1" class="wikigeneratedid"><span>a</span></h3>
+<ul class="wikitoc"><li><span class="wikilink"><a href="#Ha">1 a</a></span><ul><li class="nodirectchild"><ul><li><span class="wikilink"><a href="#Ha-1">1.0.1 a</a></span></li></ul></li></ul></li></ul><h1 id="Ha" class="wikigeneratedid"><span>a</span></h1><h3 id="Ha-1" class="wikigeneratedid"><span>a</span></h3>
 .#-----------------------------------------------------
 .expect|event/1.0
 .#-----------------------------------------------------
@@ -20,6 +20,8 @@ beginMacroMarkerStandalone [toc] []
 beginList [BULLETED] [[class]=[wikitoc]]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha]]] [false]
+onWord [1]
+onSpace
 onWord [a]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha]]] [false]
 beginList [BULLETED]
@@ -27,6 +29,8 @@ beginListItem [[class]=[nodirectchild]]
 beginList [BULLETED]
 beginListItem
 beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha-1]]] [false]
+onWord [1.0.1]
+onSpace
 onWord [a]
 endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha-1]]] [false]
 endListItem

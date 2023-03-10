@@ -43,6 +43,7 @@ import org.xwiki.rendering.macro.toc.XWikiTocMacroParameters;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
 import org.xwiki.rendering.wiki.WikiModel;
 import org.xwiki.rendering.wiki.WikiModelException;
+import org.xwiki.skinx.SkinExtension;
 
 import static org.xwiki.rendering.macro.toc.TocMacroParameters.Scope.PAGE;
 
@@ -67,6 +68,10 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
 
     @Inject
     private TocTreeBuilderFactory tocTreeBuilderFactory;
+
+    @Inject
+    @Named("ssrx")
+    private SkinExtension ssfx;
 
     /**
      * Create and initialize the descriptor of the macro.
@@ -103,6 +108,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
     public List<Block> execute(XWikiTocMacroParameters parameters, String content, MacroTransformationContext context)
         throws MacroExecutionException
     {
+        this.ssfx.use("toc.css");
         Block rootBlock = getRootBlockBlock(parameters);
 
         TreeParametersBuilder builder = new TreeParametersBuilder();
