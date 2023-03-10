@@ -19,6 +19,7 @@
  */
 package org.xwiki.contrib.numbered.content.toc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,16 +55,17 @@ public abstract class AbstractNumberingTocEntryDecorator implements TocEntryDeco
     public List<Block> decorate(HeaderBlock headerBlock, List<Block> blocks, Block rootBlock,
         TocEntriesResolver tocEntriesResolver)
     {
+        List<Block> decoratedBlocks = new ArrayList<>(blocks);
         boolean isNumbered = isNumbered(headerBlock);
         if (isNumbered) {
             Map<HeaderBlock, String> headingBlockStringMap = getHeadingsMap(rootBlock, tocEntriesResolver);
             String rawContent = headingBlockStringMap.get(headerBlock);
             if (rawContent != null) {
-                blocks.addAll(0, List.of(new WordBlock(rawContent), new SpaceBlock()));
+                decoratedBlocks.addAll(0, List.of(new WordBlock(rawContent), new SpaceBlock()));
             }
         }
 
-        return cleanupEntryLabel(blocks);
+        return cleanupEntryLabel(decoratedBlocks);
     }
 
     private Map<HeaderBlock, String> getHeadingsMap(Block rootBlock, TocEntriesResolver tocEntriesResolver)
@@ -93,15 +95,22 @@ public abstract class AbstractNumberingTocEntryDecorator implements TocEntryDeco
     private List<Block> cleanupEntryLabel(List<Block> blocks)
     {
         // Remove all the trailing spaces and special symbols. For instance "Hello World !" becomes "Hello World"
-        while (!blocks.isEmpty()) {
-            Block block = blocks.get(blocks.size() - 1);
+        List<Block> cleanedUpBlocks = new ArrayList<>(blocks);
+
+        while (!cleanedUpBlocks.isEmpty()) {
+            Block block = cleanedUpBlocks.get(cleanedUpBlocks.size() - 1);
             if (block instanceof SpecialSymbolBlock || block instanceof SpaceBlock) {
-                blocks.remove(blocks.size() - 1);
+                cleanedUpBlocks.remove(cleanedUpBlocks.size() - 1);
             } else {
                 break;
             }
         }
 
-        return blocks;
+        // We still need at least one space block, otherwise the title of the page is used for the text of the entry. 
+        if (cleanedUpBlocks.isEmpty()) {
+            cleanedUpBlocks.add(new SpaceBlock());
+        }
+
+        return cleanedUpBlocks;
     }
 }

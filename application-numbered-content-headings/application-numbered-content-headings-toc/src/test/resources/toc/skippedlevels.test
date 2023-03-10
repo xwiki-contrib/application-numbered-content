@@ -1,0 +1,51 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro on a case where intermediate headings level are missing.
+.#-----------------------------------------------------
+{{toc/}}
+
+= a =
+
+=== a ===
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<ul class="wikitoc"><li><span class="wikilink"><a href="#Ha">a</a></span><ul><li><ul><li><span class="wikilink"><a href="#Ha-1">a</a></span></li></ul></li></ul></li></ul><h1 id="Ha" class="wikigeneratedid"><span>a</span></h1><h3 id="Ha-1" class="wikigeneratedid"><span>a</span></h3>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [toc] []
+beginList [BULLETED] [[class]=[wikitoc]]
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha]]] [false]
+onWord [a]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha]]] [false]
+beginList [BULLETED]
+beginListItem
+beginList [BULLETED]
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha-1]]] [false]
+onWord [a]
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [Ha-1]]] [false]
+endListItem
+endList [BULLETED]
+endListItem
+endList [BULLETED]
+endListItem
+endList [BULLETED] [[class]=[wikitoc]]
+endMacroMarkerStandalone [toc] []
+beginSection
+beginHeader [1, Ha]
+onWord [a]
+endHeader [1, Ha]
+beginSection
+beginSection
+beginHeader [3, Ha-1]
+onWord [a]
+endHeader [3, Ha-1]
+endSection
+endSection
+endSection
+endDocument

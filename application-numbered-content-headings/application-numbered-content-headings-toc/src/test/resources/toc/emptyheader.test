@@ -1,0 +1,30 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# Test the macro on a case where there is an empty header.
+.#-----------------------------------------------------
+{{toc/}}
+
+= =
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<ul class="wikitoc"><li><span class="wikilink"><a href="#H">&nbsp;</a></span></li></ul><h1 id="H" class="wikigeneratedid"><span></span></h1>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [toc] []
+beginList [BULLETED] [[class]=[wikitoc]]
+beginListItem
+beginLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [H]]] [false]
+onSpace
+endLink [Typed = [true] Type = [doc] Parameters = [[anchor] = [H]]] [false]
+endListItem
+endList [BULLETED] [[class]=[wikitoc]]
+endMacroMarkerStandalone [toc] []
+beginSection
+beginHeader [1, H]
+endHeader [1, H]
+endSection
+endDocument
