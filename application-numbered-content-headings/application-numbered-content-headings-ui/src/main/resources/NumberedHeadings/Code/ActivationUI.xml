@@ -241,6 +241,143 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
   </object>
   <object>
     <name>NumberedHeadings.Code.ActivationUI</name>
+    <number>1</number>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>7324d949-bdc6-451a-8b09-dbd564b21e74</guid>
+    <class>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <restricted>0</restricted>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>require(['jquery', 'deferred!ckeditor'], function($, ckeditorPromise) {
+  ckeditorPromise.done(ckeditor =&gt; {
+    if (!('xwiki-numberedContent-activationUI' in ckeditor.plugins.registered)) {
+      ckeditor.plugins.add('xwiki-numberedContent-activationUI', {
+        init: function(editor) {
+          // Refresh the content of the editor. The 'xwiki:wysiwyg:convertHTML' listened below will be triggered indirectly.
+          $('#NumberedHeadings\\.Code\\.NumberedHeadingsClass_0_status').on('change', function() {
+            editor.execCommand('xwiki-refresh');
+          });
+        }
+      });
+
+      // Read the current configuration of numbered heading in the select of the UIX and provide it for the convertHTML request.
+      $(document).on('xwiki:wysiwyg:convertHTML', function(event, data) {
+        const value = $('#NumberedHeadings\\.Code\\.NumberedHeadingsClass_0_status').val();
+        var enableNumberedHeadings = false;
+
+        if (value === '') {
+          var numberedHeadingsConfig = JSON.parse(document.getElementById('numbered-headings-config')
+            .textContent);
+          enableNumberedHeadings = numberedHeadingsConfig.isActivatedOnParent;
+        } else if (value == 'activated') {
+          enableNumberedHeadings = true;
+        }
+
+        data.enableNumberedHeadings = enableNumberedHeadings;
+      });
+
+      ckeditor.on('instanceCreated', event =&gt; {
+        if (event.editor.config.extraPlugins === '') {
+          event.editor.config.extraPlugins = 'xwiki-numberedContent-activationUI';
+        } else {
+          event.editor.config.extraPlugins += ',xwiki-numberedContent-activationUI';
+        }
+      });
+    }
+  });
+});</code>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+  <object>
+    <name>NumberedHeadings.Code.ActivationUI</name>
     <number>0</number>
     <className>XWiki.UIExtensionClass</className>
     <guid>d6b3814c-f60a-401f-b818-592930c5f85f</guid>
@@ -366,6 +503,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
       <content>{{template name="display_macros.vm" /}}
 
 {{velocity}}
+#set ($discard = $xwiki.jsx.use('NumberedHeadings.Code.ActivationUI'))
 {{html clean="false"}}
       &lt;dt#if ($hasEdit) class="editableProperty"#end data-property="NumberedHeadings.Code.NumberedHeadingsClass[0].status"
       data-property-type="object" data-object-policy="updateOrCreate"&gt;

@@ -19,14 +19,20 @@
  */
 package org.xwiki.contrib.numbered.content.headings.script;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresConfiguration;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
+
+import com.xpn.xwiki.XWikiContext;
+import com.xpn.xwiki.web.XWikiRequest;
 
 /**
  * Numbered Figures Script Service. Provides operations related to numbered headings, such as knowing if the current
@@ -44,6 +50,9 @@ public class NumberedFiguresScriptService implements ScriptService
     @Inject
     private NumberedFiguresConfiguration numberedFiguresConfiguration;
 
+    @Inject
+    private Provider<XWikiContext> contextProvider;
+
     /**
      * Checks if the current document has numbered headings activated.
      *
@@ -53,7 +62,16 @@ public class NumberedFiguresScriptService implements ScriptService
     // TODO: change the thrown exception. 
     public boolean isNumberedFiguresEnabled() throws Exception
     {
-        return this.numberedFiguresConfiguration.isNumberedFiguresEnabled();
+        XWikiRequest request = this.contextProvider.get().getRequest();
+        boolean isNumberedFiguresEnabled;
+        String enableNumberedFiguresParam = request.getParameter("enableNumberedFigures");
+        // Bypass the configuration if enableNumberedFigures has the value "true" in the request.
+        if (enableNumberedFiguresParam != null) {
+            isNumberedFiguresEnabled = Objects.equals(enableNumberedFiguresParam, "true");
+        } else {
+            isNumberedFiguresEnabled = this.numberedFiguresConfiguration.isNumberedFiguresEnabled();
+        }
+        return isNumberedFiguresEnabled;
     }
 
     /**
