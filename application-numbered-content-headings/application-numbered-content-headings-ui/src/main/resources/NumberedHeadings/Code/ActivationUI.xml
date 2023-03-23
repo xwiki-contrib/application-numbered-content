@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.4" reference="NumberedHeadings.Code.ActivationUI" locale="">
+<xwikidoc version="1.5" reference="NumberedHeadings.Code.ActivationUI" locale="">
   <web>NumberedHeadings.Code</web>
   <name>ActivationUI</name>
   <language/>
@@ -77,6 +77,7 @@
         <name>code</name>
         <number>2</number>
         <prettyName>Code</prettyName>
+        <restricted>0</restricted>
         <rows>20</rows>
         <size>50</size>
         <unmodifiable>0</unmodifiable>
@@ -416,7 +417,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
         <separators>|, </separators>
         <size>5</size>
         <unmodifiable>0</unmodifiable>
-        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.parameters=Request parameters|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
+        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.cookies|request.headers|request.parameters=Request parameters|request.remoteAddr|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </async_context>
       <async_enabled>
@@ -436,6 +437,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
         <name>content</name>
         <number>1</number>
         <prettyName>Executed Content</prettyName>
+        <restricted>0</restricted>
         <rows>25</rows>
         <size>120</size>
         <unmodifiable>0</unmodifiable>
@@ -466,6 +468,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
         <name>parameters</name>
         <number>7</number>
         <prettyName>Extension Parameters</prettyName>
+        <restricted>0</restricted>
         <rows>10</rows>
         <size>40</size>
         <unmodifiable>0</unmodifiable>
@@ -503,7 +506,6 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
       <content>{{template name="display_macros.vm" /}}
 
 {{velocity}}
-#set ($discard = $xwiki.jsx.use('NumberedHeadings.Code.ActivationUI'))
 {{html clean="false"}}
       &lt;dt#if ($hasEdit) class="editableProperty"#end data-property="NumberedHeadings.Code.NumberedHeadingsClass[0].status"
       data-property-type="object" data-object-policy="updateOrCreate"&gt;
@@ -572,7 +574,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
         <separators>|, </separators>
         <size>5</size>
         <unmodifiable>0</unmodifiable>
-        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.parameters=Request parameters|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
+        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.cookies|request.headers|request.parameters=Request parameters|request.remoteAddr|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </async_context>
       <async_enabled>
@@ -592,6 +594,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
         <name>content</name>
         <number>1</number>
         <prettyName>Executed Content</prettyName>
+        <restricted>0</restricted>
         <rows>25</rows>
         <size>120</size>
         <unmodifiable>0</unmodifiable>
@@ -622,6 +625,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
         <name>parameters</name>
         <number>7</number>
         <prettyName>Extension Parameters</prettyName>
+        <restricted>0</restricted>
         <rows>10</rows>
         <size>40</size>
         <unmodifiable>0</unmodifiable>
@@ -659,6 +663,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
       <content>{{template name="display_macros.vm" /}}
 
 {{velocity}}
+#set ($discard = $xwiki.jsx.use('NumberedHeadings.Code.ActivationUI'))
 {{html clean="false"}}
 &lt;dt&gt;&lt;label for="NumberedHeadings.Code.NumberedHeadingsClass_0_status"&gt;$escapetool.xml($services.localization.render('numbered.headings.activationUI.label'))&lt;/label&gt;&lt;/dt&gt;
 &lt;dd&gt;

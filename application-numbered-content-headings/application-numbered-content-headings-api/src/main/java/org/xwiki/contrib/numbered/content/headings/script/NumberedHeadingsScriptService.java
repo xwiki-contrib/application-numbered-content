@@ -19,20 +19,14 @@
  */
 package org.xwiki.contrib.numbered.content.headings.script;
 
-import java.util.Objects;
-
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numbered.content.headings.NumberedHeadingsConfiguration;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
-
-import com.xpn.xwiki.XWikiContext;
-import com.xpn.xwiki.web.XWikiRequest;
 
 /**
  * Numbered Headings Script Service. Provides operations related to numbered headings, such as knowing if the current
@@ -50,9 +44,6 @@ public class NumberedHeadingsScriptService implements ScriptService
     @Inject
     private NumberedHeadingsConfiguration defaultNumberedHeadingsConfiguration;
 
-    @Inject
-    private Provider<XWikiContext> contextProvider;
-
     /**
      * Checks if the current document has numbered headings activated.
      *
@@ -62,16 +53,7 @@ public class NumberedHeadingsScriptService implements ScriptService
     // TODO: change the thrown exception. 
     public boolean isNumberedHeadingsEnabled() throws Exception
     {
-        XWikiRequest request = this.contextProvider.get().getRequest();
-        // Bypass the configuration if enableNumberedHeadings has the value "true" in the request.
-        boolean isNumberedHeadingsEnabled;
-        String enableNumberedHeadingsParam = request.getParameter("enableNumberedHeadings");
-        if (enableNumberedHeadingsParam != null) {
-            isNumberedHeadingsEnabled = Objects.equals(enableNumberedHeadingsParam, "true");
-        } else {
-            isNumberedHeadingsEnabled = this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabled();
-        }
-        return isNumberedHeadingsEnabled;
+        return this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabled();
     }
 
     /**

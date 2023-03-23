@@ -63,6 +63,19 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
     @Override
     public boolean isNumberedHeadingsEnabled() throws Exception
     {
+        // Bypass the configuration if enableNumberedHeadings has the value "true" in the request.
+        boolean isNumberedHeadingsEnabled;
+        String enableNumberedHeadingsParam = getEnableNumberedHeadingsRequestParameter();
+        if (enableNumberedHeadingsParam != null) {
+            isNumberedHeadingsEnabled = Objects.equals(enableNumberedHeadingsParam, "true");
+        } else {
+            isNumberedHeadingsEnabled = internalIsNumberedHeadingsEnabled();
+        }
+        return isNumberedHeadingsEnabled;
+    }
+
+    private boolean internalIsNumberedHeadingsEnabled() throws Exception
+    {
         XWikiDocument doc = getDocFromContext();
         if (doc == null) {
             return false;
@@ -92,7 +105,7 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
 
     private XWikiDocument getDocFromContext()
     {
-        XWikiContext property = (XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY);
+        XWikiContext property = getXWikiContext();
         if (property == null) {
             return null;
         }
@@ -100,8 +113,8 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
     }
 
     /**
-     * Checks if a document has numbered headings activated by looking at the presence of an XObject of type {@link
-     * NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
+     * Checks if a document has numbered headings activated by looking at the presence of an XObject of type
+     * {@link NumberedHeadingsClassDocumentInitializer#STATUS_PROPERTY}.
      *
      * @param documentReference the document reference to check
      * @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
@@ -148,5 +161,22 @@ public class DefaultNumberedHeadingsConfiguration implements NumberedHeadingsCon
         EntityType type = documentReference.getType();
         String spaceHomePage = this.entityReferenceProvider.getDefaultReference(EntityType.DOCUMENT).getName();
         return Objects.equals(type, EntityType.DOCUMENT) && Objects.equals(documentReference.getName(), spaceHomePage);
+    }
+
+    private XWikiContext getXWikiContext()
+    {
+        return (XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY);
+    }
+
+    private String getEnableNumberedHeadingsRequestParameter()
+    {
+        XWikiContext xWikiContext = getXWikiContext();
+        String enableNumberedHeadingsParam;
+        if (xWikiContext != null && xWikiContext.getRequest() != null) {
+            enableNumberedHeadingsParam = xWikiContext.getRequest().getParameter("enableNumberedHeadings");
+        } else {
+            enableNumberedHeadingsParam = null;
+        }
+        return enableNumberedHeadingsParam;
     }
 }
