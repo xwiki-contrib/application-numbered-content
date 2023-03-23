@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
  * Test of {@link NumberedFiguresConfiguration}.
  *
  * @version $Id$
- * @since x.y.z
+ * @since 1.8.3
  */
 @OldcoreTest
 @AllComponents
