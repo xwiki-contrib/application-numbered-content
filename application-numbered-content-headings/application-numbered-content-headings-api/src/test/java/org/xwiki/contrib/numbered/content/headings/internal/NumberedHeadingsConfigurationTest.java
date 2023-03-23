@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.context.Execution;
@@ -38,6 +39,7 @@ import org.xwiki.test.junit5.mockito.MockComponent;
 import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.doc.XWikiDocument;
 import com.xpn.xwiki.objects.BaseObject;
+import com.xpn.xwiki.web.XWikiRequest;
 
 import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
 import static java.util.Arrays.asList;
@@ -222,5 +224,15 @@ class NumberedHeadingsConfigurationTest
         when(this.xWikiDocumentSpace1.getXObject(REFERENCE)).thenReturn(baseObject);
         when(baseObject.getStringValue(STATUS_PROPERTY)).thenReturn(STATUS_ACTIVATED);
         assertTrue(this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabledOnParent());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void isNumberedHeadingsEnabledWithParam(boolean parameter) throws Exception
+    {
+        XWikiRequest request = mock(XWikiRequest.class);
+        when(this.xWikiContext.getRequest()).thenReturn(request);
+        when(request.getParameter("enableNumberedHeadings")).thenReturn(Boolean.toString(parameter));
+        assertEquals(parameter, this.defaultNumberedHeadingsConfiguration.isNumberedHeadingsEnabled());
     }
 }

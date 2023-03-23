@@ -35,7 +35,7 @@
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Numbered Headings API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
-    <xwiki.jacoco.instructionRatio>0.88</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>1.00</xwiki.jacoco.instructionRatio>
     <!-- Needs to be installed on root to be able to use ExecutionContextInitializer. -->
     <xwiki.extension.namespaces>{root}</xwiki.extension.namespaces>
   </properties>
