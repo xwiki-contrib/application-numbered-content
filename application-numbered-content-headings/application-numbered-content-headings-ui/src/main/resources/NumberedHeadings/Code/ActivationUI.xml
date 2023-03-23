@@ -328,7 +328,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
       <cache>long</cache>
     </property>
     <property>
-      <code>require(['jquery', 'deferred!ckeditor'], function($, ckeditorPromise) {
+      <code>require(['jquery', 'deferred!ckeditor', 'NumberedHeadingsConfig'], function($, ckeditorPromise, config) {
   ckeditorPromise.done(ckeditor =&gt; {
     if (!('xwiki-numberedContent-activationUI' in ckeditor.plugins.registered)) {
       ckeditor.plugins.add('xwiki-numberedContent-activationUI', {
@@ -346,9 +346,7 @@ require(['jquery', 'NumberedHeadingsConfig', 'bootstrap'], function($, config) {
         var enableNumberedHeadings = false;
 
         if (value === '') {
-          var numberedHeadingsConfig = JSON.parse(document.getElementById('numbered-headings-config')
-            .textContent);
-          enableNumberedHeadings = numberedHeadingsConfig.isActivatedOnParent;
+          enableNumberedHeadings = config.isActivated();
         } else if (value == 'activated') {
           enableNumberedHeadings = true;
         }
