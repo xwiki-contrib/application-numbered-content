@@ -63,6 +63,19 @@ public class NumberedFiguresConfiguration
      */
     public boolean isNumberedFiguresEnabled() throws Exception
     {
+        boolean isNumberedFiguresEnabled;
+        String enableNumberedFiguresParam = getEnableNumberedFiguresRequestParameter();
+        // Bypass the configuration if enableNumberedFigures has the value "true" in the request.
+        if (enableNumberedFiguresParam != null) {
+            isNumberedFiguresEnabled = Objects.equals(enableNumberedFiguresParam, "true");
+        } else {
+            isNumberedFiguresEnabled = internalIsNumberedFiguresEnabled();
+        }
+        return isNumberedFiguresEnabled;
+    }
+
+    private boolean internalIsNumberedFiguresEnabled() throws Exception
+    {
         XWikiDocument doc = getDocFromContext();
         if (doc == null) {
             return false;
@@ -95,7 +108,7 @@ public class NumberedFiguresConfiguration
 
     private XWikiDocument getDocFromContext()
     {
-        XWikiContext property = (XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY);
+        XWikiContext property = getXWikiContext();
         if (property == null) {
             return null;
         }
@@ -142,5 +155,22 @@ public class NumberedFiguresConfiguration
             }
         }
         return isNumbered;
+    }
+
+    private XWikiContext getXWikiContext()
+    {
+        return (XWikiContext) this.execution.getContext().getProperty(EXECUTIONCONTEXT_KEY);
+    }
+
+    private String getEnableNumberedFiguresRequestParameter()
+    {
+        String enableNumberedFiguresParam;
+        XWikiContext xWikiContext = getXWikiContext();
+        if (xWikiContext != null && xWikiContext.getRequest() != null) {
+            enableNumberedFiguresParam = xWikiContext.getRequest().getParameter("enableNumberedFigures");
+        } else {
+            enableNumberedFiguresParam = null;
+        }
+        return enableNumberedFiguresParam;
     }
 }
