@@ -34,5 +34,6 @@
   <modules>
     <module>application-numbered-content-figures-api</module>
     <module>application-numbered-content-figures-ui</module>
+    <module>application-numbered-content-figures-latex</module>
   </modules>
 </project>

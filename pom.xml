@@ -58,6 +58,7 @@
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
     <xwiki.issueManagement.jira.id>NCAPP</xwiki.issueManagement.jira.id>
     <latex.version>1.16</latex.version>
+    <figure.version>15.4-SNAPSHOT</figure.version>
   </properties>
   <dependencyManagement>
     <!-- Dependency management to handle dependencies relying on older parent-platform parent pom (e.g., latex). -->
@@ -73,11 +74,6 @@
         <version>${platform.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.xwiki.rendering</groupId>
-        <artifactId>xwiki-rendering-macro-figure</artifactId>
-        <version>${rendering.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.xwiki.platform</groupId>
         <artifactId>xwiki-platform-filter-event-model</artifactId>
         <version>${platform.version}</version>
@@ -87,7 +83,7 @@
         <artifactId>xwiki-platform-configuration-default</artifactId>
         <version>${platform.version}</version>
       </dependency>
-            <dependency>
+      <dependency>
         <groupId>org.xwiki.platform</groupId>
         <artifactId>xwiki-platform-uiextension-api</artifactId>
         <version>${platform.version}</version>
@@ -117,6 +113,31 @@
         <artifactId>xwiki-platform-classloader-xwiki</artifactId>
         <version>${platform.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.xwiki.rendering</groupId>
+        <artifactId>xwiki-rendering-transformation-macro</artifactId>
+        <version>${rendering.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.rendering</groupId>
+        <artifactId>xwiki-rendering-api</artifactId>
+        <version>${rendering.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-localization-api</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-template-api</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xwiki.contrib</groupId>
+        <artifactId>macro-figure</artifactId>
+        <version>${figure.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -127,7 +148,7 @@
         <configuration>
           <analysisConfiguration>
             <revapi.differences>
-              <criticality>allowed</criticality>
+              <criticality>documented</criticality>
               <justification>Unstable API: adding more arguments to make the builder more generic.</justification>
               <differences>
                 <item>
@@ -142,6 +163,32 @@
                   <code>java.method.numberOfParametersChanged</code>
                   <old>method java.util.List&lt;org.xwiki.rendering.block.Block&gt; org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::build(org.xwiki.rendering.internal.macro.toc.TreeParameters, boolean)</old>
                   <new>method java.util.List&lt;org.xwiki.rendering.block.Block&gt; org.xwiki.contrib.numbered.content.toc.TocTreeBuilder::build(org.xwiki.rendering.internal.macro.toc.TreeParameters)</new>
+                </item>
+              </differences>
+            </revapi.differences>
+            <revapi.differences>
+              <criticality>documented</criticality>
+              <justification>Unstable API: Can be removed because figure macro is now contrib extension that depending on 14.9+.</justification>
+              <differences>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.class.removed</code>
+                  <old>class org.xwiki.contrib.numbered.content.headings.macro.FigureMacroParameters</old>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.class.removed</code>
+                  <old>enum org.xwiki.contrib.numbered.content.headings.macro.FigureType</old>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.class.removed</code>
+                  <old>class org.xwiki.contrib.numbered.content.headings.macro.FigureMacroParameters</old>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.class.removed</code>
+                  <old>enum org.xwiki.contrib.numbered.content.headings.macro.FigureType</old>
                 </item>
               </differences>
             </revapi.differences>

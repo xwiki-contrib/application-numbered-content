@@ -38,7 +38,12 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=コード
 numbered.figures.codeSpace.description=番号を付けた図のアプリケーションコードを保存する場所。
+
+#@deprecatedstart
+##################################################
+## until 1.8.3
+##################################################
 numbered.figures.numbered.figureCaption.label=図
 numbered.figures.numbered.tableCaption.label=表
-</content>
+#@deprecatedend</content>
 </xwikidoc>

@@ -17,24 +17,49 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings.internal;
+package org.xwiki.contrib.numbered.content.figures.internal;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import org.apache.commons.collections4.SetUtils;
+import org.slf4j.Logger;
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.component.annotation.Component;
+import org.xwiki.component.phase.Initializable;
+import org.xwiki.configuration.ConfigurationSource;
 import org.xwiki.context.Execution;
+import org.xwiki.contrib.figure.FigureType;
+import org.xwiki.contrib.figure.internal.FigureTypesConfiguration;
 import org.xwiki.model.reference.EntityReference;
+import org.xwiki.model.reference.LocalDocumentReference;
+import org.xwiki.properties.ConverterManager;
+import org.xwiki.properties.converter.Converter;
+import org.xwiki.stability.Unstable;
 
 import com.xpn.xwiki.XWikiContext;
+import com.xpn.xwiki.XWikiException;
 import com.xpn.xwiki.doc.XWikiDocument;
 import com.xpn.xwiki.objects.BaseObject;
 
 import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
+import static org.xwiki.contrib.figure.FigureType.AUTOMATIC;
+import static org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfigurationClassDocumentInitializer.COUNTER;
+import static org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfigurationClassDocumentInitializer.TYPES;
 
 /**
  * Provides services related to the numbered headings. For instance, to know if a given document has the numbered
@@ -45,13 +70,37 @@ import static com.xpn.xwiki.XWikiContext.EXECUTIONCONTEXT_KEY;
  */
 @Component(roles = NumberedFiguresConfiguration.class)
 @Singleton
-public class NumberedFiguresConfiguration
+public class NumberedFiguresConfiguration implements Initializable
 {
     @Inject
     private DocumentAccessBridge documentAccessBridge;
 
     @Inject
     private Execution execution;
+
+    @Inject
+    @Named("xwikiproperties")
+    private ConfigurationSource configurationSource;
+
+    @Inject
+    private FigureTypesConfiguration figureTypesConfiguration;
+
+    @Inject
+    private ConverterManager converterManager;
+
+    @Inject
+    private Logger logger;
+
+    @Inject
+    private Provider<XWikiContext> xWikiContextProvider;
+
+    private Converter<List<?>> listConverter;
+
+    @Override
+    public void initialize()
+    {
+        this.listConverter = this.converterManager.getConverter(List.class);
+    }
 
     /**
      * Check if the current document has numbered headings activated either by looking at the presence of an XObject of
@@ -72,6 +121,81 @@ public class NumberedFiguresConfiguration
             isNumberedFiguresEnabled = internalIsNumberedFiguresEnabled();
         }
         return isNumberedFiguresEnabled;
+    }
+
+    /**
+     * @return a map of counters and their associated types (e.g.,
+     *     {@code Map.of("figure", Set.of("figure"), "math", Set.of("proof", "lemma"))})
+     * @since 1.9
+     */
+    @Unstable
+    public Map<String, Set<FigureType>> getFigureCounters()
+    {
+        Map<String, Set<String>> configurationMap = getConfigurationMap();
+        Map<String, Set<FigureType>> counters = new HashMap<>();
+        for (FigureType figureType : this.figureTypesConfiguration.getFigureTypes()) {
+            if (isAutomatic(figureType)) {
+                continue;
+            }
+            counters.merge(computeCounter(configurationMap, figureType), Set.of(figureType), SetUtils::union);
+        }
+        return counters;
+    }
+
+    /**
+     * Resolve the counter for a given figure type.
+     *
+     * @param type a figure type (e.g., {@code "proof"})
+     * @return the resolved counter (e.g., "math")
+     * @since 1.9
+     */
+    @Unstable
+    public String getCounter(String type)
+    {
+        return computeCounter(getConfigurationMap(), new FigureType(type));
+    }
+
+    private Map<String, Set<String>> getConfigurationMap()
+    {
+        Map<String, Set<String>> configurationMap = getConfigurationMapFromXObjects();
+
+        if (configurationMap.isEmpty()) {
+            configurationMap = getConfigurationMapFromProperties();
+        }
+        
+        return configurationMap;
+    }
+
+    private Map<String, Set<String>> getConfigurationMapFromXObjects()
+    {
+        LocalDocumentReference reference =
+            new LocalDocumentReference(asList("NumberedFigures", "Code"), "NumberedFiguresCounterConfiguration");
+        Map<String, Set<String>> map = new HashMap<>();
+        try {
+            XWikiContext xWikiContext = this.xWikiContextProvider.get();
+            if (xWikiContext != null) {
+                XWikiDocument document = xWikiContext.getWiki().getDocument(reference, xWikiContext);
+                List<BaseObject> xObjects =
+                    document.getXObjects(NumberedFiguresConfigurationClassDocumentInitializer.REFERENCE);
+                xObjects.forEach(xObject -> map.put(xObject.getStringValue(COUNTER),
+                    ((List<?>) xObject.getListValue(TYPES)).stream().map(String::valueOf).collect(Collectors.toSet())));
+            }
+        } catch (XWikiException e) {
+            this.logger.warn("Failed to load document [{}]. Cause: [{}]", reference, getRootCauseMessage(e));
+        }
+        return map;
+    }
+
+    private Map<String, Set<String>> getConfigurationMapFromProperties()
+    {
+        Map<String, Set<String>> configurationMap = new HashMap<>();
+        Properties properties = this.configurationSource.getProperty("numbered.figures.counters", Properties.class);
+
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+            configurationMap.put((String) entry.getKey(),
+                new HashSet<>(this.listConverter.convert(List.class, entry.getValue())));
+        }
+        return configurationMap;
     }
 
     private boolean internalIsNumberedFiguresEnabled() throws Exception
@@ -172,5 +296,37 @@ public class NumberedFiguresConfiguration
             enableNumberedFiguresParam = null;
         }
         return enableNumberedFiguresParam;
+    }
+
+    private static boolean isAutomatic(FigureType figureType)
+    {
+        return Objects.equals(figureType.getId(), AUTOMATIC.getId());
+    }
+
+    private String computeCounter(Map<String, Set<String>> configurationMap, FigureType figureType)
+    {
+        return computeCounter(configurationMap, figureType.getId());
+    }
+
+    private String computeCounter(Map<String, Set<String>> configurationMap, String figureType)
+    {
+        List<String> collect = configurationMap
+            .entrySet()
+            .stream()
+            .filter(entry -> entry.getValue().contains(figureType))
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
+        String computedCounter;
+        if (collect.size() > 1) {
+            this.logger.debug("Type [{}] appears in more than one counter [{}]. Taking the first one.", figureType,
+                collect);
+            computedCounter = collect.get(0);
+        } else if (collect.size() == 1) {
+            computedCounter = collect.get(0);
+        } else {
+            // If no counter is configured for a given
+            computedCounter = figureType;
+        }
+        return computedCounter;
     }
 }

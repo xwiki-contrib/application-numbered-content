@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings.internal;
+package org.xwiki.contrib.numbered.content.figures.internal;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +37,7 @@ import org.xwiki.rendering.block.IdBlock;
 import org.xwiki.rendering.block.ImageBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 
-import static org.xwiki.contrib.numbered.content.headings.macro.FigureType.FIGURE;
-import static org.xwiki.rendering.internal.macro.figure.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
+import static org.xwiki.contrib.figure.internal.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
 
 /**
  * Compute the numbers for the figures and save the result in a cache.
@@ -56,6 +55,9 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
 
     @Inject
     private Execution execution;
+
+    @Inject
+    private NumberedFiguresConfiguration numberedFiguresConfiguration;
 
     @Override
     public List<FigureBlock> getFiguresList(Block rootBlock)
@@ -76,11 +78,12 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
         for (FigureBlock figure : getFiguresList(rootBlock)) {
             String id = getId(figure);
             if (id != null && !figuresMap.containsKey(id)) {
-                String type = Objects.toString(figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE), FIGURE.getName());
-                Long counter = counters.getOrDefault(type, 1L);
+                String type = Objects.toString(figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE), "figure");
+                String counterId = this.numberedFiguresConfiguration.getCounter(type);
+                Long counter = counters.getOrDefault(counterId, 1L);
                 result.put(figure, String.valueOf(counter));
                 figuresMap.put(id, counter);
-                counters.put(type, counter + 1);
+                counters.put(counterId, counter + 1);
             } else {
                 result.put(figure, String.valueOf(figuresMap.get(id)));
             }

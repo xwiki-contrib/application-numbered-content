@@ -38,7 +38,12 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Code
 numbered.figures.codeSpace.description=C'est l'espace où se trouve le code de l'application de numérotation des illustrations.
+
+#@deprecatedstart
+##################################################
+## until 1.8.3
+##################################################
 numbered.figures.numbered.figureCaption.label=Illustration
 numbered.figures.numbered.tableCaption.label=Tableau
-</content>
+#@deprecatedend</content>
 </xwikidoc>

@@ -17,7 +17,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings.internal;
+package org.xwiki.contrib.numbered.content.figures.internal;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -27,6 +27,7 @@ import org.xwiki.model.reference.LocalDocumentReference;
 
 import com.xpn.xwiki.doc.AbstractMandatoryClassInitializer;
 import com.xpn.xwiki.objects.classes.BaseClass;
+import com.xpn.xwiki.objects.classes.ListClass;
 
 import static java.util.Arrays.asList;
 
@@ -34,43 +35,33 @@ import static java.util.Arrays.asList;
  * Create or update the {@code NumberedFigures.Code.NumberedFiguresClass} document with all required information.
  *
  * @version $Id$
- * @since 1.0
+ * @since 1.9
  */
 @Component
-@Named("NumberedFigures.Code.NumberedFiguresClass")
+@Named("NumberedFigures.Code.NumberedFiguresCounterConfigurationClass")
 @Singleton
-public class NumberedFiguresClassDocumentInitializer extends AbstractMandatoryClassInitializer
+public class NumberedFiguresConfigurationClassDocumentInitializer extends AbstractMandatoryClassInitializer
 {
     /**
      * The local reference of the editor binding class.
      */
     public static final LocalDocumentReference REFERENCE =
-        new LocalDocumentReference(asList("NumberedFigures", "Code"), "NumberedFiguresClass");
+        new LocalDocumentReference(asList("NumberedFigures", "Code"), "NumberedFiguresCounterConfigurationClass");
 
     /**
-     * The field name of the activated property.
+     * The name of the field storing the counter.
      */
-    public static final String STATUS_PROPERTY = "status";
+    public static final String COUNTER = "counter";
 
     /**
-     * The activated status value.
+     * The name of field storing the types.
      */
-    public static final String STATUS_ACTIVATED = "activated";
-
-    /**
-     * The deactivated status value.
-     */
-    public static final String STATUS_DEACTIVATED = "deactivated";
-
-    /**
-     * The inherits status value.
-     */
-    public static final String STATUS_INHERITS = "";
+    public static final String TYPES = "types";
 
     /**
      * Default constructor.
      */
-    public NumberedFiguresClassDocumentInitializer()
+    public NumberedFiguresConfigurationClassDocumentInitializer()
     {
         super(REFERENCE);
     }
@@ -78,7 +69,10 @@ public class NumberedFiguresClassDocumentInitializer extends AbstractMandatoryCl
     @Override
     protected void createClass(BaseClass xclass)
     {
-        xclass.addStaticListField(STATUS_PROPERTY, "Status",
-            String.join("|", STATUS_INHERITS, STATUS_ACTIVATED, STATUS_DEACTIVATED));
+        super.createClass(xclass);
+
+        xclass.addTextField(COUNTER, "Counter", 30);
+        xclass.addStaticListField(TYPES, "Types", 1, true, false,
+            null, ListClass.DISPLAYTYPE_INPUT, null, null, ListClass.FREE_TEXT_ALLOWED, false);
     }
 }

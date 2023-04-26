@@ -38,8 +38,14 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Code
 numbered.figures.codeSpace.description=This is the place where the Numbered Figures application code is located.
+
+#@deprecatedstart
+##################################################
+## until 1.8.3
+##################################################
 numbered.figures.numbered.figureCaption.label=Figure
-numbered.figures.numbered.tableCaption.label=Table</content>
+numbered.figures.numbered.tableCaption.label=Table
+#@deprecatedend</content>
   <object>
     <name>NumberedFigures.Code.Translations</name>
     <number>0</number>

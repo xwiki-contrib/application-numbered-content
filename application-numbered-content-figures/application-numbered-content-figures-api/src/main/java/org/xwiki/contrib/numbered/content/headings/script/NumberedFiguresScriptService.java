@@ -19,12 +19,16 @@
  */
 package org.xwiki.contrib.numbered.content.headings.script;
 
+import java.util.Map;
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresConfiguration;
+import org.xwiki.contrib.figure.FigureType;
+import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfiguration;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
 
@@ -66,5 +70,25 @@ public class NumberedFiguresScriptService implements ScriptService
     public boolean isNumberedFiguresEnabledOnParent() throws Exception
     {
         return this.numberedFiguresConfiguration.isNumberedFiguresEnabledOnParent();
+    }
+
+    /**
+     * @return a map of counters and their associated types (e.g.,
+     *     {@code Map.of("figure", Set.of("figure"), "math", Set.of("proof", "lemma"))})
+     */
+    public Map<String, Set<FigureType>> getFigureCounters()
+    {
+        return this.numberedFiguresConfiguration.getFigureCounters();
+    }
+
+    /**
+     * Resolve the counter for a given figure type.
+     *
+     * @param type a figure type (e.g., {@code "proof"})
+     * @return the resolve counter (e.g., "math")
+     */
+    public String getCounter(String type)
+    {
+        return this.numberedFiguresConfiguration.getCounter(type);
     }
 }

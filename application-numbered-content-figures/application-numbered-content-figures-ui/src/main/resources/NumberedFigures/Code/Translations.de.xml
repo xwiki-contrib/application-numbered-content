@@ -38,7 +38,12 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Code
 numbered.figures.codeSpace.description=Dies ist der Ort, an dem sich der Anwendungscode für nummerierte Zahlen befindet.
+
+#@deprecatedstart
+##################################################
+## until 1.8.3
+##################################################
 numbered.figures.numbered.figureCaption.label=Zahl
 numbered.figures.numbered.tableCaption.label=Tabelle
-</content>
+#@deprecatedend</content>
 </xwikidoc>

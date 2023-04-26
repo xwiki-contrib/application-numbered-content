@@ -28,16 +28,20 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
+import org.xwiki.contrib.numbered.content.figures.internal.DefaultFiguresNumberingService;
+import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfiguration;
 import org.xwiki.rendering.block.FigureBlock;
 import org.xwiki.rendering.block.GroupBlock;
+import org.xwiki.rendering.block.IdBlock;
 import org.xwiki.test.junit5.mockito.ComponentTest;
 import org.xwiki.test.junit5.mockito.InjectMockComponents;
 import org.xwiki.test.junit5.mockito.MockComponent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.xwiki.contrib.numbered.content.headings.internal.FigureNumberingExecutionContextInitializer.PROPERTY_KEY;
-import static org.xwiki.rendering.internal.macro.figure.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
+import static org.xwiki.contrib.figure.internal.FigureTypeRecognizerMacro.DATA_XWIKI_RENDERING_FIGURE_TYPE;
+import static org.xwiki.contrib.numbered.content.figures.internal.FigureNumberingExecutionContextInitializer.PROPERTY_KEY;
 
 /**
  * Test of {@link DefaultFiguresNumberingService}.
@@ -56,6 +60,9 @@ class DefaultFiguresNumberingServiceTest
     @MockComponent
     private Execution execution;
 
+    @MockComponent
+    private NumberedFiguresConfiguration numberedFiguresConfiguration;
+
     @Mock
     private ExecutionContext context;
 
@@ -64,6 +71,8 @@ class DefaultFiguresNumberingServiceTest
     {
         when(this.execution.getContext()).thenReturn(this.context);
         when(this.context.getProperty(PROPERTY_KEY)).thenReturn(new HashMap<>());
+        when(this.numberedFiguresConfiguration.getCounter(anyString()))
+            .thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     @Test
@@ -109,6 +118,41 @@ class DefaultFiguresNumberingServiceTest
     }
 
     @Test
+    void getFiguresMapSharedCounter()
+    {
+        Map<Object, Object> counters = new HashMap<>();
+        when(this.context.getProperty(PROPERTY_KEY)).thenReturn(counters);
+        when(this.numberedFiguresConfiguration.getCounter("figurebis")).thenReturn("figure");
+        
+        FigureBlock figure0 = new FigureBlock(List.of(), Map.of(
+            "id", "f0",
+            DATA_XWIKI_RENDERING_FIGURE_TYPE, "figure"
+        ));
+        FigureBlock figureImage0 = new FigureBlock(List.of(), Map.of(
+            "id", "f1",
+            DATA_XWIKI_RENDERING_FIGURE_TYPE, "table"
+        ));
+        FigureBlock figure1 = new FigureBlock(List.of(), Map.of(
+            "id", "f2",
+            DATA_XWIKI_RENDERING_FIGURE_TYPE, "figurebis"
+        ));
+        Map<FigureBlock, String> figuresMap = this.figuresNumberingService.getFiguresMap(new GroupBlock(List.of(
+            figure0,
+            figureImage0,
+            figure1
+        )));
+        assertEquals(Map.of(
+            figure0, "1",
+            figureImage0, "1",
+            figure1, "2"
+        ), figuresMap);
+        assertEquals(Map.of(
+                COUNTERS, Map.of("figure", 3L, "table", 2L),
+                "figures", Map.of("f0", 1L, "f1", 1L, "f2", 2L)),
+            counters);
+    }
+
+    @Test
     void getFiguresMapMissingType()
     {
         Map<Object, Object> counters = new HashMap<>();
@@ -121,9 +165,7 @@ class DefaultFiguresNumberingServiceTest
             "id", "f1",
             DATA_XWIKI_RENDERING_FIGURE_TYPE, "table"
         ));
-        FigureBlock figure1MissingType = new FigureBlock(List.of(), Map.of(
-            "id", "f2"
-        ));
+        FigureBlock figure1MissingType = new FigureBlock(List.of(new IdBlock("f2")));
         Map<FigureBlock, String> figuresMap = this.figuresNumberingService.getFiguresMap(new GroupBlock(List.of(
             figure0,
             figureImage0,

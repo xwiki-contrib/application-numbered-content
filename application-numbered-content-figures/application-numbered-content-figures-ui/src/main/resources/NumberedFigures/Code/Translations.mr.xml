@@ -38,6 +38,11 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=कोड
 ### Missing: numbered.figures.codeSpace.description=This is the place where the Numbered Figures application code is located.
+
+#@deprecatedstart
+##################################################
+## until 1.8.3
+##################################################
 numbered.figures.numbered.figureCaption.label=आकृती
-</content>
+#@deprecatedend</content>
 </xwikidoc>

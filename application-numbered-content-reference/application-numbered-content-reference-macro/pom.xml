@@ -87,9 +87,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-macro-figure</artifactId>
-      <version>${rendering.version}</version>
+      <groupId>org.xwiki.contrib</groupId>
+      <artifactId>macro-figure</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -109,6 +108,16 @@
       <artifactId>xwiki-platform-test-oldcore</artifactId>
       <version>${platform.version}</version>
       <type>pom</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jasper</groupId>
+      <artifactId>apache-el</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

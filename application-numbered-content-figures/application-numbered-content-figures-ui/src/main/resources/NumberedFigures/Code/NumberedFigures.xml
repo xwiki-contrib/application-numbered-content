@@ -253,60 +253,62 @@
 #if ($isNumberedFiguresEnabled == 'true')
 #set ($figureMacroDisplayName = $escapetool.css($services.localization.render('ckeditor.plugin.macro.placeholder', ['figure'])))
 #set ($figureCaptionMacroDisplayName = $escapetool.css($services.localization.render('ckeditor.plugin.macro.placeholder', ['figureCaption'])))
+#set ($H = '#')
 
-#xwikicontent,
+#macro (figureCounter $id)
+  cfigure-$id##
+#end
+
+${H}xwikicontent,
 body[contenteditable="true"] {
-  counter-reset: cfigure cfigure-table;
+  counter-reset: #foreach($counter in $services.numberedfigures.getFigureCounters().keySet())#figureCounter($counter) #end;
 }
 
 /* Match figures directly below the content and figure elements that aren't nested in a figure macro
  * (expected to be new in 14.1RC1), as then the increment would happen twice. */
-body[contenteditable="true"] &gt; figure[data-xwiki-rendering-figure-type='figure'],
-#xwikicontent &gt; figure[data-xwiki-rendering-figure-type='figure'],
-body[contenteditable="true"] :not([data-macro^="startmacro:figure"]) &gt; figure[data-xwiki-rendering-figure-type='figure'],
-#xwikicontent :not([data-macro^="startmacro:figure"]) &gt; figure[data-xwiki-rendering-figure-type='figure'],
-body[contenteditable="true"] div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='figure'],
-#xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='figure'],
 body[contenteditable="true"] &gt; figure:not([data-xwiki-rendering-figure-type]),
-#xwikicontent &gt; figure:not([data-xwiki-rendering-figure-type]),
+${H}xwikicontent &gt; figure:not([data-xwiki-rendering-figure-type]),
 body[contenteditable="true"] :not([data-macro^="startmacro:figure"]) &gt; figure:not([data-xwiki-rendering-figure-type]),
-#xwikicontent :not([data-macro^="startmacro:figure"]) &gt; figure:not([data-xwiki-rendering-figure-type]),
+${H}xwikicontent :not([data-macro^="startmacro:figure"]) &gt; figure:not([data-xwiki-rendering-figure-type]),
 body[contenteditable="true"] div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]),
-#xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]) {
-  counter-increment: cfigure;
+${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]) {
+  counter-increment: cfigure-figure;
 }
 
-body[contenteditable="true"] &gt; figure[data-xwiki-rendering-figure-type='table'],
-#xwikicontent &gt; figure[data-xwiki-rendering-figure-type='table'],
-body[contenteditable="true"] :not([data-macro^="startmacro:figure"]) &gt; figure[data-xwiki-rendering-figure-type='table'],
-#xwikicontent :not([data-macro^="startmacro:figure"]) &gt; figure[data-xwiki-rendering-figure-type='table'],
-body[contenteditable="true"] div[data-cke-display-name="${figureMacroDisplayName}"] [data-xwiki-rendering-figure-type='table'],
-#xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] [data-xwiki-rendering-figure-type='table'] {
-  counter-increment: cfigure-table;
-}
-
-body[contenteditable="true"] figure[data-xwiki-rendering-figure-type='figure'] figcaption::before,
-#xwikicontent figure[data-xwiki-rendering-figure-type='figure'] figcaption::before,
-body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='figure'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
-#xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='figure'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
 body[contenteditable="true"] figure:not([data-xwiki-rendering-figure-type]) figcaption::before,
-#xwikicontent figure:not([data-xwiki-rendering-figure-type]) figcaption::before,
+${H}xwikicontent figure:not([data-xwiki-rendering-figure-type]) figcaption::before,
 body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]) div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
-#xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]) div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before {
-  content: "$services.localization.render('numbered.figures.numbered.figureCaption.label') " counter(cfigure) ':\00a0';
+${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]) div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before {
+  content: "$services.figureTypes.getLabel('figure') " counter(cfigure-figure) ':\00a0';
   /* Let the caption be on the same line as the number. */
   float: left;
 }
 
-body[contenteditable="true"] figure[data-xwiki-rendering-figure-type='table'] figcaption::before,
-#xwikicontent figure[data-xwiki-rendering-figure-type='table'] figcaption::before,
-body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='table'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
-#xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='table'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before {
-  content: "$services.localization.render('numbered.figures.numbered.tableCaption.label') " counter(cfigure-table) ':\00a0';
+#foreach ($entry in $services.numberedfigures.getFigureCounters().entrySet())
+#set ($counter = $entry.key)
+#set ($types = $entry.value)
+#foreach ($figureType in $types)
+#set ($type = $figureType.id)
+body[contenteditable="true"] &gt; figure[data-xwiki-rendering-figure-type='$type'],
+${H}xwikicontent &gt; figure[data-xwiki-rendering-figure-type='$type'],
+body[contenteditable="true"] :not([data-macro^="startmacro:figure"]) &gt; figure[data-xwiki-rendering-figure-type='$type'],
+${H}xwikicontent :not([data-macro^="startmacro:figure"]) &gt; figure[data-xwiki-rendering-figure-type='$type'],
+body[contenteditable="true"] div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='$type'],
+${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='$type'] {
+  counter-increment: #figureCounter($counter);
+}
+
+#set ($label = $services.figureTypes.getLabel($type))
+body[contenteditable="true"] figure[data-xwiki-rendering-figure-type='$type'] figcaption::before,
+${H}xwikicontent figure[data-xwiki-rendering-figure-type='$type'] figcaption::before,
+body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='$type'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
+${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='$type'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before {
+  content: "$label " counter(#figureCounter($counter)) ':\00a0';
   /* Let the caption be on the same line as the number. */
   float: left;
 }
-
+#end
+#end
 #end</code>
     </property>
     <property>

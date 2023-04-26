@@ -1,0 +1,14 @@
+#set ($content = $latex.processor.render('default/FigureBlock'))
+#set($isNumberedFiguresEnabled = $services.numberedfigures.isNumberedFiguresEnabled())
+#if ($isNumberedFiguresEnabled)
+  #set ($type = $figureBlock.getParameter("data-xwiki-rendering-figure-type"))
+  #set ($counter = $services.numberedfigures.getCounter($type))
+  #set ($label = $services.figureTypes.getLabel($type))
+  #set ($begin = "\begin{figure-counter-$latex.tool.escape($counter)}[h]\captionsetup{name=$latex.tool.escape($label)}")
+  #set ($end = "\end{figure-counter-$latex.tool.escape($counter)}")
+  #set ($content = $content.replace('\begin{figure}[h]', $begin))
+  #set ($content = $content.replace('\begin{table}[h]', $begin))
+  #set ($content = $content.replace('\end{figure}', $end))
+  #set ($content = $content.replace('\end{table}', $end))
+#end
+$content
