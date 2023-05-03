@@ -74,6 +74,11 @@
         <version>${platform.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.xwiki.contrib</groupId>
+        <artifactId>macro-figure</artifactId>
+        <version>${figure.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.xwiki.platform</groupId>
         <artifactId>xwiki-platform-filter-event-model</artifactId>
         <version>${platform.version}</version>
@@ -132,11 +137,6 @@
         <groupId>org.xwiki.platform</groupId>
         <artifactId>xwiki-platform-template-api</artifactId>
         <version>${platform.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.xwiki.contrib</groupId>
-        <artifactId>macro-figure</artifactId>
-        <version>${figure.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

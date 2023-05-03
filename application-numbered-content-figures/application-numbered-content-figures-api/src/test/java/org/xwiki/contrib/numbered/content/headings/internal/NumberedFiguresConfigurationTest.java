@@ -104,7 +104,7 @@ class NumberedFiguresConfigurationTest
     private Converter<List<?>> converter;
 
     @BeforeComponent
-    public void configure() throws Exception
+    public void configure()
     {
         this.converter = mock(Converter.class);
         when(this.converterManager.<List<?>>getConverter(List.class)).thenReturn(this.converter);
