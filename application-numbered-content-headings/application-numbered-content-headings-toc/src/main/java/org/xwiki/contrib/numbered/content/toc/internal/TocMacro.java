@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.manager.ComponentLookupException;
 import org.xwiki.component.phase.InitializationException;
+import org.xwiki.contrib.numbered.content.toc.TocMacroParameters;
 import org.xwiki.contrib.numbered.content.toc.TocTreeBuilder;
 import org.xwiki.contrib.numbered.content.toc.TocTreeBuilderFactory;
 import org.xwiki.rendering.block.Block;
@@ -39,7 +40,6 @@ import org.xwiki.rendering.internal.macro.toc.TreeParametersBuilder;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
 import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.macro.MacroExecutionException;
-import org.xwiki.rendering.macro.toc.XWikiTocMacroParameters;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
 import org.xwiki.rendering.wiki.WikiModel;
 import org.xwiki.rendering.wiki.WikiModelException;
@@ -57,7 +57,7 @@ import static org.xwiki.rendering.macro.toc.TocMacroParameters.Scope.PAGE;
 @Component
 @Named("toc")
 @Singleton
-public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
+public class TocMacro extends AbstractMacro<TocMacroParameters>
 {
     private static final String DESCRIPTION = "Generates a Table Of Contents.";
 
@@ -78,7 +78,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
      */
     public TocMacro()
     {
-        super("Table Of Contents", DESCRIPTION, XWikiTocMacroParameters.class);
+        super("Table Of Contents", DESCRIPTION, TocMacroParameters.class);
 
         // Make sure this macro is executed as one of the last macros to be executed since
         // other macros can generate headers which need to be taken into account by the TOC
@@ -105,7 +105,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
     }
 
     @Override
-    public List<Block> execute(XWikiTocMacroParameters parameters, String content, MacroTransformationContext context)
+    public List<Block> execute(TocMacroParameters parameters, String content, MacroTransformationContext context)
         throws MacroExecutionException
     {
         this.ssfx.use("toc.css");
@@ -116,7 +116,7 @@ public class TocMacro extends AbstractMacro<XWikiTocMacroParameters>
         return this.tocTreeBuilder.build(treeParameters);
     }
 
-    private Block getRootBlockBlock(XWikiTocMacroParameters parameters) throws MacroExecutionException
+    private Block getRootBlockBlock(TocMacroParameters parameters) throws MacroExecutionException
     {
         Block rootBlock = null;
         WikiModel wikiModel = this.wikiModelProvider.get();
