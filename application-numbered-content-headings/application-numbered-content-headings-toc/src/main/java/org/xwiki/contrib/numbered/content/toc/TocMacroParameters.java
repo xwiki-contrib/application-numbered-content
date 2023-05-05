@@ -24,7 +24,8 @@ import org.xwiki.rendering.macro.toc.XWikiTocMacroParameters;
 import org.xwiki.stability.Unstable;
 
 /**
- * 
+ * Custom ToC parameters for the numbered content application.
+ *
  * @version $Id$
  * @since 1.9
  * @since 1.8.4
@@ -36,6 +37,6 @@ public class TocMacroParameters extends XWikiTocMacroParameters
     @PropertyHidden
     public void setNumbered(boolean numbered)
     {
-        // Intentionaly empty.
+        // Intentionally empty.
     }
 }
