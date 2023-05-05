@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
     <artifactId>application-numbered-content-reference</artifactId>
-    <version>1.9-SNAPSHOT</version>
+    <version>1.8.4-SNAPSHOT</version>
   </parent>
   <artifactId>application-numbered-content-reference-test</artifactId>
   <name>Numbered Content - Reference - Tests - Parent POM</name>
