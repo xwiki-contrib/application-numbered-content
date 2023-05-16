@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
+import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 import org.xwiki.contrib.numbered.content.headings.FiguresNumberingService;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.FigureBlock;
@@ -66,7 +67,7 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
     }
 
     @Override
-    public Map<FigureBlock, String> getFiguresMap(Block rootBlock)
+    public Map<FigureBlock, String> getFiguresMap(Block rootBlock) throws NumberedFiguresException
     {
         ExecutionContext context = this.execution.getContext();
         Map<String, Object> figureNumbering =

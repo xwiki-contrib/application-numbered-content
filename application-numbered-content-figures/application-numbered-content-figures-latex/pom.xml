@@ -28,9 +28,30 @@
   <artifactId>application-numbered-content-figures-latex</artifactId>
   <name>Numbered Content - Figures - Latex</name>
   <description>Provides the User Interface Extensions Points to integrate Numbered Figures with the Latex Extension</description>
-  <packaging>pom</packaging>
-  <modules>
-    <module>application-numbered-content-figures-latex-api</module>
-    <module>application-numbered-content-figures-latex-ui</module>
-  </modules>
+  <properties>
+    <!-- Name to display by the Extension Manager -->
+    <xwiki.extension.name>LaTeX for Numbered Figures</xwiki.extension.name>
+    <!-- Category to display by the Extension Manager -->
+    <xwiki.extension.category>api</xwiki.extension.category>
+    <xwiki.jacoco.instructionRatio>0.84</xwiki.jacoco.instructionRatio>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.xwiki.contrib</groupId>
+      <artifactId>figure-latex</artifactId>
+      <version>${figure.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.contrib.numbered.content</groupId>
+      <artifactId>application-numbered-content-figures-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- Test dependencies. -->
+    <dependency>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-tool-test-component</artifactId>
+      <version>${commons.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>

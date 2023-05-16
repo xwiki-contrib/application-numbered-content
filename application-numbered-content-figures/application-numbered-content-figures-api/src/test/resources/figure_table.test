@@ -13,7 +13,7 @@ beginDocument
 beginMacroMarkerStandalone [figure] [] [|Cell]
 beginMacroMarkerStandalone [figureTypeRecognizer] []
 endMacroMarkerStandalone [figureTypeRecognizer] []
-beginFigure [[data-xwiki-rendering-figure-type]=[table]]
+beginFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[table]]
 beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginTable
 beginTableRow
@@ -23,6 +23,6 @@ endTableCell
 endTableRow
 endTable
 endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
-endFigure [[data-xwiki-rendering-figure-type]=[table]]
+endFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[table]]
 endMacroMarkerStandalone [figure] [] [|Cell]
 endDocument

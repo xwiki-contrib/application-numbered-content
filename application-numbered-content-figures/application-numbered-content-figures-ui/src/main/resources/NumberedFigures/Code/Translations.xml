@@ -38,6 +38,9 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Code
 numbered.figures.codeSpace.description=This is the place where the Numbered Figures application code is located.
+numbered.figures.caption.block.separator=:
+numbered.figures.caption.inline.start=(
+numbered.figures.caption.inline.end=)
 
 #@deprecatedstart
 ##################################################

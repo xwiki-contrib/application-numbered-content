@@ -46,7 +46,7 @@
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib</groupId>
-      <artifactId>macro-figure</artifactId>
+      <artifactId>figure-macro</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>

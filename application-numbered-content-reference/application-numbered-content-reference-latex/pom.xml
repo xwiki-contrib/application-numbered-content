@@ -57,10 +57,9 @@
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-figures-latex-ui</artifactId>
+      <artifactId>application-numbered-content-figures-latex</artifactId>
       <version>${project.version}</version>
       <optional>true</optional>
-      <type>xar</type>
     </dependency>
   </dependencies>
 </project>

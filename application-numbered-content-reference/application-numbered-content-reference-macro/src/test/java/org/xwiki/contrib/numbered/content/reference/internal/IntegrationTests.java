@@ -24,16 +24,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.xwiki.cache.CacheManager;
+import org.xwiki.contrib.figure.internal.FigureTypesConfiguration;
 import org.xwiki.localization.ContextualLocalizationManager;
 import org.xwiki.observation.ObservationManager;
 import org.xwiki.rendering.test.integration.TestDataParser;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
+import org.xwiki.skinx.SkinExtension;
 import org.xwiki.test.annotation.AllComponents;
 import org.xwiki.test.mockito.MockitoComponentManager;
 import org.xwiki.wiki.descriptor.WikiDescriptorManager;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.xwiki.contrib.figure.FigureStyle.BLOCK;
 
 /**
  * Run all tests found in {@code *.test} files located in the classpath. These {@code *.test} files must follow the
@@ -54,6 +57,11 @@ public class IntegrationTests implements RenderingTests
         componentManager.registerMockComponent(WikiDescriptorManager.class);
         componentManager.registerMockComponent(CacheManager.class);
         componentManager.registerMockComponent(ObservationManager.class);
+
+        FigureTypesConfiguration figureTypesConfiguration =
+            componentManager.registerMockComponent(FigureTypesConfiguration.class);
+        when(figureTypesConfiguration.getFigureStyle(any())).thenReturn(BLOCK);
+        componentManager.registerMockComponent(SkinExtension.class, "ssx");
 
         // Mock the translation by retuning the passed key. Optionally with the list of arguments between brackets
         // separated by commas. For instance "my.translation.key [A, B]".

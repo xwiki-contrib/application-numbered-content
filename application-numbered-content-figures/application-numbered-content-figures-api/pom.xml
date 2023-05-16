@@ -53,7 +53,7 @@
     <!-- Required by FigureTypeRecognizerMacro. --> 
     <dependency>
       <groupId>org.xwiki.contrib</groupId>
-      <artifactId>macro-figure</artifactId>
+      <artifactId>figure-macro</artifactId>
     </dependency>
     <dependency>
       <groupId>org.xwiki.commons</groupId>

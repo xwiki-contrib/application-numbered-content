@@ -67,7 +67,7 @@ class DefaultFiguresNumberingServiceTest
     private ExecutionContext context;
 
     @BeforeEach
-    void setUp()
+    void setUp() throws Exception
     {
         when(this.execution.getContext()).thenReturn(this.context);
         when(this.context.getProperty(PROPERTY_KEY)).thenReturn(new HashMap<>());
@@ -85,7 +85,7 @@ class DefaultFiguresNumberingServiceTest
     }
 
     @Test
-    void getFiguresMap()
+    void getFiguresMap() throws Exception
     {
         Map<Object, Object> counters = new HashMap<>();
         when(this.context.getProperty(PROPERTY_KEY)).thenReturn(counters);
@@ -118,12 +118,12 @@ class DefaultFiguresNumberingServiceTest
     }
 
     @Test
-    void getFiguresMapSharedCounter()
+    void getFiguresMapSharedCounter() throws Exception
     {
         Map<Object, Object> counters = new HashMap<>();
         when(this.context.getProperty(PROPERTY_KEY)).thenReturn(counters);
         when(this.numberedFiguresConfiguration.getCounter("figurebis")).thenReturn("figure");
-        
+
         FigureBlock figure0 = new FigureBlock(List.of(), Map.of(
             "id", "f0",
             DATA_XWIKI_RENDERING_FIGURE_TYPE, "figure"
@@ -153,7 +153,7 @@ class DefaultFiguresNumberingServiceTest
     }
 
     @Test
-    void getFiguresMapMissingType()
+    void getFiguresMapMissingType() throws Exception
     {
         Map<Object, Object> counters = new HashMap<>();
         when(this.context.getProperty(PROPERTY_KEY)).thenReturn(counters);
@@ -183,7 +183,7 @@ class DefaultFiguresNumberingServiceTest
     }
 
     @Test
-    void getFiguresMapWithExistingCounter()
+    void getFiguresMapWithExistingCounter() throws Exception
     {
         Map<Object, Object> counters = new HashMap<>();
         counters.put("figure", 10L);

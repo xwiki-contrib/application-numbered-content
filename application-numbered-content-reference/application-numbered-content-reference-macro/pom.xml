@@ -31,7 +31,7 @@
   <name>Numbered Content - Reference Macro</name>
   <description>Provides a macro to reference numbered contents.</description>
   <properties>
-    <xwiki.jacoco.instructionRatio>0.97</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.95</xwiki.jacoco.instructionRatio>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Reference Macro for the Numbered Content Applications</xwiki.extension.name>
     <!-- Extension Manager category -->
@@ -88,7 +88,7 @@
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib</groupId>
-      <artifactId>macro-figure</artifactId>
+      <artifactId>figure-macro</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

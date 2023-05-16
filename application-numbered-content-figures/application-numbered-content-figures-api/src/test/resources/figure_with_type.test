@@ -11,7 +11,7 @@
 .#-----------------------------------------------------
 beginDocument
 beginMacroMarkerStandalone [figure] [type=figure] [|Cell]
-beginFigure [[data-xwiki-rendering-figure-type]=[figure]]
+beginFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[figure]]
 beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
 beginTable
 beginTableRow
@@ -21,6 +21,6 @@ endTableCell
 endTableRow
 endTable
 endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
-endFigure [[data-xwiki-rendering-figure-type]=[figure]]
+endFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[figure]]
 endMacroMarkerStandalone [figure] [type=figure] [|Cell]
 endDocument

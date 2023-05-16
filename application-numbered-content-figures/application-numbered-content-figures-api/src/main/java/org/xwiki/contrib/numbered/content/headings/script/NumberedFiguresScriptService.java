@@ -28,6 +28,7 @@ import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.figure.FigureType;
+import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfiguration;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
@@ -75,8 +76,9 @@ public class NumberedFiguresScriptService implements ScriptService
     /**
      * @return a map of counters and their associated types (e.g.,
      *     {@code Map.of("figure", Set.of("figure"), "math", Set.of("proof", "lemma"))})
+     * @since 1.9
      */
-    public Map<String, Set<FigureType>> getFigureCounters()
+    public Map<String, Set<FigureType>> getFigureCounters() throws NumberedFiguresException
     {
         return this.numberedFiguresConfiguration.getFigureCounters();
     }
@@ -86,8 +88,9 @@ public class NumberedFiguresScriptService implements ScriptService
      *
      * @param type a figure type (e.g., {@code "proof"})
      * @return the resolve counter (e.g., "math")
+     * @since 1.9
      */
-    public String getCounter(String type)
+    public String getCounter(String type) throws NumberedFiguresException
     {
         return this.numberedFiguresConfiguration.getCounter(type);
     }

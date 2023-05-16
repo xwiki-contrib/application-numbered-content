@@ -19,8 +19,15 @@
  */
 package org.xwiki.contrib.numbered.content.headings.internal.macro;
 
+import org.xwiki.contrib.figure.internal.FigureTypesConfiguration;
 import org.xwiki.rendering.test.integration.junit5.RenderingTests;
+import org.xwiki.skinx.SkinExtension;
 import org.xwiki.test.annotation.AllComponents;
+import org.xwiki.test.mockito.MockitoComponentManager;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.xwiki.contrib.figure.FigureStyle.BLOCK;
 
 /**
  * @version $Id$
@@ -29,4 +36,12 @@ import org.xwiki.test.annotation.AllComponents;
 @AllComponents
 public class IntegrationTests implements RenderingTests
 {
+    @Initialized
+    public void initialize(MockitoComponentManager componentManager) throws Exception
+    {
+        FigureTypesConfiguration figureTypesConfiguration =
+            componentManager.registerMockComponent(FigureTypesConfiguration.class);
+        when(figureTypesConfiguration.getFigureStyle(any())).thenReturn(BLOCK);
+        componentManager.registerMockComponent(SkinExtension.class, "ssx");
+    }
 }

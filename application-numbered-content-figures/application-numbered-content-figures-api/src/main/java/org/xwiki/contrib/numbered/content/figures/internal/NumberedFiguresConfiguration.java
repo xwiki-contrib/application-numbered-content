@@ -35,14 +35,17 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.apache.commons.collections4.SetUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.xwiki.bridge.DocumentAccessBridge;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.phase.Initializable;
 import org.xwiki.configuration.ConfigurationSource;
 import org.xwiki.context.Execution;
+import org.xwiki.contrib.figure.FigureStyle;
 import org.xwiki.contrib.figure.FigureType;
 import org.xwiki.contrib.figure.internal.FigureTypesConfiguration;
+import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 import org.xwiki.model.reference.EntityReference;
 import org.xwiki.model.reference.LocalDocumentReference;
 import org.xwiki.properties.ConverterManager;
@@ -129,16 +132,17 @@ public class NumberedFiguresConfiguration implements Initializable
      * @since 1.9
      */
     @Unstable
-    public Map<String, Set<FigureType>> getFigureCounters()
+    public Map<String, Set<FigureType>> getFigureCounters() throws NumberedFiguresException
     {
-        Map<String, Set<String>> configurationMap = getConfigurationMap();
+        Map<String, Set<String>> configurationMap = getCountersConfigurationMap();
         Map<String, Set<FigureType>> counters = new HashMap<>();
         for (FigureType figureType : this.figureTypesConfiguration.getFigureTypes()) {
             if (isAutomatic(figureType)) {
                 continue;
             }
-            counters.merge(computeCounter(configurationMap, figureType), Set.of(figureType), SetUtils::union);
+            counters.merge(computeCounter(configurationMap, figureType.getId()), Set.of(figureType), SetUtils::union);
         }
+
         return counters;
     }
 
@@ -150,23 +154,94 @@ public class NumberedFiguresConfiguration implements Initializable
      * @since 1.9
      */
     @Unstable
-    public String getCounter(String type)
+    public String getCounter(String type) throws NumberedFiguresException
     {
-        return computeCounter(getConfigurationMap(), new FigureType(type));
+        return computeCounter(getCountersConfigurationMap(), type);
     }
 
-    private Map<String, Set<String>> getConfigurationMap()
+    /**
+     * Restrictions:
+     * <ul>
+     *     <li>the "figure" and "table" types cannot be part of a custom counter.</li>
+     *     <li>a custom counter cannot be shared between figure of different styles
+     *      (e.g., between "inline" and "block" figures)</li>
+     * </ul>
+     *
+     * @return the configuration map of the counters (e.g.,
+     *     {@code Map.of("math", Set.of("proof, "lemma"), "blocks", Set.of("graph", "plot"))})
+     */
+    private Map<String, Set<String>> getCountersConfigurationMap() throws NumberedFiguresException
     {
-        Map<String, Set<String>> configurationMap = getConfigurationMapFromXObjects();
+        Map<String, Set<String>> configurationMap = getCountersConfigurationMapFromXObjects();
 
         if (configurationMap.isEmpty()) {
-            configurationMap = getConfigurationMapFromProperties();
+            configurationMap = getCountersConfigurationMapFromProperties();
         }
-        
+
+        String table = FigureType.TABLE.getId();
+        String figure = FigureType.FIGURE.getId();
+
+        checkNoReserverCounterId(configurationMap, figure);
+        checkNoReserverCounterId(configurationMap, table);
+
+        for (Map.Entry<String, Set<String>> entry : configurationMap.entrySet()) {
+
+            String counterId = entry.getKey();
+            checkNoReseverdTypeInFiguresList(entry, counterId, figure);
+
+            checkNoReseverdTypeInFiguresList(entry, counterId, table);
+
+            checkUniformStylesInFiguresList(entry, counterId);
+        }
+
         return configurationMap;
     }
 
-    private Map<String, Set<String>> getConfigurationMapFromXObjects()
+    private void checkUniformStylesInFiguresList(Map.Entry<String, Set<String>> entry, String counterId)
+        throws NumberedFiguresException
+    {
+
+        boolean hasInlineStyles = false;
+        boolean hasBlockStyles = false;
+
+        for (String filteredValue : entry.getValue()) {
+            FigureStyle figureStyle = this.figureTypesConfiguration.getFigureStyle(filteredValue);
+            if (figureStyle == FigureStyle.BLOCK) {
+                hasBlockStyles = true;
+            } else if (figureStyle == FigureStyle.INLINE) {
+                hasInlineStyles = true;
+            }
+
+            // As soon as we find both block and inline styles in the same counter, we fail the configuration check.
+            if (hasInlineStyles && hasBlockStyles) {
+                throw new NumberedFiguresException(String.format(
+                    "Figure counters miss-configured counter [%s] shares counters of different styles [%s]", counterId,
+                    StringUtils.join(entry.getValue(), ", ")));
+            }
+        }
+    }
+
+    private static void checkNoReserverCounterId(Map<String, Set<String>> configurationMap, String table)
+        throws NumberedFiguresException
+    {
+        if (configurationMap.containsKey(table)) {
+            throw new NumberedFiguresException(
+                "Figure counters miss-configured, the counter id [" + table + "] is reserved");
+        }
+    }
+
+    private static void checkNoReseverdTypeInFiguresList(Map.Entry<String, Set<String>> entry, String counterId,
+        String figure)
+        throws NumberedFiguresException
+    {
+        if (entry.getValue().stream().anyMatch(it -> Objects.equals(it, figure))) {
+            throw new NumberedFiguresException(
+                "Figure counters miss-configured, counter [" + counterId + "] contains a figure of type [" + figure
+                    + "].");
+        }
+    }
+
+    private Map<String, Set<String>> getCountersConfigurationMapFromXObjects()
     {
         LocalDocumentReference reference =
             new LocalDocumentReference(asList("NumberedFigures", "Code"), "NumberedFiguresCounterConfiguration");
@@ -186,7 +261,7 @@ public class NumberedFiguresConfiguration implements Initializable
         return map;
     }
 
-    private Map<String, Set<String>> getConfigurationMapFromProperties()
+    private Map<String, Set<String>> getCountersConfigurationMapFromProperties()
     {
         Map<String, Set<String>> configurationMap = new HashMap<>();
         Properties properties = this.configurationSource.getProperty("numbered.figures.counters", Properties.class);
@@ -240,8 +315,8 @@ public class NumberedFiguresConfiguration implements Initializable
     }
 
     /**
-     * Checks if a document has numbered headings activated by looking at the presence of an XObject of type {@link
-     * NumberedFiguresClassDocumentInitializer#STATUS_PROPERTY}.
+     * Checks if a document has numbered headings activated by looking at the presence of an XObject of type
+     * {@link NumberedFiguresClassDocumentInitializer#STATUS_PROPERTY}.
      *
      * @param documentReference the document reference to check
      * @return {@code true} if the numbered headings are activated in the document, {@code false} otherwise
@@ -301,11 +376,6 @@ public class NumberedFiguresConfiguration implements Initializable
     private static boolean isAutomatic(FigureType figureType)
     {
         return Objects.equals(figureType.getId(), AUTOMATIC.getId());
-    }
-
-    private String computeCounter(Map<String, Set<String>> configurationMap, FigureType figureType)
-    {
-        return computeCounter(configurationMap, figureType.getId());
     }
 
     private String computeCounter(Map<String, Set<String>> configurationMap, String figureType)

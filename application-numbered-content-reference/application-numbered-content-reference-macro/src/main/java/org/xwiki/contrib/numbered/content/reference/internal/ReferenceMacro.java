@@ -29,6 +29,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
+import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 import org.xwiki.contrib.numbered.content.headings.FiguresNumberingService;
 import org.xwiki.contrib.numbered.content.headings.HeadingsNumberingService;
 import org.xwiki.contrib.numbered.content.reference.ReferenceMacroParameters;
@@ -44,6 +45,7 @@ import org.xwiki.rendering.block.WordBlock;
 import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.listener.reference.DocumentResourceReference;
 import org.xwiki.rendering.macro.AbstractMacro;
+import org.xwiki.rendering.macro.MacroExecutionException;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
 
 import static java.util.Collections.emptyMap;
@@ -102,6 +104,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
 
     @Override
     public List<Block> execute(ReferenceMacroParameters parameters, String content, MacroTransformationContext context)
+        throws MacroExecutionException
     {
         DocumentResourceReference resourceReference = new DocumentResourceReference("");
         String id = parameters.getId();
@@ -113,7 +116,11 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         // Chain the search, first in the headers, then in the figures.
         String number = headingNumber(id, rootBlock);
         if (number == null) {
-            number = figuresNumber(id, rootBlock);
+            try {
+                number = figuresNumber(id, rootBlock);
+            } catch (NumberedFiguresException e) {
+                throw new MacroExecutionException("Failed to computed reference number", e);
+            }
         }
 
         Block referenceContent;
@@ -151,7 +158,7 @@ public class ReferenceMacro extends AbstractMacro<ReferenceMacroParameters>
         return number;
     }
 
-    private String figuresNumber(String id, Block rootBlock)
+    private String figuresNumber(String id, Block rootBlock) throws NumberedFiguresException
     {
         String number = null;
         for (FiguresNumberingService figureNumberingService : this.figuresNumberingServices) {

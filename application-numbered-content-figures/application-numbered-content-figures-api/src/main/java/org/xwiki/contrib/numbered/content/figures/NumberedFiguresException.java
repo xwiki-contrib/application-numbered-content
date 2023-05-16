@@ -17,40 +17,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings;
+package org.xwiki.contrib.numbered.content.figures;
 
-import java.util.List;
-import java.util.Map;
-
-import org.xwiki.component.annotation.Role;
-import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
-import org.xwiki.rendering.block.Block;
-import org.xwiki.rendering.block.FigureBlock;
 import org.xwiki.stability.Unstable;
 
 /**
- * Provide the operations to compute the numbering of figures.
+ * Default numbered figures exception.
  *
  * @version $Id$
- * @since 1.0
+ * @since 1.9
  */
-@Role
 @Unstable
-public interface FiguresNumberingService
+public class NumberedFiguresException extends Exception
 {
     /**
-     * Return a list of figures found in a root block.
+     * Constructs a new numbered figure exception with the specified detail message. The cause is not initialized, and
+     * may subsequently be initialized by a call to {@link #initCause}.
      *
-     * @param rootBlock the root block to analyze
-     * @return the list of figures found in the root block
+     * @param message the detail message. The detail message is saved for later retrieval by the
+     *     {@link #getMessage()} method.
      */
-    List<FigureBlock> getFiguresList(Block rootBlock);
-
-    /**
-     * Return a map of the figures found in a root block associated with their computed numbering.
-     *
-     * @param rootBlock the root block to analyze
-     * @return the computed map
-     */
-    Map<FigureBlock, String> getFiguresMap(Block rootBlock) throws NumberedFiguresException;
+    public NumberedFiguresException(String message)
+    {
+        super(message);
+    }
 }

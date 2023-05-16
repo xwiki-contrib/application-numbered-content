@@ -37,9 +37,11 @@ import org.xwiki.configuration.ConfigurationSource;
 import org.xwiki.contrib.figure.FigureType;
 import org.xwiki.contrib.figure.internal.DefaultFigureTypesConfiguration;
 import org.xwiki.contrib.figure.internal.FigureTypesConfigurationSource;
+import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresClassDocumentInitializer;
 import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfiguration;
 import org.xwiki.model.reference.DocumentReference;
+import org.xwiki.model.reference.EntityReference;
 import org.xwiki.properties.ConverterManager;
 import org.xwiki.properties.converter.Converter;
 import org.xwiki.properties.internal.converter.ListConverter;
@@ -62,9 +64,12 @@ import com.xpn.xwiki.web.XWikiRequest;
 import ch.qos.logback.classic.Level;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.xwiki.contrib.figure.FigureStyle.BLOCK;
 import static org.xwiki.contrib.figure.FigureType.FIGURE;
 import static org.xwiki.contrib.figure.FigureType.TABLE;
 
@@ -83,6 +88,10 @@ import static org.xwiki.contrib.figure.FigureType.TABLE;
 })
 class NumberedFiguresConfigurationTest
 {
+    private static final String BLOCK_TYPES = "figure.block.types";
+
+    private static final String INLINE_TYPES = "figure.inline.types";
+
     @InjectMockComponents
     private NumberedFiguresConfiguration numberedFiguresConfiguration;
 
@@ -118,6 +127,7 @@ class NumberedFiguresConfigurationTest
         this.document = this.oldcore.getSpyXWiki()
             .getDocument(new DocumentReference("xwiki", "Space", "Page"), this.oldcore.getXWikiContext());
         this.oldcore.getXWikiContext().setDoc(this.document);
+        when(this.objectConfigurationSource.isEmpty()).thenReturn(true);
     }
 
     @ParameterizedTest
@@ -143,70 +153,112 @@ class NumberedFiguresConfigurationTest
     }
 
     @Test
-    void getFigureCountersNoOverride()
+    void getFigureCountersNoOverride() throws Exception
     {
         Map<String, Set<FigureType>> figureCounters = this.numberedFiguresConfiguration.getFigureCounters();
         assertEquals(Map.of("figure", Set.of(FIGURE), "table", Set.of(TABLE)), figureCounters);
-        assertEquals("Mandatory type [figure] added.", this.logCapture.getMessage(0));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(0).getLevel());
-        assertEquals("Mandatory type [table] added.", this.logCapture.getMessage(1));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(1).getLevel());
     }
 
     @Test
-    void getFigureCountersIgnoredUnknown()
+    void getFigureCountersIgnoredUnknown() throws Exception
     {
         Properties countersProperties = new Properties();
         countersProperties.put("math", "lemma,proof");
         this.oldcore.getConfigurationSource().setProperty("numbered.figures.counters", countersProperties);
         Map<String, Set<FigureType>> figureCounters = this.numberedFiguresConfiguration.getFigureCounters();
         assertEquals(Map.of("figure", Set.of(FIGURE), "table", Set.of(TABLE)), figureCounters);
-        assertEquals("Mandatory type [figure] added.", this.logCapture.getMessage(0));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(0).getLevel());
-        assertEquals("Mandatory type [table] added.", this.logCapture.getMessage(1));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(1).getLevel());
     }
 
     @Test
-    void getFigureCountersWithCounter()
+    void getFigureCountersFailCounterWithForbiddenType()
+    {
+        Properties countersProperties = new Properties();
+        countersProperties.put("test", "figure");
+        this.oldcore.getConfigurationSource().setProperty("numbered.figures.counters", countersProperties);
+        NumberedFiguresException numberedFiguresException =
+            assertThrows(NumberedFiguresException.class, () -> this.numberedFiguresConfiguration.getFigureCounters());
+        assertEquals("Figure counters miss-configured, counter [test] contains a figure of type [figure].",
+            numberedFiguresException.getMessage());
+    }
+
+    @Test
+    void getFigureCountersFailCounterWithForbiddenCounter()
+    {
+        Properties countersProperties = new Properties();
+        countersProperties.put("figure", "test");
+        this.oldcore.getConfigurationSource().setProperty("numbered.figures.counters", countersProperties);
+        NumberedFiguresException numberedFiguresException =
+            assertThrows(NumberedFiguresException.class, () -> this.numberedFiguresConfiguration.getFigureCounters());
+        assertEquals("Figure counters miss-configured, the counter id [figure] is reserved",
+            numberedFiguresException.getMessage());
+    }
+
+    @Test
+    void getFigureCountersFailMixedStyles()
+    {
+        Properties countersProperties = new Properties();
+        countersProperties.put("test", "lemma,graph");
+        this.oldcore.getConfigurationSource().setProperty(BLOCK_TYPES, List.of("graph"));
+        this.oldcore.getConfigurationSource().setProperty(INLINE_TYPES, List.of("lemma"));
+        this.oldcore.getConfigurationSource().setProperty("numbered.figures.counters", countersProperties);
+        NumberedFiguresException numberedFiguresException =
+            assertThrows(NumberedFiguresException.class, () -> this.numberedFiguresConfiguration.getFigureCounters());
+        assertEquals(
+            "Figure counters miss-configured counter [test] shares counters of different styles [lemma, graph]",
+            numberedFiguresException.getMessage());
+    }
+
+    @Test
+    void getFigureCountersWithCounter() throws Exception
     {
         Properties countersProperties = new Properties();
         countersProperties.put("math", "lemma,proof");
         this.oldcore.getConfigurationSource().setProperty("numbered.figures.counters", countersProperties);
-        this.oldcore.getConfigurationSource().setProperty("figure.types", List.of("lemma", "proof"));
+        this.oldcore.getConfigurationSource().setProperty(BLOCK_TYPES, List.of("lemma", "proof"));
         Map<String, Set<FigureType>> figureCounters = this.numberedFiguresConfiguration.getFigureCounters();
         assertEquals(Map.of(
             "figure", Set.of(FIGURE),
             "table", Set.of(TABLE),
-            "math", Set.of(new FigureType("lemma"), new FigureType("proof"))
+            "math", Set.of(new FigureType("lemma", BLOCK), new FigureType("proof", BLOCK))
         ), figureCounters);
-        assertEquals("Mandatory type [figure] added.", this.logCapture.getMessage(0));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(0).getLevel());
-        assertEquals("Mandatory type [table] added.", this.logCapture.getMessage(1));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(1).getLevel());
     }
 
     @Test
-    void getFigureCountersWithDuplicatedCounter()
+    void getFigureCountersWithDuplicatedCounter() throws Exception
     {
         Properties countersProperties = new Properties();
         countersProperties.put("math", "lemma,proof");
         countersProperties.put("proof", "proof");
         this.oldcore.getConfigurationSource().setProperty("numbered.figures.counters", countersProperties);
-        this.oldcore.getConfigurationSource().setProperty("figure.types", List.of("lemma", "proof"));
+        this.oldcore.getConfigurationSource().setProperty(BLOCK_TYPES, List.of("lemma", "proof"));
         Map<String, Set<FigureType>> figureCounters = this.numberedFiguresConfiguration.getFigureCounters();
         assertEquals(Map.of(
             "figure", Set.of(FIGURE),
             "table", Set.of(TABLE),
-            "math", Set.of(new FigureType("lemma"), new FigureType("proof"))
+            "math", Set.of(new FigureType("lemma", BLOCK), new FigureType("proof", BLOCK))
         ), figureCounters);
 
-        assertEquals("Mandatory type [figure] added.", this.logCapture.getMessage(0));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(0).getLevel());
-        assertEquals("Mandatory type [table] added.", this.logCapture.getMessage(1));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(1).getLevel());
         assertEquals("Type [proof] appears in more than one counter [[math, proof]]. Taking the first one.",
-            this.logCapture.getMessage(2));
-        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(2).getLevel());
+            this.logCapture.getMessage(0));
+        assertEquals(Level.DEBUG, this.logCapture.getLogEvent(0).getLevel());
+    }
+
+    @Test
+    void isNumberedFiguresEnabledOnParent() throws Exception
+    {
+        DocumentReference reference = new DocumentReference("xwiki", List.of("Space", "Page"), "SubPage");
+        EntityReference parent = new DocumentReference("WebHome", reference.getLastSpaceReference());
+
+        XWikiDocument parentDocument = this.oldcore.getSpyXWiki().getDocument(parent, this.oldcore.getXWikiContext());
+
+        BaseObject xObject = parentDocument.newXObject(NumberedFiguresClassDocumentInitializer.REFERENCE,
+            this.oldcore.getXWikiContext());
+        xObject.setStringValue(NumberedFiguresClassDocumentInitializer.STATUS_PROPERTY, "activated");
+        this.oldcore.getSpyXWiki().saveDocument(parentDocument, this.oldcore.getXWikiContext());
+
+        this.document = this.oldcore.getSpyXWiki().getDocument(reference, this.oldcore.getXWikiContext());
+        this.oldcore.getXWikiContext().setDoc(this.document);
+
+        assertTrue(this.numberedFiguresConfiguration.isNumberedFiguresEnabledOnParent());
     }
 }
