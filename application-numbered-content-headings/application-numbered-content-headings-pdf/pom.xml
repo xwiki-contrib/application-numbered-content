@@ -29,10 +29,10 @@
   </parent>
   <artifactId>application-numbered-content-headings-pdf</artifactId>
   <name>Numbered Content - Headings - PDF Export</name>
-  <description>Numbered Content - Headings - PDF Export</description>
+  <description>Add numbering to the PDF TOC</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>PDF Export for the Numbered Headings Application</xwiki.extension.name>
+    <xwiki.extension.name>PDF integration for the Numbered Headings Application</xwiki.extension.name>
     <xwiki.extension.category>other</xwiki.extension.category>
   </properties>
   <packaging>jar</packaging>
