@@ -38,6 +38,9 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Code
 numbered.figures.codeSpace.description=Dies ist der Ort, an dem sich der Anwendungscode für nummerierte Zahlen befindet.
+numbered.figures.caption.block.separator=:
+numbered.figures.caption.inline.start=(
+numbered.figures.caption.inline.end=)
 
 #@deprecatedstart
 ##################################################
@@ -45,5 +48,6 @@ numbered.figures.codeSpace.description=Dies ist der Ort, an dem sich der Anwendu
 ##################################################
 numbered.figures.numbered.figureCaption.label=Zahl
 numbered.figures.numbered.tableCaption.label=Tabelle
-#@deprecatedend</content>
+#@deprecatedend
+</content>
 </xwikidoc>
