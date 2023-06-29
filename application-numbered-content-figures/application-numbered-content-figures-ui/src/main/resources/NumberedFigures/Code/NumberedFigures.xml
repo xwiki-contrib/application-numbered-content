@@ -317,7 +317,7 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
           content: "$escapetool.css($services.figureTypes.getLabel($type)) " counter(#figureCounter($counter)) '\00a0';
           font-size: @figure-caption-font-size;
           color: @figure-caption-color;
-          float: inline-start;
+          float: left;
           margin-top: 2px;
       }
     
