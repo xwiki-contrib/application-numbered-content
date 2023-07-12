@@ -1,0 +1,110 @@
+.runTransformations:macro
+.#-----------------------------------------------------
+.input|xwiki/2.1
+.# The numbering with a first figure without id
+.#-----------------------------------------------------
+{{figure type="definition"}}
+{{figureCaption}}
+Union of Sets
+{{/figureCaption}}
+
+Content A{{/figure}}
+
+{{figure type="definition"}}
+{{figureCaption}}
+{{id name="def:b"/}}Intersection of Sets
+{{/figureCaption}}
+
+Content B{{/figure}}
+
+
+Reference to B{{reference id="def:b"/}}
+.#-----------------------------------------------------
+.expect|xhtml/1.0
+.#-----------------------------------------------------
+<div class="figcaption"><p>Union of Sets</p></div><p>Content A</p><div class="figcaption"><p><span id="def:b"></span>Intersection of Sets</p></div><p>Content B</p><div class="wikimodel-emptyline"></div><p>Reference to B<span class="wikilink"><a href="#def:b">2</a></span></p>
+.#-----------------------------------------------------
+.expect|event/1.0
+.#-----------------------------------------------------
+beginDocument
+beginMacroMarkerStandalone [figure] [type=definition] [{{figureCaption}}
+Union of Sets
+{{/figureCaption}}
+
+Content A]
+beginFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[definition]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginMacroMarkerStandalone [figureCaption] [] [Union of Sets]
+beginFigureCaption
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginParagraph
+onWord [Union]
+onSpace
+onWord [of]
+onSpace
+onWord [Sets]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigureCaption
+endMacroMarkerStandalone [figureCaption] [] [Union of Sets]
+beginParagraph
+onWord [Content]
+onSpace
+onWord [A]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[definition]]
+endMacroMarkerStandalone [figure] [type=definition] [{{figureCaption}}
+Union of Sets
+{{/figureCaption}}
+
+Content A]
+beginMacroMarkerStandalone [figure] [type=definition] [{{figureCaption}}
+{{id name="def:b"/}}Intersection of Sets
+{{/figureCaption}}
+
+Content B]
+beginFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[definition]]
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginMacroMarkerStandalone [figureCaption] [] [{{id name="def:b"/}}Intersection of Sets]
+beginFigureCaption
+beginMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+beginParagraph
+beginMacroMarkerInline [id] [name=def:b]
+onId [def:b]
+endMacroMarkerInline [id] [name=def:b]
+onWord [Intersection]
+onSpace
+onWord [of]
+onSpace
+onWord [Sets]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigureCaption
+endMacroMarkerStandalone [figureCaption] [] [{{id name="def:b"/}}Intersection of Sets]
+beginParagraph
+onWord [Content]
+onSpace
+onWord [B]
+endParagraph
+endMetaData [[non-generated-content]=[java.util.List<org.xwiki.rendering.block.Block>]]
+endFigure [[data-xwiki-rendering-figure-style]=[block][data-xwiki-rendering-figure-type]=[definition]]
+endMacroMarkerStandalone [figure] [type=definition] [{{figureCaption}}
+{{id name="def:b"/}}Intersection of Sets
+{{/figureCaption}}
+
+Content B]
+onEmptyLines [1]
+beginParagraph
+onWord [Reference]
+onSpace
+onWord [to]
+onSpace
+onWord [B]
+beginMacroMarkerInline [reference] [id=def:b]
+beginLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [def:b]]] [false]
+onWord [2]
+endLink [Typed = [true] Type = [doc] Reference = [] Parameters = [[anchor] = [def:b]]] [false]
+endMacroMarkerInline [reference] [id=def:b]
+endParagraph
+endDocument

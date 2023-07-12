@@ -77,16 +77,16 @@ public class DefaultFiguresNumberingService implements FiguresNumberingService
 
         Map<FigureBlock, String> result = new HashMap<>();
         for (FigureBlock figure : getFiguresList(rootBlock)) {
-            String id = getId(figure);
-            if (id != null && !figuresMap.containsKey(id)) {
+            if (!result.containsKey(figure)) {
+                String id = getId(figure);
                 String type = Objects.toString(figure.getParameter(DATA_XWIKI_RENDERING_FIGURE_TYPE), "figure");
                 String counterId = this.numberedFiguresConfiguration.getCounter(type);
                 Long counter = counters.getOrDefault(counterId, 1L);
                 result.put(figure, String.valueOf(counter));
-                figuresMap.put(id, counter);
+                if (id != null) {
+                    figuresMap.put(id, counter);
+                }
                 counters.put(counterId, counter + 1);
-            } else {
-                result.put(figure, String.valueOf(figuresMap.get(id)));
             }
         }
 
