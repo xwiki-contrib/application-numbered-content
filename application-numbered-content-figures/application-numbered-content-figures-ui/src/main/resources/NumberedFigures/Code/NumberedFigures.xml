@@ -340,6 +340,10 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
     #end
   #end
 #end
+
+[data-xwiki-rendering-figure-style="inline"] figcaption, [data-xwiki-rendering-figure-style="inline"] [data-cke-display-name="macro:figureCaption"] {
+  margin-top: 1px;
+}
 #end</code>
     </property>
     <property>
