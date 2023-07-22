@@ -38,6 +38,9 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Код
 numbered.figures.codeSpace.description=Это место, где находится код приложения Numbered Figures.
+numbered.figures.caption.block.separator=:
+numbered.figures.caption.inline.start=(
+numbered.figures.caption.inline.end=)
 
 #@deprecatedstart
 ##################################################
@@ -45,5 +48,6 @@ numbered.figures.codeSpace.description=Это место, где находит�
 ##################################################
 numbered.figures.numbered.figureCaption.label=Рисунок
 numbered.figures.numbered.tableCaption.label=Таблица
-#@deprecatedend</content>
+#@deprecatedend
+</content>
 </xwikidoc>
