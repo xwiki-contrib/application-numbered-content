@@ -106,15 +106,12 @@ class DefaultFiguresNumberingServiceTest
             figureImage0,
             figure1
         )));
+        Map<FigureBlock, String> expectedResults = Map.of(figure0, "1", figureImage0, "1", figure1, "2");
+        assertEquals(expectedResults, figuresMap);
         assertEquals(Map.of(
-            figure0, "1",
-            figureImage0, "1",
-            figure1, "2"
-        ), figuresMap);
-        assertEquals(Map.of(
-                COUNTERS, Map.of("figure", 3L, "table", 2L),
-                "figures", Map.of("f0", 1L, "f1", 1L, "f2", 2L)),
-            counters);
+            COUNTERS, Map.of("figure", 3L, "table", 2L),
+            "results", expectedResults
+        ), counters);
     }
 
     @Test
@@ -141,15 +138,12 @@ class DefaultFiguresNumberingServiceTest
             figureImage0,
             figure1
         )));
+        Map<FigureBlock, String> expectedResults = Map.of(figure0, "1", figureImage0, "1", figure1, "2");
+        assertEquals(expectedResults, figuresMap);
         assertEquals(Map.of(
-            figure0, "1",
-            figureImage0, "1",
-            figure1, "2"
-        ), figuresMap);
-        assertEquals(Map.of(
-                COUNTERS, Map.of("figure", 3L, "table", 2L),
-                "figures", Map.of("f0", 1L, "f1", 1L, "f2", 2L)),
-            counters);
+            COUNTERS, Map.of("figure", 3L, "table", 2L),
+            "results", expectedResults
+        ), counters);
     }
 
     @Test
@@ -171,14 +165,11 @@ class DefaultFiguresNumberingServiceTest
             figureImage0,
             figure1MissingType
         )));
-        assertEquals(Map.of(
-            figure0, "1",
-            figureImage0, "1",
-            figure1MissingType, "2"
-        ), figuresMap);
+        Map<FigureBlock, String> expectedResults = Map.of(figure0, "1", figureImage0, "1", figure1MissingType, "2");
+        assertEquals(expectedResults, figuresMap);
         assertEquals(Map.of(
                 COUNTERS, Map.of("figure", 3L, "table", 2L),
-                "figures", Map.of("f0", 1L, "f1", 1L, "f2", 2L)),
+                "results", expectedResults),
             counters);
     }
 
