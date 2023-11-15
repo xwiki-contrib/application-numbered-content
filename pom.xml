@@ -57,8 +57,8 @@
   <properties>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
     <xwiki.issueManagement.jira.id>NCAPP</xwiki.issueManagement.jira.id>
-    <latex.version>1.21</latex.version>
-    <figure.version>15.4</figure.version>
+    <latex.version>1.23</latex.version>
+    <figure.version>15.4.1</figure.version>
   </properties>
   <dependencyManagement>
     <!-- Dependency management to handle dependencies relying on older parent-platform parent pom (e.g., latex). -->
