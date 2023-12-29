@@ -38,16 +38,16 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=암호
 numbered.figures.codeSpace.description=번역이 저장되었지만, 일부 새롭게 실패한 검사가 있습니다: 일치하지 않는 마침표(.)
-### Missing: numbered.figures.caption.block.separator=:
+numbered.figures.caption.block.separator=상속
 numbered.figures.caption.inline.start=(
-### Missing: numbered.figures.caption.inline.end=)
+numbered.figures.caption.inline.end=)
 
 #@deprecatedstart
 ##################################################
 ## until 1.8.3
 ##################################################
 numbered.figures.numbered.figureCaption.label=수치
-### Missing: numbered.figures.numbered.tableCaption.label=Table
+numbered.figures.numbered.tableCaption.label=테이블
 #@deprecatedend
 </content>
   </xwikidoc>
