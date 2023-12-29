@@ -40,15 +40,15 @@
 numbered.headings.codeSpace.description=Numbered Headings 애플리케이션 코드가 있는 곳입니다.
 numbered.headings.activationUI.label=제목 번호 매기기 활성화
 numbered.headings.activationUI.parameters.title=제목 번호 매기기
-### Missing: numbered.headings.activationUI.contentUpdate.inProgress=Updating content...
-### Missing: numbered.headings.activationUI.contentUpdate.done=Content updated
-### Missing: numbered.headings.activationUI.contentUpdate.failed=Content update failed
-### Missing: numbered.headings.ckeditor.headerConfigurationAction.title=Header Config
-### Missing: numbered.headings.ckeditor.headerConfigurationAction.start.title=Start
-### Missing: numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Header start number must be a whole number.
-### Missing: numbered.headings.ckeditor.skipNumberingHeader.activate.title=Skip numbering: Activate
-### Missing: numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=Skip numbering: Deactivate
-### Missing: numbered.heading.template.title=Numbered Headings Template
-### Missing: numbered.heading.template.description=Creates a page with numbered headings activated.
+numbered.headings.activationUI.contentUpdate.inProgress=콘텐츠 업데이트 중...
+numbered.headings.activationUI.contentUpdate.done=콘텐츠가 업데이트되었습니다.
+numbered.headings.activationUI.contentUpdate.failed=콘텐츠 업데이트 실패
+numbered.headings.ckeditor.headerConfigurationAction.title=헤더 구성
+numbered.headings.ckeditor.headerConfigurationAction.start.title=시작
+numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=헤더 시작 번호는 정수여야 합니다.
+numbered.headings.ckeditor.skipNumberingHeader.activate.title=번호 매기기 건너뛰기: 활성화
+numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=번호 매기기 건너뛰기: 비활성화
+numbered.heading.template.title=번호가 매겨진 제목 템플릿
+numbered.heading.template.description=번호가 매겨진 제목이 활성화된 페이지를 만듭니다.
 </content>
   </xwikidoc>
