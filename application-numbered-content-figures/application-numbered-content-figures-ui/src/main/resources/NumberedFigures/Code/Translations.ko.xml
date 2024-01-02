@@ -37,8 +37,8 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=암호
-numbered.figures.codeSpace.description=번역이 저장되었지만, 일부 새롭게 실패한 검사가 있습니다: 일치하지 않는 마침표(.)
-numbered.figures.caption.block.separator=상속
+numbered.figures.codeSpace.description=Numbered Figures 애플리케이션 코드가 있는 곳입니다.
+numbered.figures.caption.block.separator=:
 numbered.figures.caption.inline.start=(
 numbered.figures.caption.inline.end=)
 
