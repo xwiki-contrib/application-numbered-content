@@ -590,6 +590,8 @@ require(
   #end
 #end
 
+/* Legacy browser support, can be removed when Safari &lt; 17.2 looses enough market share to be irrelevant. */
+
 #buildSelector($rootSelectors '&gt; h1:not([data-xwiki-rendering-protected]):not([data-numbered-headings-start]):first-child') {
 /* This is not strictly necessary apart from counter initialization for a global start value. */
 counter-reset: ch1 ch2 ch3 ch4 ch5 ch6 !important;
@@ -695,7 +697,90 @@ counter-reset: ch5 var(--numbered-headings-start) ch6;
 
 #buildSelector($rootSelectors 'h6[data-numbered-headings-start]') {
 counter-reset: ch6 var(--numbered-headings-start);
-}</code>
+}
+
+/* Newer browser support based on counter-set. */
+@supports (counter-set: nh1) {
+  /* Initialize the counters once on the root elements so they are consistently available for all headings. */
+  #buildSelector($rootSelectors '') {
+    counter-reset: nh1 nh2 nh3 nh4 nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h1:not([data-xwiki-rendering-protected])::before') {
+    content: counter(nh1) '\00a0';
+    counter-increment: nh1;
+  }
+
+  #buildSelector($rootSelectors 'h1:not([data-xwiki-rendering-protected])') {
+    counter-set: nh2 nh3 nh4 nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h2:not([data-xwiki-rendering-protected])::before') {
+    content: counter(nh1) '.' counter(nh2) '\00a0';
+    counter-increment: nh2;
+  }
+
+  #buildSelector($rootSelectors 'h2:not([data-xwiki-rendering-protected])') {
+    counter-set: nh3 nh4 nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h3:not([data-xwiki-rendering-protected])::before') {
+    content: counter(nh1) '.' counter(nh2) '.' counter(nh3) '\00a0';
+    counter-increment: nh3;
+  }
+
+  #buildSelector($rootSelectors 'h3:not([data-xwiki-rendering-protected])') {
+    counter-set: nh4 nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h4:not([data-xwiki-rendering-protected])::before') {
+    content: counter(nh1) '.' counter(nh2) '.' counter(nh3) '.' counter(nh4) '\00a0';
+    counter-increment: nh4;
+  }
+
+  #buildSelector($rootSelectors 'h4:not([data-xwiki-rendering-protected])') {
+    counter-set: nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h5:not([data-xwiki-rendering-protected])::before') {
+    content: counter(nh1) '.' counter(nh2) '.' counter(nh3) '.' counter(nh4) '.' counter(nh5) '\00a0';
+    counter-increment: nh5;
+  }
+
+  #buildSelector($rootSelectors 'h5:not([data-xwiki-rendering-protected])') {
+    counter-set: nh6;
+  }
+
+  #buildSelector($rootSelectors 'h6:not([data-xwiki-rendering-protected])::before') {
+    content: counter(nh1) '.' counter(nh2) '.' counter(nh3) '.' counter(nh4) '.' counter(nh5) '.' counter(nh6) '\00a0';
+    counter-increment: nh6;
+  }
+
+  #buildSelector($rootSelectors 'h1[data-numbered-headings-start]') {
+    counter-set: nh1 var(--numbered-headings-start) nh2 nh3 nh4 nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h2[data-numbered-headings-start]') {
+    counter-set: nh2 var(--numbered-headings-start) nh3 nh4 nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h3[data-numbered-headings-start]') {
+    counter-set: nh3 var(--numbered-headings-start) nh4 nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h4[data-numbered-headings-start]') {
+    counter-set: nh4 var(--numbered-headings-start) nh5 nh6;
+  }
+
+  #buildSelector($rootSelectors 'h5[data-numbered-headings-start]') {
+    counter-set: nh5 var(--numbered-headings-start) nh6;
+  }
+
+  #buildSelector($rootSelectors 'h6[data-numbered-headings-start]') {
+    counter-set: nh6 var(--numbered-headings-start);
+  }
+}
+</code>
     </property>
     <property>
       <contentType>CSS</contentType>
