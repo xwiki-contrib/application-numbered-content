@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
     <artifactId>application-numbered-content-headings</artifactId>
-    <version>1.9.4-SNAPSHOT</version>
+    <version>1.10.0</version>
   </parent>
   <artifactId>application-numbered-content-headings-toc</artifactId>
   <name>Numbered Content - Headings - Table of Content</name>
