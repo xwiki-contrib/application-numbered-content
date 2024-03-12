@@ -707,20 +707,16 @@ counter-reset: ch6 var(--numbered-headings-start);
 ## isn't affected by the issues of counter-reset. We detect pagedjs with the selector
 ## #xwikicontent:not([data-id="xwikicontent"]). The class .numbered-content-root is normally on a child of #xwikicontent
 ## but when dynamically enabling numbered headings it can also be on #xwikicontent itself.
+#set ($rootSelectors = [
+  '#body[contenteditable="true"] .numbered-content-root ',
+  '#xwikicontent:not([data-id="xwikicontent"]) .numbered-content-root ',
+  '#xwikicontent:not([data-id="xwikicontent"]).numbered-content-root '
+])
 #if ($isNumberedHeadingsEnabled == 'true')
-  #set ($rootSelectors = [
-    '#body[contenteditable="true"] .numbered-content-root ',
-    '#xwikicontent:not([data-id="xwikicontent"]) .numbered-content-root ',
-    '#xwikicontent:not([data-id="xwikicontent"]).numbered-content-root ',
+  #set ($discard = $rootSelectors.addAll([
     '#xwikicontent:not([data-id="xwikicontent"]):not(.disable-numbered-headings) ',
     '#body[contenteditable="true"]:not(.disable-numbered-headings) '
-  ])
-#else
-  #set ($rootSelectors = [
-    '#body[contenteditable="true"] .numbered-content-root ',
-    '#xwikicontent:not([data-id="xwikicontent"]) .numbered-content-root ',
-    '#xwikicontent:not([data-id="xwikicontent"]).numbered-content-root '
-  ])
+  ]))
 #end
   /* Initialize the counters once on the root elements so they are consistently available for all headings. */
   #buildSelector($rootSelectors '') {
