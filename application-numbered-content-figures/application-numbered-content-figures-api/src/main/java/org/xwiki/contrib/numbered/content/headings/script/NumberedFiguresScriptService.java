@@ -19,14 +19,19 @@
  */
 package org.xwiki.contrib.numbered.content.headings.script;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresConfiguration;
+import org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresDisplayDataManager;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
+import org.xwiki.velocity.tools.JSONTool;
 
 /**
  * Numbered Figures Script Service. Provides operations related to numbered headings, such as knowing if the current
@@ -43,6 +48,9 @@ public class NumberedFiguresScriptService implements ScriptService
 {
     @Inject
     private NumberedFiguresConfiguration numberedFiguresConfiguration;
+
+    @Inject
+    private NumberedFiguresDisplayDataManager numberedFiguresDisplayDataManager;
 
     /**
      * Checks if the current document has numbered headings activated.
@@ -66,5 +74,29 @@ public class NumberedFiguresScriptService implements ScriptService
     public boolean isNumberedFiguresEnabledOnParent() throws Exception
     {
         return this.numberedFiguresConfiguration.isNumberedFiguresEnabledOnParent();
+    }
+
+    /**
+     * @param locale the locale to use
+     * @return the data that is needed to display the figure numbering
+     * @since 1.8.5
+     */
+    @Unstable
+    public NumberedFigureDisplayData getDisplayData(Locale locale)
+    {
+        return this.numberedFiguresDisplayDataManager.getFigureDisplayData(locale);
+    }
+
+    /**
+     * @param locale the locale to use
+     * @return the hash of the data that is needed to display the figure numbering
+     * @since 1.8.5
+     */
+    @Unstable
+    public String getDisplayDataHash(Locale locale)
+    {
+        return DigestUtils.sha256Hex(
+            new JSONTool().serialize(this.numberedFiguresDisplayDataManager.getFigureDisplayData(locale))
+        );
     }
 }

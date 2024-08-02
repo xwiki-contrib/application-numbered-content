@@ -245,14 +245,16 @@
       </use>
     </class>
     <property>
-      <cache>forbid</cache>
+      <cache>long</cache>
     </property>
     <property>
       <code>## TODO: The selectors are currently ckeditor specific (cke) to make the figure numbered visible in edit mode.
 #set ($isNumberedFiguresEnabled = $request.getParameter("isNumberedFiguresEnabled"))
+#set ($locale = $request.getParameter("locale"))
 #if ($isNumberedFiguresEnabled == 'true')
-#set ($figureMacroDisplayName = $escapetool.css($services.localization.render('ckeditor.plugin.macro.placeholder', ['figure'])))
-#set ($figureCaptionMacroDisplayName = $escapetool.css($services.localization.render('ckeditor.plugin.macro.placeholder', ['figureCaption'])))
+#set ($displayData = $services.numberedfigures.getDisplayData($locale))
+#set ($figureMacroDisplayName = $escapetool.css($displayData.getFigurePlaceholder()))
+#set ($figureCaptionMacroDisplayName = $escapetool.css($displayData.getFigureCaptionPlaceholder()))
 
 #xwikicontent,
 body[contenteditable="true"] {
@@ -293,7 +295,7 @@ body[contenteditable="true"] figure:not([data-xwiki-rendering-figure-type]) figc
 #xwikicontent figure:not([data-xwiki-rendering-figure-type]) figcaption::before,
 body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]) div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
 #xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:not([data-xwiki-rendering-figure-type]) div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before {
-  content: "$services.localization.render('numbered.figures.numbered.figureCaption.label') " counter(cfigure) ':\00a0';
+  content: "$displayData.getTranslation('numbered.figures.numbered.figureCaption.label') " counter(cfigure) ':\00a0';
   /* Let the caption be on the same line as the number. */
   float: left;
 }
@@ -302,7 +304,7 @@ body[contenteditable="true"] figure[data-xwiki-rendering-figure-type='table'] fi
 #xwikicontent figure[data-xwiki-rendering-figure-type='table'] figcaption::before,
 body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='table'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
 #xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='table'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before {
-  content: "$services.localization.render('numbered.figures.numbered.tableCaption.label') " counter(cfigure-table) ':\00a0';
+  content: "$displayData.getTranslation('numbered.figures.numbered.tableCaption.label') " counter(cfigure-table) ':\00a0';
   /* Let the caption be on the same line as the number. */
   float: left;
 }
@@ -450,15 +452,19 @@ body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayNam
     <property>
       <content>{{velocity}}
 #set($isNumberedFiguresEnabled = $services.numberedfigures.isNumberedFiguresEnabled())
-#set ($origdoc = $xwiki.getDocument('NumberedFigures.Code.NumberedFigures'))
-#set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
-  'isNumberedFiguresEnabled': $isNumberedFiguresEnabled,
-  'locale': $services.localization.getCurrentLocale(),
-  'docVersion': $origdoc.getVersion()
-})))
-{{html clean='false'}}
-&lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
-{{/html}}
+#if ($isNumberedFiguresEnabled)
+  #set ($origdoc = $xwiki.getDocument('NumberedFigures.Code.NumberedFigures'))
+  #set ($locale = $services.localization.getCurrentLocale())
+  #set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
+    'isNumberedFiguresEnabled': $isNumberedFiguresEnabled,
+    'locale': $locale,
+    'hash': $services.numberedfigures.getDisplayDataHash($locale),
+    'docVersion': $origdoc.getVersion()
+  })))
+  {{html clean='false'}}
+  &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
+  {{/html}}
+#end
 {{/velocity}}</content>
     </property>
     <property>
