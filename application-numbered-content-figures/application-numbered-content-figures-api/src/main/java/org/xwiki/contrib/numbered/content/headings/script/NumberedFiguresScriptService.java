@@ -19,6 +19,7 @@
  */
 package org.xwiki.contrib.numbered.content.headings.script;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,12 +27,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.figure.FigureType;
 import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfiguration;
+import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresDisplayDataManager;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
+import org.xwiki.velocity.tools.JSONTool;
 
 /**
  * Numbered Figures Script Service. Provides operations related to numbered headings, such as knowing if the current
@@ -48,6 +52,9 @@ public class NumberedFiguresScriptService implements ScriptService
 {
     @Inject
     private NumberedFiguresConfiguration numberedFiguresConfiguration;
+
+    @Inject
+    private NumberedFiguresDisplayDataManager numberedFiguresDisplayDataManager;
 
     /**
      * Checks if the current document has numbered headings activated.
@@ -81,6 +88,32 @@ public class NumberedFiguresScriptService implements ScriptService
     public Map<String, Set<FigureType>> getFigureCounters() throws NumberedFiguresException
     {
         return this.numberedFiguresConfiguration.getFigureCounters();
+    }
+
+    /**
+     * @param locale the locale to use
+     * @return the data that is needed to display the figure numbering
+     * @throws NumberedFiguresException if loading the configuration failed
+     * @since 1.10.2
+     */
+    @Unstable
+    public NumberedFigureDisplayData getDisplayData(Locale locale) throws NumberedFiguresException
+    {
+        return this.numberedFiguresDisplayDataManager.getFigureDisplayData(locale);
+    }
+
+    /**
+     * @param locale the locale to use
+     * @return the hash of the data that is needed to display the figure numbering
+     * @throws NumberedFiguresException if loading the configuration failed
+     * @since 1.10.2
+     */
+    @Unstable
+    public String getDisplayDataHash(Locale locale) throws NumberedFiguresException
+    {
+        return DigestUtils.sha256Hex(
+            new JSONTool().serialize(this.numberedFiguresDisplayDataManager.getFigureDisplayData(locale))
+        );
     }
 
     /**
