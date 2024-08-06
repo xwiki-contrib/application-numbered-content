@@ -245,7 +245,7 @@
       </use>
     </class>
     <property>
-      <cache>forbid</cache>
+      <cache>long</cache>
     </property>
     <property>
       <code>## TODO: The selectors are currently ckeditor specific (cke) to make the figure numbered visible in edit mode.
