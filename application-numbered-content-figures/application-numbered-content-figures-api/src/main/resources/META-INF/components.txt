@@ -1,7 +1,6 @@
 org.xwiki.contrib.numbered.content.headings.internal.DefaultFiguresNumberingService
 org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresClassDocumentInitializer
 org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresConfiguration
-org.xwiki.contrib.numbered.content.headings.internal.NumberedFiguresDisplayDataManager
 org.xwiki.contrib.numbered.content.headings.script.NumberedFiguresScriptService
 500:org.xwiki.contrib.numbered.content.headings.internal.macro.FigureMacro
 org.xwiki.contrib.numbered.content.headings.internal.FigureNumberingExecutionContextInitializer
