@@ -57,8 +57,9 @@
   <properties>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
     <xwiki.issueManagement.jira.id>NCAPP</xwiki.issueManagement.jira.id>
-    <latex.version>1.24</latex.version>
+    <latex.version>1.26</latex.version>
     <figure.version>15.4.4</figure.version>
+    <dockerJava.version>3.3.6</dockerJava.version>
   </properties>
   <dependencyManagement>
     <!-- Dependency management to handle dependencies relying on older parent-platform parent pom (e.g., latex). -->
@@ -137,6 +138,27 @@
         <groupId>org.xwiki.platform</groupId>
         <artifactId>xwiki-platform-template-api</artifactId>
         <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.docker-java</groupId>
+        <artifactId>docker-java-core</artifactId>
+        <version>${dockerJava.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.github.docker-java</groupId>
+        <artifactId>docker-java-transport-httpclient5</artifactId>
+        <version>${dockerJava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.java.dev.jna</groupId>
+        <artifactId>jna</artifactId>
+        <version>5.13.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
