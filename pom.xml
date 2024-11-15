@@ -148,6 +148,14 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -159,6 +167,16 @@
         <groupId>net.java.dev.jna</groupId>
         <artifactId>jna</artifactId>
         <version>5.13.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.docker-java</groupId>
+        <artifactId>docker-java</artifactId>
+        <version>${dockerJava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.docker-java</groupId>
+        <artifactId>docker-java-api</artifactId>
+        <version>${dockerJava.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
