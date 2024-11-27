@@ -5,3 +5,4 @@ org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfiguration
 org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfigurationClassDocumentInitializer
 org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresDisplayDataManager
 org.xwiki.contrib.numbered.content.headings.script.NumberedFiguresScriptService
+org.xwiki.contrib.numbered.content.figures.internal.FiguresCSSCountersProvider

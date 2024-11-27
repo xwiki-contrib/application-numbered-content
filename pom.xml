@@ -273,5 +273,6 @@
     <module>application-numbered-content-figures</module>
     <module>application-numbered-content-headings</module>
     <module>application-numbered-content-reference</module>
+    <module>application-numbered-content-common</module>
   </modules>
 </project>

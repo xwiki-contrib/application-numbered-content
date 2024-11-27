@@ -3,3 +3,4 @@ org.xwiki.contrib.numbered.content.headings.internal.DefaultNumberedHeadingsConf
 org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingService
 org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService
 org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingExecutionContextInitializer
+org.xwiki.contrib.numbered.content.headings.internal.HeadingsCSSCountersProvider

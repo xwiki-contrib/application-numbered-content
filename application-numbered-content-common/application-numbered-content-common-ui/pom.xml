@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  * See the NOTICE file distributed with this work for additional
  * information regarding copyright ownership.
@@ -24,43 +23,16 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
-    <artifactId>application-numbered-content-figures</artifactId>
+    <artifactId>application-numbered-content-common</artifactId>
     <version>1.10.3-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application-numbered-content-figures-ui</artifactId>
-  <name>Numbered Content - Figures - UI</name>
-  <description>Provides the User Interface for Numbered Figures.</description>
+  <artifactId>application-numbered-content-common-ui</artifactId>
+  <name>Numbered Content - Common - UI</name>
+  <description>Provides User Interface elements shared by the numbered elements extensions.</description>
   <packaging>xar</packaging>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Figures Application</xwiki.extension.name>
-    <xwiki.extension.category>application</xwiki.extension.category>
+    <xwiki.extension.name>Numbered Common Application</xwiki.extension.name>
   </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-figures-api</artifactId>
-      <version>${project.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib</groupId>
-      <artifactId>figure-macro</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-localization-macro</artifactId>
-      <version>${platform.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-common-ui</artifactId>
-      <version>${project.version}</version>
-      <scope>runtime</scope>
-      <type>xar</type>
-    </dependency>
-  </dependencies>
 </project>

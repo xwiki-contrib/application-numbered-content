@@ -261,11 +261,6 @@
   cfigure-$id##
 #end
 
-${H}xwikicontent,
-body[contenteditable="true"] {
-  counter-reset: #foreach($counter in $displayData.getFigureCounters().keySet())#figureCounter($counter) #end;
-}
-
 [data-xwiki-rendering-figure-style="inline"] figcaption p:last-child::after,
 [data-xwiki-rendering-figure-style="inline"] [data-cke-display-name="macro:figureCaption"] p:last-child::after {
   content: '';
@@ -322,8 +317,8 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
           float: left;
           margin-top: 2px;
       }
-    
-    
+
+
       body[contenteditable="true"] figure[data-xwiki-rendering-figure-type='$type'] figcaption::before,
       ${H}xwikicontent figure[data-xwiki-rendering-figure-type='$type'] figcaption::before,
       body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='$type'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
@@ -491,6 +486,7 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
 #set($isNumberedFiguresEnabled = $services.numberedfigures.isNumberedFiguresEnabled())
 #if ($isNumberedFiguresEnabled)
   #set ($origdoc = $xwiki.getDocument('NumberedFigures.Code.NumberedFigures'))
+  #set ($commondoc = $xwiki.getDocument('NumberedCommon.Code.NumberedCommon'))
   #set ($locale = $services.localization.getCurrentLocale())
   #set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
     'isNumberedFiguresEnabled': $isNumberedFiguresEnabled,
@@ -498,8 +494,12 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
     'hash': $services.numberedfigures.getDisplayDataHash($locale),
     'docVersion': $origdoc.getVersion()
   })))
+  #set($ssxHrefCommon = $commondoc.getURL('ssx', $escapetool.url({
+    'hash': $services.numberedcommon.hash($locale)
+  })))
   {{html clean='false'}}
   &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
+  &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHrefCommon)"/&gt;
   {{/html}}
 #end
 {{/velocity}}</content>
