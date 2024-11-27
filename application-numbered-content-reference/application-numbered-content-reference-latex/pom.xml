@@ -47,14 +47,6 @@
       <groupId>org.xwiki.contrib.latex</groupId>
       <artifactId>latex-export</artifactId>
       <version>${latex.version}</version>
-      <exclusions>
-        <!-- TODO: Remove once the LaTeX extension brings a version of Plexus Archiver that is newer than the one
-             brought by the specified Platform parent POM version -->
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-archiver</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.xwiki.contrib.numbered.content</groupId>

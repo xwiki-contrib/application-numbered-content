@@ -178,6 +178,38 @@
         <artifactId>docker-java-api</artifactId>
         <version>${dockerJava.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-archiver</artifactId>
+        <!--
+          For security reasons, force using a recent plexus-archiver version.
+          We can do that because, while there is a dependency management for plexus-archiver in the xwiki-commons root pom,
+          it's not actually included in the XWiki WAR.
+        -->
+        <version>4.8.0</version>
+        <exclusions>
+          <!--
+           Exclude dependencies which are included in XWiki WAR but with lower versions than what Plexus Archiver
+           officially requires (luckily Plexus Archiver still works with them).
+          -->
+          <exclusion>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
