@@ -27,7 +27,7 @@
     <artifactId>parent-platform</artifactId>
     <version>14.10</version>
   </parent>
-  
+
   <packaging>pom</packaging>
   <groupId>org.xwiki.contrib.numbered.content</groupId>
   <artifactId>application-numbered-content</artifactId>
@@ -261,6 +261,31 @@
                   <ignore>true</ignore>
                   <code>java.class.removed</code>
                   <old>enum org.xwiki.contrib.numbered.content.headings.macro.FigureType</old>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.class.removed</code>
+                  <old>class org.xwiki.contrib.numbered.content.headings.script.NumberedFiguresScriptService</old>
+                  <justification>Not a breaking change, the script service still have the same identifier.</justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.class.nonFinalClassInheritsFromNewClass</code>
+                  <old>class org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService</old>
+                  <new>class org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService</new>
+                  <superClass>org.xwiki.contrib.numbered.content.headings.script.AbstractNumberedHeadingsScriptService</superClass>
+                  <justification>Not a breaking change, the script service still have the same identifier and the same signatures.</justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.annotation.attributeValueChanged</code>
+                  <old>class org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService</old>
+                  <new>class org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService</new>
+                  <annotationType>javax.inject.Named</annotationType>
+                  <attribute>value</attribute>
+                  <oldValue>"numberedheadings"</oldValue>
+                  <newValue>"numbered.headings"</newValue>
+                  <justification>Not a breaking change, a script service with the old name is still provided.</justification>
                 </item>
               </differences>
             </revapi.differences>

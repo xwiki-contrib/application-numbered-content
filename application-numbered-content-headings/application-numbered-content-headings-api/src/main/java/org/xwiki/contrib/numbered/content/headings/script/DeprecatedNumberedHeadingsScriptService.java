@@ -23,20 +23,20 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.common.NumberedScriptService;
 import org.xwiki.stability.Unstable;
 
 /**
- * Concrete instance of {@link AbstractNumberedHeadingsScriptService}, with the {@code numbered.headings} script service
- * name. Another instance with a deprecated name exists: {@link DeprecatedNumberedHeadingsScriptService}.
+ * Concrete instance of {@link AbstractNumberedHeadingsScriptService}, with the deprecated {@code numberedheadings} script
+ * service name. The currently valid instance is {@link NumberedHeadingsScriptService}.
  *
  * @version $Id$
  * @since 1.0
  */
 @Component
-@Named(NumberedScriptService.ROLE_HINT + ".headings")
+@Named("numberedheadings")
 @Singleton
 @Unstable
-public class NumberedHeadingsScriptService extends AbstractNumberedHeadingsScriptService
+@Deprecated(since = "1.10.3")
+public class DeprecatedNumberedHeadingsScriptService extends AbstractNumberedHeadingsScriptService
 {
 }

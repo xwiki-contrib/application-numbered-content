@@ -144,7 +144,7 @@
     </property>
     <property>
       <code>#set ($locale = $services.localization.getCurrentLocale())
-$services.numberedcommon.css($locale)</code>
+$services.numbered.common.css($locale)</code>
     </property>
     <property>
       <contentType>CSS</contentType>

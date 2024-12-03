@@ -17,26 +17,26 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings.script;
+package org.xwiki.contrib.numbered.content.figures.script;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.common.NumberedScriptService;
 import org.xwiki.stability.Unstable;
 
 /**
- * Concrete instance of {@link AbstractNumberedHeadingsScriptService}, with the {@code numbered.headings} script service
- * name. Another instance with a deprecated name exists: {@link DeprecatedNumberedHeadingsScriptService}.
+ * Concrete instance of {@link AbstractNumberedFiguresScriptService}, with the deprecated {@code numberedfigures} script
+ * service name. The currently valid instance is {@link NumberedFiguresScriptService}.
  *
  * @version $Id$
  * @since 1.0
  */
 @Component
-@Named(NumberedScriptService.ROLE_HINT + ".headings")
+@Named("numberedfigures")
 @Singleton
 @Unstable
-public class NumberedHeadingsScriptService extends AbstractNumberedHeadingsScriptService
+@Deprecated(since = "1.10.3")
+public class DeprecatedNumberedFiguresScriptService extends AbstractNumberedFiguresScriptService
 {
 }

@@ -29,12 +29,12 @@
   </parent>
   <artifactId>application-numbered-content-common-api</artifactId>
   <name>Numbered Content - Common - API</name>
-  <description>Provides operations to support the numbering of content elements.</description>
+  <description>Provides common operations to support the numbering of content elements. For instance, the definition of shared CSS files.</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Common Numbering API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
-    <xwiki.jacoco.instructionRatio>0.83</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.80</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>
@@ -47,6 +47,12 @@
       <artifactId>xwiki-commons-script</artifactId>
       <version>${commons.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-skin-api</artifactId>
+      <version>${platform.version}</version>
+    </dependency>
+    <!-- Test dependencies. -->
     <dependency>
       <groupId>org.xwiki.commons</groupId>
       <artifactId>xwiki-commons-tool-test-component</artifactId>

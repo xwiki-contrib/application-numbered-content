@@ -252,7 +252,7 @@
 #set ($isNumberedFiguresEnabled = $request.getParameter("isNumberedFiguresEnabled"))
 #set ($locale = $request.getParameter("locale"))
 #if ($isNumberedFiguresEnabled == 'true')
-#set ($displayData = $services.numberedfigures.getDisplayData($locale))
+#set ($displayData = $services.numbered.figures.getDisplayData($locale))
 #set ($figureMacroDisplayName = $escapetool.css($displayData.getFigurePlaceholder()))
 #set ($figureCaptionMacroDisplayName = $escapetool.css($displayData.getFigureCaptionPlaceholder()))
 #set ($H = '#')
@@ -483,7 +483,7 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
     </property>
     <property>
       <content>{{velocity}}
-#set($isNumberedFiguresEnabled = $services.numberedfigures.isNumberedFiguresEnabled())
+#set($isNumberedFiguresEnabled = $services.numbered.figures.isNumberedFiguresEnabled())
 #if ($isNumberedFiguresEnabled)
   #set ($origdoc = $xwiki.getDocument('NumberedFigures.Code.NumberedFigures'))
   #set ($commondoc = $xwiki.getDocument('NumberedCommon.Code.NumberedCommon'))
@@ -491,11 +491,11 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
   #set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
     'isNumberedFiguresEnabled': $isNumberedFiguresEnabled,
     'locale': $locale,
-    'hash': $services.numberedfigures.getDisplayDataHash($locale),
+    'hash': $services.numbered.figures.getDisplayDataHash($locale),
     'docVersion': $origdoc.getVersion()
   })))
   #set($ssxHrefCommon = $commondoc.getURL('ssx', $escapetool.url({
-    'hash': $services.numberedcommon.hash($locale)
+    'hash': $services.numbered.common.hash($locale)
   })))
   {{html clean='false'}}
   &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
@@ -646,8 +646,8 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
       <content>{{velocity}}
 #set ($discard = $xwiki.jsx.use('NumberedFigures.Code.NumberedFigures'))
 {{html clean="false"}}
-#set($isNumberedFiguresEnabled = $services.numberedfigures.isNumberedFiguresEnabled())
-#set($isNumberedFiguresEnabledOnParent = $services.numberedfigures.isNumberedFiguresEnabledOnParent())
+#set($isNumberedFiguresEnabled = $services.numbered.figures.isNumberedFiguresEnabled())
+#set($isNumberedFiguresEnabledOnParent = $services.numbered.figures.isNumberedFiguresEnabledOnParent())
 &lt;script id="numbered-figures-config" type="application/json"&gt;$jsontool.serialize({
   'isActivated': $isNumberedFiguresEnabled,
   'isActivatedOnParent': $isNumberedFiguresEnabledOnParent

@@ -20,6 +20,7 @@
 package org.xwiki.contrib.numbered.content.common;
 
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,6 +31,7 @@ import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numbered.content.common.internal.CounterInitializationCSSMerge;
 import org.xwiki.contrib.numbered.content.common.internal.MapToCssConverter;
 import org.xwiki.script.service.ScriptService;
+import org.xwiki.skinx.SkinExtension;
 import org.xwiki.stability.Unstable;
 
 /**
@@ -39,7 +41,7 @@ import org.xwiki.stability.Unstable;
  * @since 1.10.3
  */
 @Component
-@Named("numberedcommon")
+@Named(NumberedScriptService.ROLE_HINT + ".common")
 @Singleton
 @Unstable
 public class NumberedCommonScriptService implements ScriptService
@@ -49,6 +51,10 @@ public class NumberedCommonScriptService implements ScriptService
 
     @Inject
     private MapToCssConverter converter;
+
+    @Inject
+    @Named("ssx")
+    private SkinExtension ssx;
 
     /**
      * @param locale the current locale
@@ -66,6 +72,16 @@ public class NumberedCommonScriptService implements ScriptService
     public String hash(Locale locale)
     {
         return DigestUtils.md5Hex(getMergedCSS(locale)).toLowerCase();
+    }
+
+    public void insertCSS(Locale locale) {
+        /*
+        #set($ssxHrefCommon = $commondoc.getURL('ssx', $escapetool.url({
+    'hash': $services.numbered.common.hash($locale)
+  })))
+         */
+
+        this.ssx.use("NumberedCommon.Code.NumberedCommon", Map.of("hash", hash(locale)));
     }
 
     private String getMergedCSS(Locale locale)

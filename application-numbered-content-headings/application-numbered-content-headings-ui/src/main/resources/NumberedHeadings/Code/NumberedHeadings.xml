@@ -942,11 +942,11 @@ counter-reset: ch6 var(--numbered-headings-start);
     <property>
       <content>{{velocity}}
 {{html clean="false"}}
-#set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
-#set($isNumberedHeadingsEnabledOnParent = $services.numberedheadings.isNumberedHeadingsEnabledOnParent())
+#set($isNumberedHeadingsEnabled = $services.numbered.headings.isNumberedHeadingsEnabled())
+#set($isNumberedHeadingsEnabledOnParent = $services.numbered.headings.isNumberedHeadingsEnabledOnParent())
 &lt;script id="numbered-headings-config" type="application/json"&gt;$jsontool.serialize({
   'isActivated': $isNumberedHeadingsEnabled,
-  'isActivatedOnParent': $services.numberedheadings.isNumberedHeadingsEnabledOnParent()
+  'isActivatedOnParent': $services.numbered.headings.isNumberedHeadingsEnabledOnParent()
 })&lt;/script&gt;
 {{/html}}
 {{/velocity}}</content>
@@ -1091,7 +1091,7 @@ counter-reset: ch6 var(--numbered-headings-start);
     </property>
     <property>
       <content>{{velocity}}
-#set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
+#set($isNumberedHeadingsEnabled = $services.numbered.headings.isNumberedHeadingsEnabled())
 #set ($origdoc = $xwiki.getDocument('NumberedHeadings.Code.NumberedHeadings'))
 #set ($commondoc = $xwiki.getDocument('NumberedCommon.Code.NumberedCommon'))
 #set ($locale = $services.localization.getCurrentLocale())
@@ -1101,7 +1101,7 @@ counter-reset: ch6 var(--numbered-headings-start);
   'docVersion': $origdoc.getVersion()
 })))
 #set($ssxHrefCommon = $commondoc.getURL('ssx', $escapetool.url({
-  'hash': $services.numberedcommon.hash($locale)
+  'hash': $services.numbered.common.hash($locale)
 })))
 {{html clean='false'}}
 &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;

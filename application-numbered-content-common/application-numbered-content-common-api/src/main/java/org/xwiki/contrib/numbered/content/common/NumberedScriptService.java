@@ -17,26 +17,44 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings.script;
+package org.xwiki.contrib.numbered.content.common;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.common.NumberedScriptService;
-import org.xwiki.stability.Unstable;
+import org.xwiki.script.service.ScriptService;
+import org.xwiki.script.service.ScriptServiceManager;
 
 /**
- * Concrete instance of {@link AbstractNumberedHeadingsScriptService}, with the {@code numbered.headings} script service
- * name. Another instance with a deprecated name exists: {@link DeprecatedNumberedHeadingsScriptService}.
+ * Intermediate script service, currently providing access to sub-script services, with name {@code numbered.${XXX}}
+ * (e.g., {@code numbered.common}, {@code numbered.figure}).
  *
  * @version $Id$
- * @since 1.0
+ * @since 1.10.3
  */
 @Component
-@Named(NumberedScriptService.ROLE_HINT + ".headings")
+@Named(NumberedScriptService.ROLE_HINT)
 @Singleton
-@Unstable
-public class NumberedHeadingsScriptService extends AbstractNumberedHeadingsScriptService
+public class NumberedScriptService implements ScriptService
 {
+    /**
+     * The role hint of this component.
+     */
+    public static final String ROLE_HINT = "numbered";
+
+    @Inject
+    private ScriptServiceManager scriptServiceManager;
+
+    /**
+     * @param <S> the type of the {@link ScriptService}
+     * @param serviceName the name of the sub {@link ScriptService}
+     * @return the {@link ScriptService} or null of none could be found
+     */
+    @SuppressWarnings("unchecked")
+    public <S extends ScriptService> S get(String serviceName)
+    {
+        return (S) this.scriptServiceManager.get(ROLE_HINT + '.' + serviceName);
+    }
 }

@@ -56,7 +56,7 @@ public class CounterInitializationCSSMerge
     private Logger logger;
 
     /**
-     * Merge the values from the {@link CSSCountersProvider}s
+     * Merge the values from the {@link CSSCountersProvider}s.
      *
      * @param locale the current locale
      * @return merge the values from the {@link CSSCountersProvider}s

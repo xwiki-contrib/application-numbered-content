@@ -1,3 +1,4 @@
 org.xwiki.contrib.numbered.content.common.internal.CounterInitializationCSSMerge
 org.xwiki.contrib.numbered.content.common.internal.MapToCssConverter
 org.xwiki.contrib.numbered.content.common.NumberedCommonScriptService
+org.xwiki.contrib.numbered.content.common.NumberedScriptService
