@@ -572,18 +572,20 @@ require(
     </property>
     <property>
       <code>#set ($isNumberedHeadingsEnabled = $request.getParameter("isNumberedHeadingsEnabled"))
+## We separate the selectors that must no be applied on root, as they are already initialized by the common numbering
+## CSS. That way, we avoid CSS conflict for counters initialization.
+#set ($nonRootSelectors = [
+  '.numbered-content-root ' ,
+  '.numbered-content-root &gt; .xwiki-metadata-container '
+])
 #if ($isNumberedHeadingsEnabled == 'true')
   #set ($rootSelectors = [
-    '.numbered-content-root ',
-    '.numbered-content-root &gt; .xwiki-metadata-container ',
     '#xwikicontent:not(.disable-numbered-headings) ',
     '#body[contenteditable="true"]:not(.disable-numbered-headings) '
   ])
+  #set ($discard = $rootSelectors.addAll($nonRootSelectors))
 #else
-  #set ($rootSelectors = [
-    '.numbered-content-root ' ,
-    '.numbered-content-root &gt; .xwiki-metadata-container '
-  ])
+  #set ($rootSelectors = $nonRootSelectors)
 #end
 
 #macro (buildSelector $rootSelectors $suffix)
@@ -719,7 +721,7 @@ counter-reset: ch6 var(--numbered-headings-start);
   ]))
 #end
   /* Initialize the counters once on the root elements so they are consistently available for all headings. */
-  #buildSelector($rootSelectors '') {
+  #buildSelector($nonRootSelectors '') {
     counter-reset: nh1 nh2 nh3 nh4 nh5 nh6;
   }
 
@@ -940,11 +942,11 @@ counter-reset: ch6 var(--numbered-headings-start);
     <property>
       <content>{{velocity}}
 {{html clean="false"}}
-#set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
-#set($isNumberedHeadingsEnabledOnParent = $services.numberedheadings.isNumberedHeadingsEnabledOnParent())
+#set($isNumberedHeadingsEnabled = $services.numbered.headings.isNumberedHeadingsEnabled())
+#set($isNumberedHeadingsEnabledOnParent = $services.numbered.headings.isNumberedHeadingsEnabledOnParent())
 &lt;script id="numbered-headings-config" type="application/json"&gt;$jsontool.serialize({
   'isActivated': $isNumberedHeadingsEnabled,
-  'isActivatedOnParent': $services.numberedheadings.isNumberedHeadingsEnabledOnParent()
+  'isActivatedOnParent': $services.numbered.headings.isNumberedHeadingsEnabledOnParent()
 })&lt;/script&gt;
 {{/html}}
 {{/velocity}}</content>
@@ -1089,13 +1091,15 @@ counter-reset: ch6 var(--numbered-headings-start);
     </property>
     <property>
       <content>{{velocity}}
-#set($isNumberedHeadingsEnabled = $services.numberedheadings.isNumberedHeadingsEnabled())
+#set($isNumberedHeadingsEnabled = $services.numbered.headings.isNumberedHeadingsEnabled())
 #set ($origdoc = $xwiki.getDocument('NumberedHeadings.Code.NumberedHeadings'))
+#set ($locale = $services.localization.getCurrentLocale())
 #set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
   'isNumberedHeadingsEnabled': $isNumberedHeadingsEnabled,
   'locale': $services.localization.getCurrentLocale(),
   'docVersion': $origdoc.getVersion()
 })))
+#set ($discard = $services.numbered.common.insertCSS($locale))
 {{html clean='false'}}
 &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
 {{/html}}

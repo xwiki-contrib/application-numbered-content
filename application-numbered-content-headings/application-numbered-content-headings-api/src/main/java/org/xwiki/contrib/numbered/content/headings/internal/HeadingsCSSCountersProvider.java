@@ -17,26 +17,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings.script;
+package org.xwiki.contrib.numbered.content.headings.internal;
+
+import java.util.Locale;
+import java.util.Set;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.common.NumberedScriptService;
-import org.xwiki.stability.Unstable;
+import org.xwiki.contrib.numbered.content.common.CSSCountersProvider;
 
 /**
- * Concrete instance of {@link AbstractNumberedHeadingsScriptService}, with the {@code numbered.headings} script service
- * name. Another instance with a deprecated name exists: {@link DeprecatedNumberedHeadingsScriptService}.
+ * Provider for the CSS counters used for headings numbering.
  *
  * @version $Id$
  * @since 1.10.3
  */
 @Component
-@Named(NumberedScriptService.ROLE_HINT + ".headings")
 @Singleton
-@Unstable
-public class NumberedHeadingsScriptService extends AbstractNumberedHeadingsScriptService
+@Named("headings")
+public class HeadingsCSSCountersProvider implements CSSCountersProvider
 {
+    @Override
+    public Set<String> selectors(Locale locale)
+    {
+        return Set.of();
+    }
+
+    @Override
+    public Set<String> selectorsCounterSet(Locale locale)
+    {
+        return Set.of("nh1", "nh2", "nh3", "nh4", "nh5", "nh6");
+    }
 }

@@ -163,7 +163,7 @@
     <property>
       <content>{{velocity}}
 #set ($start = $latex.block.getParameter('data-numbered-headings-start'))
-#if ($start &amp;&amp; $services.numberedheadings.isNumberedHeadingsEnabled())
+#if ($start &amp;&amp; $services.numbered.headings.isNumberedHeadingsEnabled())
   #set ($headingLevel = $latex.block.getLevel().ordinal() + 1)
   #if ($headingLevel == 1)
     #if ($isBook)

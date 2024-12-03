@@ -1,5 +1,7 @@
 org.xwiki.contrib.numbered.content.headings.internal.NumberedHeadingsClassDocumentInitializer
 org.xwiki.contrib.numbered.content.headings.internal.DefaultNumberedHeadingsConfiguration
 org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingService
-org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService
 org.xwiki.contrib.numbered.content.headings.internal.HeadingsNumberingExecutionContextInitializer
+org.xwiki.contrib.numbered.content.headings.internal.HeadingsCSSCountersProvider
+org.xwiki.contrib.numbered.content.headings.script.DeprecatedNumberedHeadingsScriptService
+org.xwiki.contrib.numbered.content.headings.script.NumberedHeadingsScriptService

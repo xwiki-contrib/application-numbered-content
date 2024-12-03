@@ -1,4 +1,6 @@
-/*
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
  * See the NOTICE file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -16,27 +18,21 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
-package org.xwiki.contrib.numbered.content.headings.script;
+-->
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import org.xwiki.component.annotation.Component;
-import org.xwiki.contrib.numbered.content.common.NumberedScriptService;
-import org.xwiki.stability.Unstable;
-
-/**
- * Concrete instance of {@link AbstractNumberedHeadingsScriptService}, with the {@code numbered.headings} script service
- * name. Another instance with a deprecated name exists: {@link DeprecatedNumberedHeadingsScriptService}.
- *
- * @version $Id$
- * @since 1.10.3
- */
-@Component
-@Named(NumberedScriptService.ROLE_HINT + ".headings")
-@Singleton
-@Unstable
-public class NumberedHeadingsScriptService extends AbstractNumberedHeadingsScriptService
-{
-}
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.xwiki.contrib.numbered.content</groupId>
+    <artifactId>application-numbered-content</artifactId>
+    <version>1.10.3-SNAPSHOT</version>
+  </parent>
+  <artifactId>application-numbered-content-common</artifactId>
+  <name>Numbered Content - Common - Parent POM</name>
+  <description>Numbered Content - Common - Parent POM</description>
+  <packaging>pom</packaging>
+  <modules>
+    <module>application-numbered-content-common-api</module>
+    <module>application-numbered-content-common-ui</module>
+  </modules>
+</project>

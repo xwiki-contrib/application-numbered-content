@@ -17,38 +17,35 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.numbered.content.headings.script;
+package org.xwiki.contrib.numbered.content.figures.script;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.figure.FigureType;
 import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresConfiguration;
 import org.xwiki.contrib.numbered.content.figures.internal.NumberedFiguresDisplayDataManager;
+import org.xwiki.contrib.numbered.content.headings.script.NumberedFigureDisplayData;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.stability.Unstable;
 import org.xwiki.velocity.tools.JSONTool;
 
 /**
  * Numbered Figures Script Service. Provides operations related to numbered headings, such as knowing if the current
- * page should be numbered.
+ * page should be numbered. The class is currently abstract to have two implementations. One with the deprecated name
+ * {@code numberedfigures}, and one with the new {@code numbered.figures} name. This abstract class can be removed and
+ * the implementation moved to {@link NumberedFiguresScriptService} if {@link DeprecatedNumberedFiguresScriptService} is removed
+ * from the code base.
  *
  * @version $Id$
- * @since 1.0
+ * @since 1.10.3
  */
-@Component
-@Named("numberedfigures")
-@Singleton
-@Unstable
-public class NumberedFiguresScriptService implements ScriptService
+public abstract class AbstractNumberedFiguresScriptService implements ScriptService
 {
     @Inject
     private NumberedFiguresConfiguration numberedFiguresConfiguration;
@@ -62,7 +59,7 @@ public class NumberedFiguresScriptService implements ScriptService
      * @return {@code true} if the current document has numbered headings activated, {@code false} otherwise.
      * @throws Exception in case of error when checking if the current document has numbered headings activated.
      */
-    // TODO: change the thrown exception. 
+    // TODO: change the thrown exception.
     public boolean isNumberedFiguresEnabled() throws Exception
     {
         return this.numberedFiguresConfiguration.isNumberedFiguresEnabled();

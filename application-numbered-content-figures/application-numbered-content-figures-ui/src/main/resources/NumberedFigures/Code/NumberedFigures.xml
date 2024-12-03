@@ -252,7 +252,7 @@
 #set ($isNumberedFiguresEnabled = $request.getParameter("isNumberedFiguresEnabled"))
 #set ($locale = $request.getParameter("locale"))
 #if ($isNumberedFiguresEnabled == 'true')
-#set ($displayData = $services.numberedfigures.getDisplayData($locale))
+#set ($displayData = $services.numbered.figures.getDisplayData($locale))
 #set ($figureMacroDisplayName = $escapetool.css($displayData.getFigurePlaceholder()))
 #set ($figureCaptionMacroDisplayName = $escapetool.css($displayData.getFigureCaptionPlaceholder()))
 #set ($H = '#')
@@ -260,11 +260,6 @@
 #macro (figureCounter $id)
   cfigure-$id##
 #end
-
-${H}xwikicontent,
-body[contenteditable="true"] {
-  counter-reset: #foreach($counter in $displayData.getFigureCounters().keySet())#figureCounter($counter) #end;
-}
 
 [data-xwiki-rendering-figure-style="inline"] figcaption p:last-child::after,
 [data-xwiki-rendering-figure-style="inline"] [data-cke-display-name="macro:figureCaption"] p:last-child::after {
@@ -322,8 +317,8 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
           float: left;
           margin-top: 2px;
       }
-    
-    
+
+
       body[contenteditable="true"] figure[data-xwiki-rendering-figure-type='$type'] figcaption::before,
       ${H}xwikicontent figure[data-xwiki-rendering-figure-type='$type'] figcaption::before,
       body[contenteditable="true"]  div[data-cke-display-name="${figureMacroDisplayName}"] figure[data-xwiki-rendering-figure-type='$type'] div[data-cke-display-name="${figureCaptionMacroDisplayName}"] p:first-child::before,
@@ -488,16 +483,17 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
     </property>
     <property>
       <content>{{velocity}}
-#set($isNumberedFiguresEnabled = $services.numberedfigures.isNumberedFiguresEnabled())
+#set($isNumberedFiguresEnabled = $services.numbered.figures.isNumberedFiguresEnabled())
 #if ($isNumberedFiguresEnabled)
   #set ($origdoc = $xwiki.getDocument('NumberedFigures.Code.NumberedFigures'))
   #set ($locale = $services.localization.getCurrentLocale())
   #set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
     'isNumberedFiguresEnabled': $isNumberedFiguresEnabled,
     'locale': $locale,
-    'hash': $services.numberedfigures.getDisplayDataHash($locale),
+    'hash': $services.numbered.figures.getDisplayDataHash($locale),
     'docVersion': $origdoc.getVersion()
   })))
+  #set ($discard = $services.numbered.common.insertCSS($locale))
   {{html clean='false'}}
   &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
   {{/html}}
@@ -646,8 +642,8 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
       <content>{{velocity}}
 #set ($discard = $xwiki.jsx.use('NumberedFigures.Code.NumberedFigures'))
 {{html clean="false"}}
-#set($isNumberedFiguresEnabled = $services.numberedfigures.isNumberedFiguresEnabled())
-#set($isNumberedFiguresEnabledOnParent = $services.numberedfigures.isNumberedFiguresEnabledOnParent())
+#set($isNumberedFiguresEnabled = $services.numbered.figures.isNumberedFiguresEnabled())
+#set($isNumberedFiguresEnabledOnParent = $services.numbered.figures.isNumberedFiguresEnabledOnParent())
 &lt;script id="numbered-figures-config" type="application/json"&gt;$jsontool.serialize({
   'isActivated': $isNumberedFiguresEnabled,
   'isActivatedOnParent': $isNumberedFiguresEnabledOnParent

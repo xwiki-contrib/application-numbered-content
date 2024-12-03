@@ -24,20 +24,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
-    <artifactId>application-numbered-content-figures</artifactId>
+    <artifactId>application-numbered-content-common</artifactId>
     <version>1.10.3-SNAPSHOT</version>
   </parent>
-
-  <artifactId>application-numbered-content-figures-api</artifactId>
-  <name>Numbered Content - Figures - API</name>
-  <description>Automatically add numbering on the figures of a page.</description>
+  <artifactId>application-numbered-content-common-api</artifactId>
+  <name>Numbered Content - Common - API</name>
+  <description>Provides common operations to support the numbering of content elements. For instance, the definition of shared CSS files.</description>
   <properties>
     <!-- Name to display by the Extension Manager -->
-    <xwiki.extension.name>Numbered Figures API</xwiki.extension.name>
+    <xwiki.extension.name>Common Numbering API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
     <xwiki.jacoco.instructionRatio>0.76</xwiki.jacoco.instructionRatio>
-    <!-- Needs to be installed on root to be able to use ExecutionContextInitializer. -->
-    <xwiki.extension.namespaces>{root}</xwiki.extension.namespaces>
   </properties>
   <dependencies>
     <dependency>
@@ -46,19 +43,21 @@
       <version>${commons.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-script</artifactId>
+      <version>${commons.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-oldcore</artifactId>
+      <artifactId>xwiki-platform-skin-api</artifactId>
       <version>${platform.version}</version>
     </dependency>
-    <!-- Required by FigureTypeRecognizerMacro. -->
+    <!-- Test dependencies. -->
     <dependency>
-      <groupId>org.xwiki.contrib</groupId>
-      <artifactId>figure-macro</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.contrib.numbered.content</groupId>
-      <artifactId>application-numbered-content-common-api</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-tool-test-component</artifactId>
+      <version>${commons.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.xwiki.commons</groupId>
@@ -67,29 +66,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-test</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-syntax-xwiki21</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-syntax-event</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-test-oldcore</artifactId>
-      <version>${platform.version}</version>
-      <type>pom</type>
-      <scope>test</scope>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
     </dependency>
   </dependencies>
 </project>
