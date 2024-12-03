@@ -71,6 +71,7 @@ public abstract class AbstractNumberedFiguresScriptService implements ScriptServ
      * @return {@code true} if the current document has numbered headings activated, {@code false} otherwise.
      * @throws Exception in case of error when checking if the current document has numbered headings activated.
      */
+
     public boolean isNumberedFiguresEnabledOnParent() throws Exception
     {
         return this.numberedFiguresConfiguration.isNumberedFiguresEnabledOnParent();

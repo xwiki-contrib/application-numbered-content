@@ -486,7 +486,6 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
 #set($isNumberedFiguresEnabled = $services.numbered.figures.isNumberedFiguresEnabled())
 #if ($isNumberedFiguresEnabled)
   #set ($origdoc = $xwiki.getDocument('NumberedFigures.Code.NumberedFigures'))
-  #set ($commondoc = $xwiki.getDocument('NumberedCommon.Code.NumberedCommon'))
   #set ($locale = $services.localization.getCurrentLocale())
   #set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
     'isNumberedFiguresEnabled': $isNumberedFiguresEnabled,
@@ -494,12 +493,9 @@ ${H}xwikicontent div[data-cke-display-name="${figureMacroDisplayName}"] figure:n
     'hash': $services.numbered.figures.getDisplayDataHash($locale),
     'docVersion': $origdoc.getVersion()
   })))
-  #set($ssxHrefCommon = $commondoc.getURL('ssx', $escapetool.url({
-    'hash': $services.numbered.common.hash($locale)
-  })))
+  #set ($discard = $services.numbered.common.insertCSS($locale))
   {{html clean='false'}}
   &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
-  &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHrefCommon)"/&gt;
   {{/html}}
 #end
 {{/velocity}}</content>

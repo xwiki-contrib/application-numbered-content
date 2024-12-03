@@ -66,22 +66,24 @@ public class NumberedCommonScriptService implements ScriptService
     }
 
     /**
+     * Insert the relevant html to import the common numbering CSS. A hash is added to the resource parameters to allow
+     * for the CSS cache to be deprecated. For instance, if an extension providing new counters is installed. Or, in
+     * case of a change in the way we render the CSS after an upgrade.
+     *
+     * @param locale the current locale
+     */
+    public void insertCSS(Locale locale)
+    {
+        this.ssx.use("NumberedCommon.Code.NumberedCommon", Map.of("hash", hash(locale)));
+    }
+
+    /**
      * @param locale the current locale
      * @return the computed hash of the {@link #css(Locale)}
      */
-    public String hash(Locale locale)
+    private String hash(Locale locale)
     {
         return DigestUtils.md5Hex(getMergedCSS(locale)).toLowerCase();
-    }
-
-    public void insertCSS(Locale locale) {
-        /*
-        #set($ssxHrefCommon = $commondoc.getURL('ssx', $escapetool.url({
-    'hash': $services.numbered.common.hash($locale)
-  })))
-         */
-
-        this.ssx.use("NumberedCommon.Code.NumberedCommon", Map.of("hash", hash(locale)));
     }
 
     private String getMergedCSS(Locale locale)

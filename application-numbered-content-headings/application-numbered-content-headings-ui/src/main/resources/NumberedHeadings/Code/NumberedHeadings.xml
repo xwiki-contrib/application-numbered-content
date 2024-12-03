@@ -1093,19 +1093,15 @@ counter-reset: ch6 var(--numbered-headings-start);
       <content>{{velocity}}
 #set($isNumberedHeadingsEnabled = $services.numbered.headings.isNumberedHeadingsEnabled())
 #set ($origdoc = $xwiki.getDocument('NumberedHeadings.Code.NumberedHeadings'))
-#set ($commondoc = $xwiki.getDocument('NumberedCommon.Code.NumberedCommon'))
 #set ($locale = $services.localization.getCurrentLocale())
 #set($ssxHref = $origdoc.getURL('ssx', $escapetool.url({
   'isNumberedHeadingsEnabled': $isNumberedHeadingsEnabled,
   'locale': $services.localization.getCurrentLocale(),
   'docVersion': $origdoc.getVersion()
 })))
-#set($ssxHrefCommon = $commondoc.getURL('ssx', $escapetool.url({
-  'hash': $services.numbered.common.hash($locale)
-})))
+#set ($discard = $services.numbered.common.insertCSS($locale))
 {{html clean='false'}}
 &lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHref)"/&gt;
-&lt;link rel='stylesheet' type='text/css' href="$escapetool.xml($ssxHrefCommon)"/&gt;
 {{/html}}
 {{/velocity}}</content>
     </property>

@@ -29,7 +29,7 @@ import org.xwiki.script.service.ScriptService;
  * page should be numbered. The class is currently abstract to have two implementations. One with the deprecated name *
  * {@code numberedheadings}, and one with the new {@code numbered.headings} name. This abstract class can be removed and
  * the implementation moved to {@link NumberedHeadingsScriptService} if {@link DeprecatedNumberedHeadingsScriptService}
- * is removed  from the code base.
+ * is removed from the code base.
  *
  * @version $Id$
  * @since 1.10.3

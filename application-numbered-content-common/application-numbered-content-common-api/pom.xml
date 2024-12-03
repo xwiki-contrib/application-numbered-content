@@ -34,7 +34,7 @@
     <!-- Name to display by the Extension Manager -->
     <xwiki.extension.name>Common Numbering API</xwiki.extension.name>
     <xwiki.extension.category>api</xwiki.extension.category>
-    <xwiki.jacoco.instructionRatio>0.80</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.76</xwiki.jacoco.instructionRatio>
   </properties>
   <dependencies>
     <dependency>

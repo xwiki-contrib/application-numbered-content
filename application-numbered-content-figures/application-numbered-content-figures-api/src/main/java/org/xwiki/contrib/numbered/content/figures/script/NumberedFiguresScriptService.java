@@ -31,7 +31,7 @@ import org.xwiki.stability.Unstable;
  * name. Another instance with a deprecated name exists: {@link DeprecatedNumberedFiguresScriptService}.
  *
  * @version $Id$
- * @since 1.0
+ * @since 1.10.3
  */
 @Component
 @Named(NumberedScriptService.ROLE_HINT + ".figures")
