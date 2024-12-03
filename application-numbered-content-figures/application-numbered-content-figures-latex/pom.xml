@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.xwiki.contrib.numbered.content</groupId>
     <artifactId>application-numbered-content-figures</artifactId>
-    <version>1.10.3-SNAPSHOT</version>
+    <version>1.10.3</version>
   </parent>
   <artifactId>application-numbered-content-figures-latex</artifactId>
   <name>Numbered Content - Figures - Latex</name>
