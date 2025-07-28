@@ -38,6 +38,9 @@
   <hidden>true</hidden>
   <content>numbered.figures.codeSpace.title=Code
 numbered.figures.codeSpace.description=C'est l'espace où se trouve le code de l'application de numérotation des illustrations.
+numbered.figures.caption.block.separator=:
+numbered.figures.caption.inline.start=(
+numbered.figures.caption.inline.end=)
 
 #@deprecatedstart
 ##################################################
@@ -45,5 +48,6 @@ numbered.figures.codeSpace.description=C'est l'espace où se trouve le code de l
 ##################################################
 numbered.figures.numbered.figureCaption.label=Illustration
 numbered.figures.numbered.tableCaption.label=Tableau
-#@deprecatedend</content>
+#@deprecatedend
+</content>
 </xwikidoc>
