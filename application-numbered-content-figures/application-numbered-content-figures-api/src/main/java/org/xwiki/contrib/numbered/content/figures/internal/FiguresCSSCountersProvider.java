@@ -32,7 +32,7 @@ import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.numbered.content.common.CSSCountersProvider;
 import org.xwiki.contrib.numbered.content.figures.NumberedFiguresException;
 
-import static org.apache.commons.lang.exception.ExceptionUtils.getRootCauseMessage;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
 
 /**
  * Provider for the CSS counters used for figures numbering.
