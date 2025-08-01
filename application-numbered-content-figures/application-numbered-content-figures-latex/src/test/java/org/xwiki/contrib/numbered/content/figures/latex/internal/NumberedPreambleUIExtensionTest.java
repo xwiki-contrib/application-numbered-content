@@ -22,8 +22,6 @@ package org.xwiki.contrib.numbered.content.figures.latex.internal;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xwiki.contrib.figure.FigureType;
