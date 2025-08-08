@@ -38,6 +38,9 @@
     <xwiki.extension.category>macro</xwiki.extension.category>
     <!-- Another extension also providing a "reference" macro and that should not be installed simultaneously. -->
     <xwiki.extension.features>org.xwiki.contrib:macro-numbered-references</xwiki.extension.features>
+
+    <!-- Needed for unit tests. TODO: remove when upgrading to XWiki 17.6.0+ -->
+    <xwiki.enforcer.enforce-commons-lang3.skip>true</xwiki.enforcer.enforce-commons-lang3.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -61,6 +64,7 @@
       <artifactId>xwiki-rendering-macro-message</artifactId>
       <version>${rendering.version}</version>
     </dependency>
+
     <!-- Test dependencies. -->
     <dependency>
       <groupId>org.xwiki.commons</groupId>
@@ -118,6 +122,12 @@
     <dependency>
       <groupId>org.mortbay.jasper</groupId>
       <artifactId>apache-el</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- TODO: remove when upgrading to XWiki 17.6.0+ -->
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -38,6 +38,9 @@
     <xwiki.jacoco.instructionRatio>0.82</xwiki.jacoco.instructionRatio>
     <!-- Old names of this module used for retro compatibility when resolving dependencies of old extensions -->
     <xwiki.extension.features>org.xwiki.contrib.numbered.content:application-numbered-content-toc-macro</xwiki.extension.features>
+
+    <!-- Needed for unit tests. TODO: remove when upgrading to XWiki 17.6.0+ -->
+    <xwiki.enforcer.enforce-commons-lang3.skip>true</xwiki.enforcer.enforce-commons-lang3.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -50,6 +53,7 @@
       <artifactId>application-numbered-content-headings-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <!-- Test dependencies. -->
     <dependency>
       <groupId>org.xwiki.commons</groupId>
@@ -72,6 +76,12 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- TODO: remove when upgrading to XWiki 17.6.0+ -->
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
