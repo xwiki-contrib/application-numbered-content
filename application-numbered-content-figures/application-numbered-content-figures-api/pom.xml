@@ -38,9 +38,6 @@
     <xwiki.jacoco.instructionRatio>0.76</xwiki.jacoco.instructionRatio>
     <!-- Needs to be installed on root to be able to use ExecutionContextInitializer. -->
     <xwiki.extension.namespaces>{root}</xwiki.extension.namespaces>
-
-    <!-- Needed for unit tests. TODO: remove when upgrading to XWiki 17.6.0+ -->
-    <xwiki.enforcer.enforce-commons-lang3.skip>true</xwiki.enforcer.enforce-commons-lang3.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -94,12 +91,6 @@
       <artifactId>xwiki-platform-test-oldcore</artifactId>
       <version>${platform.version}</version>
       <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-    <!-- TODO: remove when upgrading to XWiki 17.6.0+ -->
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
