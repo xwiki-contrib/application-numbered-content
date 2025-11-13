@@ -59,7 +59,7 @@
     <xwiki.issueManagement.jira.id>NCAPP</xwiki.issueManagement.jira.id>
     <latex.version>1.26</latex.version>
     <figure.version>15.4.4</figure.version>
-    <dockerJava.version>3.3.6</dockerJava.version>
+    <dockerJava.version>3.7.0</dockerJava.version>
   </properties>
   <dependencyManagement>
     <!-- Dependency management to handle dependencies relying on older parent-platform parent pom (e.g., latex). -->
