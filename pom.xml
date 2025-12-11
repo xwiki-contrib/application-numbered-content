@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.xwiki.contrib</groupId>
     <artifactId>parent-platform</artifactId>
-    <version>14.10-3</version>
+    <version>14.10-5</version>
   </parent>
 
   <packaging>pom</packaging>
@@ -59,7 +59,6 @@
     <xwiki.issueManagement.jira.id>NCAPP</xwiki.issueManagement.jira.id>
     <latex.version>1.26</latex.version>
     <figure.version>15.4.4</figure.version>
-    <dockerJava.version>3.3.6</dockerJava.version>
   </properties>
   <dependencyManagement>
     <!-- Dependency management to handle dependencies relying on older parent-platform parent pom (e.g., latex). -->
