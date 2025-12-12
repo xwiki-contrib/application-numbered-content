@@ -57,7 +57,7 @@
   <properties>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
     <xwiki.issueManagement.jira.id>NCAPP</xwiki.issueManagement.jira.id>
-    <latex.version>1.26</latex.version>
+    <latex.version>1.26.1</latex.version>
     <figure.version>15.4.4</figure.version>
     <dockerJava.version>3.3.6</dockerJava.version>
   </properties>
