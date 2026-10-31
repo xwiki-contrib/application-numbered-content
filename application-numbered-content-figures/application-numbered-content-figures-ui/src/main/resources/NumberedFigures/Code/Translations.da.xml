@@ -36,18 +36,18 @@
   <minorEdit>false</minorEdit>
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
-  <content>### Missing: numbered.figures.codeSpace.title=
-### Missing: numbered.figures.codeSpace.description=
-### Missing: numbered.figures.caption.block.separator=
-### Missing: numbered.figures.caption.inline.start=
-### Missing: numbered.figures.caption.inline.end=
+  <content>numbered.figures.codeSpace.title=Kode
+numbered.figures.codeSpace.description=Her ligger koden til programmet til nummererede figurer.
+numbered.figures.caption.block.separator=:
+numbered.figures.caption.inline.start=(
+numbered.figures.caption.inline.end=)
 
 #@deprecatedstart
 ##################################################
 ## until 1.8.3
 ##################################################
-### Missing: numbered.figures.numbered.figureCaption.label=
-### Missing: numbered.figures.numbered.tableCaption.label=
+numbered.figures.numbered.figureCaption.label=Figur
+numbered.figures.numbered.tableCaption.label=Tabel
 #@deprecatedend
 </content>
 </xwikidoc>
