@@ -36,19 +36,19 @@
   <minorEdit>false</minorEdit>
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
-  <content>### Missing: numbered.headings.codeSpace.title=
-### Missing: numbered.headings.codeSpace.description=
-### Missing: numbered.headings.activationUI.label=
-### Missing: numbered.headings.activationUI.parameters.title=
-### Missing: numbered.headings.activationUI.contentUpdate.inProgress=
-### Missing: numbered.headings.activationUI.contentUpdate.done=
-### Missing: numbered.headings.activationUI.contentUpdate.failed=
-### Missing: numbered.headings.ckeditor.headerConfigurationAction.title=
-### Missing: numbered.headings.ckeditor.headerConfigurationAction.start.title=
-### Missing: numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=
-### Missing: numbered.headings.ckeditor.skipNumberingHeader.activate.title=
-### Missing: numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=
-### Missing: numbered.heading.template.title=
-### Missing: numbered.heading.template.description=
+  <content>numbered.headings.codeSpace.title=Kode
+numbered.headings.codeSpace.description=Her ligger koden til programmet til nummererede overskrifter.
+numbered.headings.activationUI.label=Aktivér nummerering af overskrifter
+numbered.headings.activationUI.parameters.title=Nummerering af overskrifter
+numbered.headings.activationUI.contentUpdate.inProgress=Opdaterer indholdet...
+numbered.headings.activationUI.contentUpdate.done=Indholdet er opdateret
+numbered.headings.activationUI.contentUpdate.failed=Indholdet kunne ikke opdateres
+numbered.headings.ckeditor.headerConfigurationAction.title=Indstillinger for overskrifter
+numbered.headings.ckeditor.headerConfigurationAction.start.title=Start
+numbered.headings.ckeditor.headerConfigurationAction.start.title.error.invalidNumber=Overskriftens startnummer skal være et helt tal.
+numbered.headings.ckeditor.skipNumberingHeader.activate.title=Spring nummerering over: Aktivér
+numbered.headings.ckeditor.skipNumberingHeader.deactivate.title=Spring nummerering over: Deaktiver
+numbered.heading.template.title=Skabelon til nummererede overskrifter
+numbered.heading.template.description=Opretter en side, hvor nummererede overskrifter er slået til.
 </content>
 </xwikidoc>
