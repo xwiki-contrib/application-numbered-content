@@ -37,5 +37,6 @@
     <module>application-numbered-content-headings-pdf</module>
     <module>application-numbered-content-headings-ui</module>
     <module>application-numbered-content-headings-toc</module>
+    <module>application-numbered-content-headings-test</module>
   </modules>
 </project>

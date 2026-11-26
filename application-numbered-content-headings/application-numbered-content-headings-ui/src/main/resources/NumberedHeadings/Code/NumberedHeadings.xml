@@ -171,8 +171,8 @@ define('NumberedHeadingsConfig', () =&gt; {
   }
 })
 require(
-  ['jquery', 'deferred!ckeditor', 'NumberedHeadingsConfig', 'xwiki-l10n!NumberedHeadingsConfigLocalization'],
-  function ($, ckeditorPromise, config, l10n) {
+  ['jquery', 'deferred!ckeditor', 'NumberedHeadingsConfig'],
+  function ($, ckeditorPromise, config) {
 
     function activatedByClass(editor) {
       let selection = editor.getSelection();
@@ -201,7 +201,9 @@ require(
           requires: 'dialog',
           init: function (editor) {
             handleIndentation(editor);
-            handleHeaderRightClick(editor);
+            require(['xwiki-l10n!NumberedHeadingsConfigLocalization'], l10n =&gt; {
+              handleHeaderRightClick(editor, l10n);
+            });
           }
         });
 
@@ -287,7 +289,7 @@ require(
     //
     // Right-click specific code.
     //
-    function handleHeaderRightClick(editor) {
+    function handleHeaderRightClick(editor, l10n) {
       /**
        * Activate the action only when the condition is reached (ie, click on a hX header).
        *
