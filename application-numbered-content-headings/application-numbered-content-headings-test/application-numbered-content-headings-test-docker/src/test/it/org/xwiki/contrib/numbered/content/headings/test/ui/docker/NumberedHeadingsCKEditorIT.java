@@ -57,6 +57,8 @@ class NumberedHeadingsCKEditorIT
 
     private static final String SKIPPED_HEADING = "Second";
 
+    private static final String THIRD_HEADING = "Third";
+
     private static final String PARAGRAPH = "Some paragraph.";
 
     @BeforeAll
@@ -116,6 +118,19 @@ class NumberedHeadingsCKEditorIT
 
         viewPage = new NumberedHeadingsViewPage();
         assertEquals(List.of("First", SKIPPED_HEADING, "Third"), viewPage.getNumberedHeadings());
+    }
+
+    @Test
+    @Order(3)
+    void headingIndentation(TestUtils setup, TestReference testReference)
+    {
+        NumberedHeadingsEditPage editPage = edit(setup, getPage(testReference));
+        assertEquals(1, editPage.getHeadingLevel(THIRD_HEADING));
+        editPage.indentHeading(THIRD_HEADING);
+        assertEquals(2, editPage.getHeadingLevel(THIRD_HEADING));
+        editPage.outdentHeading(THIRD_HEADING);
+        assertEquals(1, editPage.getHeadingLevel(THIRD_HEADING));
+        editPage.clickCancel();
     }
 
     private DocumentReference getPage(TestReference testReference)
