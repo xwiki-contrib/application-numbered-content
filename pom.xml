@@ -35,7 +35,7 @@
   <description>Provides automatic numbering for different types of contents. Currently: numbered headings and numbered
     figures. In addition, integrates those numbers in the Table of Content and provides a reference macro to generate
     numbered links to numbered contents.</description>
-  <version>1.11.1</version>
+  <version>1.11.2-SNAPSHOT</version>
   <developers>
     <developer>
       <id>mleduc</id>
@@ -54,7 +54,7 @@
     <connection>scm:git:git://github.com/xwiki-contrib/application-numbered-content.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-numbered-content.git</developerConnection>
     <url>https://github.com/xwiki-contrib/application-numbered-content/tree/master</url>
-    <tag>application-numbered-content-1.11.1</tag>
+    <tag>HEAD</tag>
   </scm>
   <properties>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
