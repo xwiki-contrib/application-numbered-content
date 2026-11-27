@@ -33,7 +33,8 @@ import org.xwiki.test.ui.XWikiWebDriver;
 import org.xwiki.test.ui.po.BaseElement;
 
 /**
- * The context menu of a CKEditor instance, opened on an element of the editing area.
+ * The context menu of a CKEditor instance, opened with the keyboard at the caret position of the editing area,
+ * optionally after placing the caret in a given element.
  *
  * @version $Id$
  * @since 1.11.1
@@ -65,16 +66,31 @@ public class CKEditorContextMenu extends BaseElement
      */
     public CKEditorContextMenu open(String elementText)
     {
+        return open(() -> getDriver().findElement(By.xpath(
+            String.format("//body//*[normalize-space(.)='%1$s'][not(.//*[normalize-space(.)='%1$s'])]", elementText)))
+            .click());
+    }
+
+    /**
+     * Opens the context menu with the keyboard (Shift+F10) at the current caret position of the editing area, and
+     * waits for it to be displayed.
+     *
+     * @return this context menu
+     */
+    public CKEditorContextMenu open()
+    {
+        return open(() -> { });
+    }
+
+    private CKEditorContextMenu open(Runnable placeCaret)
+    {
         XWikiWebDriver driver = getDriver();
         WebElement editingFrame = (WebElement) driver.executeScript(
             "return CKEDITOR.instances[arguments[0]].ui.contentsElement.find('iframe').getItem(0).$;",
             this.editorName);
         driver.switchTo().frame(editingFrame);
         try {
-            WebElement element = driver.findElement(By.xpath(
-                String.format("//body//*[normalize-space(.)='%1$s'][not(.//*[normalize-space(.)='%1$s'])]",
-                    elementText)));
-            element.click();
+            placeCaret.run();
             driver.switchTo().activeElement().sendKeys(Keys.chord(Keys.SHIFT, Keys.F10));
         } finally {
             driver.switchTo().defaultContent();

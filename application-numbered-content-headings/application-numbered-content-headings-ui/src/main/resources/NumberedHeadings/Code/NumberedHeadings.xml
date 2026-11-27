@@ -319,7 +319,12 @@ require(
        *   expect it not have the skip attribute
        */
       function createDefSkip(def, activatedStatus) {
-        return CKEDITOR.tools.extend(def || {}, {
+        const exec = def.exec;
+        def.exec = function (editor) {
+          exec.call(this, editor);
+          refreshCommandStates(editor);
+        };
+        return CKEDITOR.tools.extend(def, {
           contextSensitive: 1,
           refresh: function (editor, path) {
             let headerNode = path.contains('h1', 1)
@@ -335,6 +340,11 @@ require(
         });
       }
 
+
+      function refreshCommandStates(editor) {
+        editor.forceNextSelectionCheck();
+        editor.selectionChange(true);
+      }
 
       function getHeadingElement(editor) {
         var range;
