@@ -131,8 +131,8 @@
     'ckeditor.headerConfigurationAction.title',
     'ckeditor.headerConfigurationAction.start.title',
     'ckeditor.headerConfigurationAction.start.title.error.invalidNumber',
-    'ckeditor.skipNumberingHeader.activate.title',
-    'ckeditor.skipNumberingHeader.deactivate.title'
+    'ckeditor.skipNumberingHeader.removeNumbering.title',
+    'ckeditor.skipNumberingHeader.restoreNumbering.title'
   ]
 });
 
@@ -440,13 +440,13 @@ require(
           order: 12
         });
         editor.addMenuItem('activateSkipNumbering', {
-          label: l10n['ckeditor.skipNumberingHeader.activate.title'],
+          label: l10n['ckeditor.skipNumberingHeader.removeNumbering.title'],
           command: 'activateSkipNumberingCmd',
           group: 'clipboard',
           order: 13
         });
         editor.addMenuItem('deactivateSkipNumbering', {
-          label: l10n['ckeditor.skipNumberingHeader.deactivate.title'],
+          label: l10n['ckeditor.skipNumberingHeader.restoreNumbering.title'],
           command: 'deactivateSkipNumberingCmd',
           group: 'clipboard',
           order: 14

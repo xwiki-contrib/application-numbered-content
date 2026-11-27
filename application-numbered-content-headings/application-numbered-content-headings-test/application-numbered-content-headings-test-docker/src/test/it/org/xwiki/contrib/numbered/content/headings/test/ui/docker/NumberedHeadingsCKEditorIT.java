@@ -51,9 +51,9 @@ class NumberedHeadingsCKEditorIT
 {
     private static final String HEADER_CONFIG = "Header Config";
 
-    private static final String ACTIVATE_SKIP = "Skip numbering: Activate";
+    private static final String REMOVE_NUMBERING = "Remove numbering";
 
-    private static final String DEACTIVATE_SKIP = "Skip numbering: Deactivate";
+    private static final String RESTORE_NUMBERING = "Restore numbering";
 
     private static final String SKIPPED_HEADING = "Second";
 
@@ -86,13 +86,13 @@ class NumberedHeadingsCKEditorIT
         NumberedHeadingsEditPage editPage = edit(setup, page);
         List<String> entries = editPage.openContextMenu(SKIPPED_HEADING).getEntries();
         assertTrue(entries.contains(HEADER_CONFIG), entries.toString());
-        assertTrue(entries.contains(ACTIVATE_SKIP), entries.toString());
-        assertFalse(entries.contains(DEACTIVATE_SKIP), entries.toString());
+        assertTrue(entries.contains(REMOVE_NUMBERING), entries.toString());
+        assertFalse(entries.contains(RESTORE_NUMBERING), entries.toString());
 
         entries = editPage.openContextMenu(PARAGRAPH).getEntries();
         assertFalse(entries.contains(HEADER_CONFIG), entries.toString());
-        assertFalse(entries.contains(ACTIVATE_SKIP), entries.toString());
-        assertFalse(entries.contains(DEACTIVATE_SKIP), entries.toString());
+        assertFalse(entries.contains(REMOVE_NUMBERING), entries.toString());
+        assertFalse(entries.contains(RESTORE_NUMBERING), entries.toString());
         editPage.clickCancel();
     }
 
@@ -102,7 +102,7 @@ class NumberedHeadingsCKEditorIT
     {
         DocumentReference page = getPage(testReference);
         NumberedHeadingsEditPage editPage = edit(setup, page);
-        editPage.openContextMenu(SKIPPED_HEADING).clickEntry(ACTIVATE_SKIP);
+        editPage.openContextMenu(SKIPPED_HEADING).clickEntry(REMOVE_NUMBERING);
         editPage.clickSaveAndView();
 
         NumberedHeadingsViewPage viewPage = new NumberedHeadingsViewPage();
@@ -111,9 +111,9 @@ class NumberedHeadingsCKEditorIT
         editPage = edit(setup, page);
         CKEditorContextMenu contextMenu = editPage.openContextMenu(SKIPPED_HEADING);
         List<String> entries = contextMenu.getEntries();
-        assertTrue(entries.contains(DEACTIVATE_SKIP), entries.toString());
-        assertFalse(entries.contains(ACTIVATE_SKIP), entries.toString());
-        contextMenu.clickEntry(DEACTIVATE_SKIP);
+        assertTrue(entries.contains(RESTORE_NUMBERING), entries.toString());
+        assertFalse(entries.contains(REMOVE_NUMBERING), entries.toString());
+        contextMenu.clickEntry(RESTORE_NUMBERING);
         editPage.clickSaveAndView();
 
         viewPage = new NumberedHeadingsViewPage();
@@ -138,17 +138,17 @@ class NumberedHeadingsCKEditorIT
     void toggleSkipNumberingWithoutMovingTheCaret(TestUtils setup, TestReference testReference)
     {
         NumberedHeadingsEditPage editPage = edit(setup, getPage(testReference));
-        editPage.openContextMenu(SKIPPED_HEADING).clickEntry(ACTIVATE_SKIP);
+        editPage.openContextMenu(SKIPPED_HEADING).clickEntry(REMOVE_NUMBERING);
 
         CKEditorContextMenu contextMenu = editPage.openContextMenu();
         List<String> entries = contextMenu.getEntries();
-        assertTrue(entries.contains(DEACTIVATE_SKIP), entries.toString());
-        assertFalse(entries.contains(ACTIVATE_SKIP), entries.toString());
-        contextMenu.clickEntry(DEACTIVATE_SKIP);
+        assertTrue(entries.contains(RESTORE_NUMBERING), entries.toString());
+        assertFalse(entries.contains(REMOVE_NUMBERING), entries.toString());
+        contextMenu.clickEntry(RESTORE_NUMBERING);
 
         entries = editPage.openContextMenu().getEntries();
-        assertTrue(entries.contains(ACTIVATE_SKIP), entries.toString());
-        assertFalse(entries.contains(DEACTIVATE_SKIP), entries.toString());
+        assertTrue(entries.contains(REMOVE_NUMBERING), entries.toString());
+        assertFalse(entries.contains(RESTORE_NUMBERING), entries.toString());
         editPage.clickCancel();
     }
 
