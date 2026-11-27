@@ -68,6 +68,16 @@ public class NumberedHeadingsEditPage extends WYSIWYGEditPage
     }
 
     /**
+     * Opens the context menu at the current caret position of the edited content.
+     *
+     * @return the displayed context menu
+     */
+    public CKEditorContextMenu openContextMenu()
+    {
+        return new CKEditorContextMenu(EDITOR_NAME).open();
+    }
+
+    /**
      * Places the caret in the heading with the given text, presses Tab and waits for the heading level to change.
      *
      * @param headingText the text of the heading

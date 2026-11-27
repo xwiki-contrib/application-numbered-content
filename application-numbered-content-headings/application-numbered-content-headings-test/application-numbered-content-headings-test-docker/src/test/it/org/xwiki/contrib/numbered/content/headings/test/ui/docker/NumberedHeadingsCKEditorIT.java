@@ -133,6 +133,25 @@ class NumberedHeadingsCKEditorIT
         editPage.clickCancel();
     }
 
+    @Test
+    @Order(4)
+    void toggleSkipNumberingWithoutMovingTheCaret(TestUtils setup, TestReference testReference)
+    {
+        NumberedHeadingsEditPage editPage = edit(setup, getPage(testReference));
+        editPage.openContextMenu(SKIPPED_HEADING).clickEntry(ACTIVATE_SKIP);
+
+        CKEditorContextMenu contextMenu = editPage.openContextMenu();
+        List<String> entries = contextMenu.getEntries();
+        assertTrue(entries.contains(DEACTIVATE_SKIP), entries.toString());
+        assertFalse(entries.contains(ACTIVATE_SKIP), entries.toString());
+        contextMenu.clickEntry(DEACTIVATE_SKIP);
+
+        entries = editPage.openContextMenu().getEntries();
+        assertTrue(entries.contains(ACTIVATE_SKIP), entries.toString());
+        assertFalse(entries.contains(DEACTIVATE_SKIP), entries.toString());
+        editPage.clickCancel();
+    }
+
     private DocumentReference getPage(TestReference testReference)
     {
         // Shared by all the test methods, the test reference being specific to each method.
